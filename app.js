@@ -119,7 +119,6 @@ async function loadOfficialContent() {
       document.querySelector('#daily-page-verse').textContent = `“${content.daily.verse}”`;
       document.querySelector('#daily-page-reference').textContent = content.daily.reference;
       if (content.daily.content) document.querySelector('#daily-page-content').textContent = content.daily.content;
-      document.querySelector('#daily-link').addEventListener('click', () => window.open(content.daily.url, '_blank', 'noopener'));
     }
     if (content.meeting?.reading) {
       document.querySelector('#meeting-reading').textContent = content.meeting.reading;
