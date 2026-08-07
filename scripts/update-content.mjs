@@ -68,17 +68,26 @@ async function getMeeting(date) {
   const rtf = await (await fetchWithTimeout(current.file.url)).text();
   const text = rtfToText(rtf);
   const treasure = text.match(/1\.\s+(.+?)\s*\(10 min\)/i)?.[1] || 'Tesouros da Palavra de Deus';
-  return { weekOf: monday.toISOString().slice(0, 10), reading, treasure, sourceUrl: current.file.url };
+  return { weekOf: monday.toISOString().slice(0, 10), reading, treasure, sourceUrl: current.file.url, coverUrl: media.pubImage?.url || null };
+}
+
+async function getWatchtowerCover(date) {
+  const issue = `${date.getUTCFullYear()}${String(date.getUTCMonth() + 1).padStart(2, '0')}`;
+  const url = `https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS?pub=w&issue=${issue}&langwritten=T&output=json`;
+  const media = await (await fetchWithTimeout(url)).json();
+  if (!media.pubImage?.url) throw new Error('Capa da Sentinela não encontrada.');
+  return media.pubImage.url;
 }
 
 const now = new Date();
 const previous = JSON.parse(await readFile(contentFile, 'utf8'));
-const results = await Promise.allSettled([getDaily(now), getMeeting(now)]);
+const results = await Promise.allSettled([getDaily(now), getMeeting(now), getWatchtowerCover(now)]);
 const daily = results[0].status === 'fulfilled' ? results[0].value : previous.daily;
 const meeting = results[1].status === 'fulfilled' ? results[1].value : previous.meeting;
 if (!daily || !meeting) throw new Error('Não há conteúdo válido disponível para publicação.');
 const errors = results.filter((result) => result.status === 'rejected').map((result) => result.reason.message);
-const content = { updatedAt: new Date().toISOString(), daily, meeting, previousUpdatedAt: previous.updatedAt || null, errors };
+const covers = { workbook: meeting.coverUrl || previous.covers?.workbook || null, watchtower: results[2].status === 'fulfilled' ? results[2].value : previous.covers?.watchtower || null };
+const content = { updatedAt: new Date().toISOString(), daily, meeting, covers, previousUpdatedAt: previous.updatedAt || null, errors };
 await mkdir(new URL('../data/', import.meta.url), { recursive: true });
 await writeFile(contentFile, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
 console.log(`Conteúdo atualizado: ${daily.date}; semana de ${meeting.weekOf}.`);

@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-07T14:54:52.675Z",
+  "updatedAt": "2026-08-07T14:58:19.825Z",
   "daily": {
     "date": "2026-08-07",
     "verse": "Começou uma grande perseguição contra a congregação em Jerusalém. — Atos 8:1 .",
@@ -10,10 +10,13 @@
     "weekOf": "2026-08-03",
     "reading": "Jeremias 22–23",
     "treasure": "A importância de ter bons pastores",
-    "sourceUrl": "https://cfp2.jw-cdn.org/a/7b43e6/1/o/mwb_T_202607_04.rtf"
+    "sourceUrl": "https://cfp2.jw-cdn.org/a/7b43e6/1/o/mwb_T_202607_04.rtf",
+    "coverUrl": "https://cfp2.jw-cdn.org/a/1b6379/1/ir/mwb_T_202607_lg.jpg"
+  },
+  "covers": {
+    "workbook": "https://cfp2.jw-cdn.org/a/1b6379/1/ir/mwb_T_202607_lg.jpg",
+    "watchtower": "https://cfp2.jw-cdn.org/a/d03461/1/ir/w_T_202608_lg.jpg"
   },
   "previousUpdatedAt": "2026-08-07T14:48:30.541Z",
-  "errors": [
-    "This operation was aborted"
-  ]
+  "errors": []
 }

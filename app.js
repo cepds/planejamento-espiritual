@@ -84,6 +84,16 @@ async function loadOfficialContent() {
       defaultEvents = [{ title: 'Reunião de meio de semana', meta: content.meeting.reading }, ...defaultEvents.slice(1)];
       if (!getEvents().length) renderEvents();
     }
+    if (content.covers?.workbook) {
+      const cover = document.querySelector('#workbook-cover');
+      cover.src = content.covers.workbook;
+      cover.hidden = false;
+    }
+    if (content.covers?.watchtower) {
+      const cover = document.querySelector('#watchtower-cover');
+      cover.src = content.covers.watchtower;
+      cover.hidden = false;
+    }
   } catch (error) { console.warn('Conteúdo oficial não pôde ser atualizado.', error); }
 }
 

@@ -2,10 +2,15 @@
 #panel .card{background:#11120f;border-color:#3c403b;box-shadow:none}
 #panel .daily-reading,#panel .events-card .card-heading,#panel .events-list,#panel .panel-card-inner{background:#1d251b}
 #panel .events-card .card-heading{margin:-5px -5px 12px;padding:13px;border-radius:11px}
+#panel .agenda-title{display:flex;align-items:center;gap:12px}
+#panel .workbook-cover{width:40px;height:53px;object-fit:cover;border-radius:5px;border:1px solid #63806a;box-shadow:0 3px 8px rgba(0,0,0,.25)}
 #panel .events-list{padding:0 14px;border-radius:11px}
 #panel .event-row{border-color:#465046}
 #panel .panel-card-inner{border-radius:11px;padding:18px;min-height:100%}
 #panel .watchtower-card,#panel .family-card{padding:18px}
+#panel .watchtower-layout{display:grid;grid-template-columns:82px minmax(0,1fr);gap:17px;align-items:start}
+#panel .watchtower-cover{width:82px;aspect-ratio:3/4;object-fit:cover;border-radius:7px;border:1px solid #6e9177;box-shadow:0 5px 14px rgba(0,0,0,.28)}
 #panel .watchtower-card .section-label,#panel .family-card .section-label{color:#8ec09c}
 #panel .button-secondary{border-color:#74947b;background:#104e36;color:#fff}
 #panel .button-secondary:hover{background:#0c3d2b}
+@media(max-width:520px){#panel .watchtower-layout{grid-template-columns:62px minmax(0,1fr);gap:13px}#panel .watchtower-cover{width:62px}}
