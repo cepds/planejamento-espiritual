@@ -141,7 +141,7 @@ async function loadOfficialContent() {
       publicationMedia.href = family.articleUrl;
       if (family.publicationImageUrl) document.querySelector('#family-publication-image').src = family.publicationImageUrl;
       const videoMedia = document.querySelector('#family-video-media');
-      videoMedia.hidden = !family.videoImageUrl;
+      videoMedia.hidden = !family.videoImageUrl || family.videoImageUrl === family.publicationImageUrl;
       videoMedia.href = family.videoUrl || '#';
       if (family.videoImageUrl) document.querySelector('#family-video-image').src = family.videoImageUrl;
     }
