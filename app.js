@@ -196,6 +196,8 @@ async function loadOfficialContent() {
     const showWeekend = day === 0 || day === 5 || day === 6;
     document.querySelector('#midweek-focus').hidden = showWeekend;
     document.querySelector('#weekend-focus').hidden = !showWeekend;
+    document.querySelector('#meeting-midweek-card').hidden = showWeekend;
+    document.querySelector('#meeting-weekend-card').hidden = !showWeekend;
   } catch (error) { console.warn('Conteúdo oficial não pôde ser atualizado.', error); }
 }
 
