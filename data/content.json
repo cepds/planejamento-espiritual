@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-07T15:28:29.248Z",
+  "updatedAt": "2026-08-07T15:50:55.720Z",
   "daily": {
     "date": "2026-08-07",
     "verse": "Começou uma grande perseguição contra a congregação em Jerusalém. — Atos 8:1 .",
@@ -22,8 +22,58 @@
     "workbook": "https://cfp2.jw-cdn.org/a/1b6379/1/ir/mwb_T_202607_lg.jpg",
     "watchtower": "https://cfp2.jw-cdn.org/a/d03461/1/ir/w_T_202608_lg.jpg"
   },
+  "familyWorship": {
+    "topic": "Casamento",
+    "title": "Como ser feliz no casamento? — Mostre respeito",
+    "prompt": "Conversem sobre uma maneira prática de mostrar respeito no casamento nesta semana.",
+    "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
+    "videoUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
+    "weekOf": "2026-08-04",
+    "sequence": 1,
+    "scheduleThrough": "2027-08-31"
+  },
+  "familyUpcoming": [
+    {
+      "topic": "Casamento",
+      "title": "Como ser feliz no casamento? — Mostre respeito",
+      "prompt": "Conversem sobre uma maneira prática de mostrar respeito no casamento nesta semana.",
+      "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
+      "videoUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
+      "weekOf": "2026-08-04",
+      "sequence": 1,
+      "scheduleThrough": "2027-08-31"
+    },
+    {
+      "topic": "Família",
+      "title": "Como desenvolver uma família espiritualmente forte",
+      "prompt": "Identifiquem uma prioridade que pode fortalecer a espiritualidade da família.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20010515/Como-desenvolver-uma-fam%C3%ADlia-espiritualmente-forte/",
+      "videoUrl": null,
+      "weekOf": "2026-08-11",
+      "sequence": 2,
+      "scheduleThrough": "2027-08-31"
+    },
+    {
+      "topic": "Fortalecimento espiritual",
+      "title": "Famílias cristãs — “fiquem despertas”",
+      "prompt": "Escolham uma ação simples para manter a família espiritualmente desperta.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20110515/Fam%C3%ADlias-crist%C3%A3s-fiquem-despertas/",
+      "videoUrl": null,
+      "weekOf": "2026-08-18",
+      "sequence": 3,
+      "scheduleThrough": "2027-08-31"
+    },
+    {
+      "topic": "Amor",
+      "title": "Um amor de verdade",
+      "prompt": "Assistam juntos e conversem sobre como demonstrar amor nas atitudes diárias.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
+      "videoUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
+      "weekOf": "2026-08-25",
+      "sequence": 4,
+      "scheduleThrough": "2027-08-31"
+    }
+  ],
   "previousUpdatedAt": "2026-08-07T15:27:24.792Z",
-  "errors": [
-    "This operation was aborted"
-  ]
+  "errors": []
 }

@@ -17,6 +17,8 @@
 #panel .watchtower-card .section-label,#panel .family-card .section-label{color:#8ec09c}
 #panel .button-secondary{border-color:#74947b;background:#104e36;color:#fff}
 #panel .button-secondary:hover{background:#0c3d2b}
+#panel .family-topic,#family .family-topic{margin:0 0 4px;color:#dcb96c;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+#panel .family-prompt{color:#cbdccf;margin:11px 0 18px;font-size:13px;line-height:1.5}
 @media(max-width:520px){#panel .watchtower-layout{grid-template-columns:62px minmax(0,1fr);gap:13px}#panel .watchtower-cover{width:62px}}
 
 /* Capas na aba Reuniões. */
@@ -30,6 +32,28 @@
 #meetings .study-points{display:grid;gap:10px;margin:14px 0 0;padding:0;list-style:none}
 #meetings .study-points li{position:relative;padding:0 0 0 16px;color:#d9e9dc;font-size:13px;line-height:1.5}
 #meetings .study-points li::before{content:'';position:absolute;left:0;top:.58em;width:6px;height:6px;border-radius:50%;background:#dcb96c}
+
+/* Plano semanal de AdoraÃ§Ã£o em FamÃ­lia. */
+#family{max-width:760px;display:none;gap:18px}
+#family.is-active{display:grid}
+#family .card{background:#11120f;border-color:#3c403b;box-shadow:none}
+#family .family-study-card{background:#1d251b}
+#family h2{margin:0;color:#f1f7e9;font:700 28px/1.2 Georgia,serif;letter-spacing:-.02em}
+#family .family-week{margin:10px 0 0;color:#96bd9e;font-size:13px}
+#family .family-prompt{margin:18px 0;color:#d8e6d9;line-height:1.55}
+#family .family-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+#family .button-secondary,#family .button-video{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid #74947b;background:#104e36;color:#fff}
+#family .button-secondary:hover,#family .button-video:hover{background:#0c3d2b}
+#family .button-video{background:transparent;color:#dceee0}
+#family .family-upcoming{display:grid}
+#family .family-upcoming-row{display:grid;grid-template-columns:110px minmax(0,1fr);gap:13px;padding:13px 0;border-top:1px solid #465046}
+#family .family-upcoming-row:first-child{border-top:0;padding-top:0}
+#family .family-upcoming-date{color:#dcb96c;font-size:12px;font-weight:700}
+#family .family-upcoming-topic,#family .family-upcoming-title{margin:0}
+#family .family-upcoming-topic{color:#93bd9b;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+#family .family-upcoming-title{color:#edf4e9;font:700 16px/1.35 Georgia,serif}
+#family .family-schedule-note{margin:16px 0 0;color:#95aa98;font-size:12px}
+@media(max-width:520px){#family .family-upcoming-row{grid-template-columns:1fr;gap:4px}#family h2{font-size:24px}}
 
 /* No desktop, a navegação permanece fixa; somente o conteúdo rola. */
 @media(min-width:651px){body{overflow:hidden}.app-shell{height:100vh;min-height:0;overflow:hidden}.sidebar{height:100vh;overflow-y:auto}.content{height:100vh;overflow-y:auto}}

@@ -43,6 +43,11 @@ function setPage(page, shouldScroll = true) {
   if (shouldScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function formatFamilyWeek(value) {
+  const [year, month, day] = String(value).split('-').map(Number);
+  return new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long' }).format(new Date(year, month - 1, day));
+}
+
 function renderEvents() {
   const savedEvents = getEvents();
   const events = savedEvents.length ? savedEvents : defaultEvents;
@@ -113,6 +118,34 @@ async function loadOfficialContent() {
       const meetingCover = document.querySelector('#meeting-watchtower-cover');
       meetingCover.src = content.covers.watchtower;
       meetingCover.hidden = false;
+    }
+    if (content.familyWorship?.title) {
+      const family = content.familyWorship;
+      document.querySelector('#panel-family-topic').textContent = family.topic;
+      document.querySelector('#panel-family-title').textContent = family.title;
+      document.querySelector('#panel-family-prompt').textContent = family.prompt;
+      document.querySelector('#family-topic').textContent = family.topic;
+      document.querySelector('#family-title').textContent = family.title;
+      document.querySelector('#family-week').textContent = `Tema iniciado em ${formatFamilyWeek(family.weekOf)}. Atualiza toda terça-feira.`;
+      document.querySelector('#family-prompt').textContent = family.prompt;
+      const article = document.querySelector('#family-article');
+      article.href = family.articleUrl;
+      const video = document.querySelector('#family-video');
+      video.hidden = !family.videoUrl;
+      if (family.videoUrl) video.href = family.videoUrl;
+    }
+    if (content.familyUpcoming?.length) {
+      const upcoming = document.querySelector('#family-upcoming');
+      upcoming.replaceChildren(...content.familyUpcoming.map((item, index) => {
+        const row = document.createElement('div'); row.className = 'family-upcoming-row';
+        const date = document.createElement('span'); date.className = 'family-upcoming-date';
+        date.textContent = index === 0 ? 'Esta semana' : formatFamilyWeek(item.weekOf);
+        const copy = document.createElement('div');
+        const topic = document.createElement('p'); topic.className = 'family-upcoming-topic'; topic.textContent = item.topic;
+        const title = document.createElement('p'); title.className = 'family-upcoming-title'; title.textContent = item.title;
+        copy.append(topic, title); row.append(date, copy);
+        return row;
+      }));
     }
     const day = new Date().getDay();
     const showWeekend = day === 0 || day === 5 || day === 6;
