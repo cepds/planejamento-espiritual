@@ -33,7 +33,7 @@
 #panel .family-topic,#family .family-topic{margin:0 0 4px;color:#dcb96c;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
 #panel .family-prompt{color:#cbdccf;margin:11px 0 18px;font-size:13px;line-height:1.5}
 #panel .panel-family-cover{float:right;width:62px;height:82px;object-fit:cover;border:1px solid #6e9177;border-radius:6px;margin:0 0 10px 14px;box-shadow:0 4px 11px rgba(0,0,0,.24)}
-@media(max-width:650px){#panel .panel-family-cover{float:none;display:block;width:100%;height:132px;object-fit:cover;margin:10px 0 14px;border-radius:8px}}
+@media(max-width:650px){#panel .panel-family-cover{display:none!important}}
 @media(max-width:520px){#panel .watchtower-layout{grid-template-columns:62px minmax(0,1fr);gap:13px}#panel .watchtower-cover{width:62px}}
 
 /* Capas na aba Reuniões. */
