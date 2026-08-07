@@ -66,8 +66,12 @@ async function getMeeting(date) {
 
 const now = new Date();
 const previous = JSON.parse(await readFile(contentFile, 'utf8'));
-const [daily, meeting] = await Promise.all([getDaily(now), getMeeting(now)]);
-const content = { updatedAt: new Date().toISOString(), daily, meeting, previousUpdatedAt: previous.updatedAt || null };
+const results = await Promise.allSettled([getDaily(now), getMeeting(now)]);
+const daily = results[0].status === 'fulfilled' ? results[0].value : previous.daily;
+const meeting = results[1].status === 'fulfilled' ? results[1].value : previous.meeting;
+if (!daily || !meeting) throw new Error('Não há conteúdo válido disponível para publicação.');
+const errors = results.filter((result) => result.status === 'rejected').map((result) => result.reason.message);
+const content = { updatedAt: new Date().toISOString(), daily, meeting, previousUpdatedAt: previous.updatedAt || null, errors };
 await mkdir(new URL('../data/', import.meta.url), { recursive: true });
 await writeFile(contentFile, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
 console.log(`Conteúdo atualizado: ${daily.date}; semana de ${meeting.weekOf}.`);
