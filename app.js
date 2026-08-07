@@ -34,12 +34,13 @@ function decodeLegacyText(value) {
   return decoded;
 }
 
-function setPage(page) {
+function setPage(page, shouldScroll = true) {
   pages.forEach((item) => item.classList.toggle('is-active', item.id === page));
   document.querySelectorAll('.nav-item').forEach((item) => item.classList.toggle('is-active', item.dataset.page === page));
   pageTitle.innerHTML = pageNames[page];
   document.querySelector('#add-event').hidden = page !== 'panel';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.location.hash = page;
+  if (shouldScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function renderEvents() {
@@ -63,6 +64,8 @@ function removeEvent(index) { const events = getEvents(); events.splice(index, 1
 document.querySelector('#add-event').addEventListener('click', () => { const title = prompt('Nome do evento:'); if (!title || !title.trim()) return; const events = getEvents(); events.push({ title: title.trim(), meta: 'Evento pessoal' }); localStorage.setItem(eventKey, JSON.stringify(events)); renderEvents(); });
 clearEvents.addEventListener('click', () => { localStorage.removeItem(eventKey); renderEvents(); });
 navigation.forEach((item) => item.addEventListener('click', () => setPage(item.dataset.page)));
+const initialPage = window.location.hash.slice(1);
+if (Object.hasOwn(pageNames, initialPage)) setPage(initialPage, false);
 document.querySelector('#today').textContent = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
 renderEvents();
 
