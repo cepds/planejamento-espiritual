@@ -48,25 +48,58 @@ function formatFamilyWeek(value) {
   return new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long' }).format(new Date(year, month - 1, day));
 }
 
+function parseEventDate(value) {
+  const match = String(value || '').trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!match) return null;
+  const [, day, month, year] = match.map(Number);
+  const date = new Date(year, month - 1, day);
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
+    ? `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+    : null;
+}
+
+function specialEventDetails(event) {
+  if (!event.special || !event.date) return null;
+  const target = new Date(`${event.date}T00:00:00`);
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const daysUntil = Math.round((target - today) / 86400000);
+  if (daysUntil < 0 || daysUntil > 30) return null;
+  const date = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long' }).format(target);
+  return { daysUntil, meta: daysUntil === 0 ? `${date} · é hoje` : `${date} · faltam ${daysUntil} dias` };
+}
+
 function renderEvents() {
   const savedEvents = getEvents();
-  const events = savedEvents.length ? savedEvents : defaultEvents;
+  const visibleSavedEvents = savedEvents.map((event, savedIndex) => ({ event, savedIndex, special: specialEventDetails(event) }))
+    .filter(({ event, special }) => !event.special || special);
+  const events = [...defaultEvents.map((event) => ({ event, savedIndex: null, special: null })), ...visibleSavedEvents];
   eventList.replaceChildren();
-  events.forEach((event, index) => {
-    const row = document.createElement('div'); row.className = 'event-row';
+  events.forEach(({ event, savedIndex, special }) => {
+    const row = document.createElement('div'); row.className = `event-row${special ? ' is-special' : ''}`;
     const dot = document.createElement('span'); dot.className = 'event-dot';
     const copy = document.createElement('div');
     const title = document.createElement('p'); title.className = 'event-title'; title.textContent = decodeLegacyText(event.title);
-    const meta = document.createElement('p'); meta.className = 'event-meta'; meta.textContent = decodeLegacyText(event.meta);
+    const meta = document.createElement('p'); meta.className = 'event-meta'; meta.textContent = special?.meta || decodeLegacyText(event.meta);
     copy.append(title, meta); row.append(dot, copy);
-    if (savedEvents.length) { const remove = document.createElement('button'); remove.className = 'event-remove'; remove.type = 'button'; remove.textContent = 'Remover'; remove.addEventListener('click', () => removeEvent(index)); row.append(remove); }
+    if (savedIndex !== null) { const remove = document.createElement('button'); remove.className = 'event-remove'; remove.type = 'button'; remove.textContent = 'Remover'; remove.addEventListener('click', () => removeEvent(savedIndex)); row.append(remove); }
     eventList.append(row);
   });
   clearEvents.hidden = !savedEvents.length;
 }
 
 function removeEvent(index) { const events = getEvents(); events.splice(index, 1); localStorage.setItem(eventKey, JSON.stringify(events)); renderEvents(); }
-document.querySelector('#add-event').addEventListener('click', () => { const title = prompt('Nome do evento:'); if (!title || !title.trim()) return; const events = getEvents(); events.push({ title: title.trim(), meta: 'Evento pessoal' }); localStorage.setItem(eventKey, JSON.stringify(events)); renderEvents(); });
+document.querySelector('#add-event').addEventListener('click', () => {
+  const types = { '1': 'Congresso', '2': 'Assembleia', '3': 'Visita', congresso: 'Congresso', assembleia: 'Assembleia', visita: 'Visita' };
+  const selected = prompt('Evento especial:\n1 — Congresso\n2 — Assembleia\n3 — Visita\n\nDigite o número ou o nome do evento.');
+  if (selected === null) return;
+  const title = types[selected.trim().toLowerCase()];
+  if (!title) { alert('Escolha Congresso, Assembleia ou Visita.'); return; }
+  const date = parseEventDate(prompt(`Data do ${title} (dd/mm/aaaa):`));
+  if (!date) { alert('Informe uma data válida no formato dd/mm/aaaa.'); return; }
+  const events = getEvents();
+  events.push({ title, meta: 'Evento especial', date, special: true });
+  localStorage.setItem(eventKey, JSON.stringify(events)); renderEvents();
+});
 clearEvents.addEventListener('click', () => { localStorage.removeItem(eventKey); renderEvents(); });
 navigation.forEach((item) => item.addEventListener('click', () => setPage(item.dataset.page)));
 const initialPage = window.location.hash.slice(1);
