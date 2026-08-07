@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "planejamento-espiritual-20",
+    "site": "meu-painel-espiritual",
     "public": ".",
     "ignore": ["firebase.json"],
     "headers": [
