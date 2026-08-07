@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-07T15:51:47.161Z",
+  "updatedAt": "2026-08-07T15:57:38.974Z",
   "daily": {
     "date": "2026-08-07",
     "verse": "Começou uma grande perseguição contra a congregação em Jerusalém. — Atos 8:1 .",
@@ -30,7 +30,9 @@
     "videoUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
     "weekOf": "2026-08-04",
     "sequence": 1,
-    "scheduleThrough": "2027-08-31"
+    "scheduleThrough": "2027-08-31",
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg",
+    "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg"
   },
   "familyUpcoming": [
     {
@@ -41,7 +43,9 @@
       "videoUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
       "weekOf": "2026-08-04",
       "sequence": 1,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg",
+      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg"
     },
     {
       "topic": "Família",
@@ -49,9 +53,12 @@
       "prompt": "Identifiquem uma prioridade que pode fortalecer a espiritualidade da família.",
       "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20010515/Como-desenvolver-uma-fam%C3%ADlia-espiritualmente-forte/",
       "videoUrl": null,
+      "coverUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
       "weekOf": "2026-08-11",
       "sequence": 2,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     },
     {
       "topic": "Fortalecimento espiritual",
@@ -59,9 +66,12 @@
       "prompt": "Escolham uma ação simples para manter a família espiritualmente desperta.",
       "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20110515/Fam%C3%ADlias-crist%C3%A3s-fiquem-despertas/",
       "videoUrl": null,
+      "coverUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
       "weekOf": "2026-08-18",
       "sequence": 3,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
+      "videoImageUrl": null
     },
     {
       "topic": "Amor",
@@ -71,11 +81,11 @@
       "videoUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
       "weekOf": "2026-08-25",
       "sequence": 4,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg",
+      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg"
     }
   ],
-  "previousUpdatedAt": "2026-08-07T15:51:14.204Z",
-  "errors": [
-    "This operation was aborted"
-  ]
+  "previousUpdatedAt": "2026-08-07T15:56:02.976Z",
+  "errors": []
 }

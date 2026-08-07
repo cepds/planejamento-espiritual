@@ -19,6 +19,7 @@
 #panel .button-secondary:hover{background:#0c3d2b}
 #panel .family-topic,#family .family-topic{margin:0 0 4px;color:#dcb96c;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
 #panel .family-prompt{color:#cbdccf;margin:11px 0 18px;font-size:13px;line-height:1.5}
+#panel .panel-family-cover{float:right;width:62px;height:82px;object-fit:cover;border:1px solid #6e9177;border-radius:6px;margin:0 0 10px 14px;box-shadow:0 4px 11px rgba(0,0,0,.24)}
 @media(max-width:520px){#panel .watchtower-layout{grid-template-columns:62px minmax(0,1fr);gap:13px}#panel .watchtower-cover{width:62px}}
 
 /* Capas na aba Reuniões. */
@@ -53,6 +54,12 @@
 #family .family-upcoming-topic{color:#93bd9b;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
 #family .family-upcoming-title{color:#edf4e9;font:700 16px/1.35 Georgia,serif}
 #family .family-schedule-note{margin:16px 0 0;color:#95aa98;font-size:12px}
+#family .family-media{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:22px}
+#family .family-media-link{display:block;overflow:hidden;border:1px solid #48604c;border-radius:10px;background:#11120f;color:#eaf4e9;text-decoration:none}
+#family .family-media-link img{display:block;width:100%;height:130px;object-fit:cover;border-bottom:1px solid #48604c}
+#family .family-media-link span{display:block;padding:10px 12px;font-size:12px;font-weight:700}
+#family .family-media-link:hover{border-color:#8ebd98;background:#172117}
+@media(max-width:520px){#family .family-media{grid-template-columns:1fr}}
 @media(max-width:520px){#family .family-upcoming-row{grid-template-columns:1fr;gap:4px}#family h2{font-size:24px}}
 
 /* No desktop, a navegação permanece fixa; somente o conteúdo rola. */

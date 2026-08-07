@@ -5,10 +5,10 @@ const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'jul
 
 const familyCatalog = [
   { topic: 'Casamento', title: 'Como ser feliz no casamento? — Mostre respeito', prompt: 'Conversem sobre uma maneira prática de mostrar respeito no casamento nesta semana.', articleUrl: 'https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/', videoUrl: 'https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/' },
-  { topic: 'Família', title: 'Como desenvolver uma família espiritualmente forte', prompt: 'Identifiquem uma prioridade que pode fortalecer a espiritualidade da família.', articleUrl: 'https://www.jw.org/pt/biblioteca/revistas/w20010515/Como-desenvolver-uma-fam%C3%ADlia-espiritualmente-forte/', videoUrl: null },
-  { topic: 'Fortalecimento espiritual', title: 'Famílias cristãs — “fiquem despertas”', prompt: 'Escolham uma ação simples para manter a família espiritualmente desperta.', articleUrl: 'https://www.jw.org/pt/biblioteca/revistas/w20110515/Fam%C3%ADlias-crist%C3%A3s-fiquem-despertas/', videoUrl: null },
+  { topic: 'Família', title: 'Como desenvolver uma família espiritualmente forte', prompt: 'Identifiquem uma prioridade que pode fortalecer a espiritualidade da família.', articleUrl: 'https://www.jw.org/pt/biblioteca/revistas/w20010515/Como-desenvolver-uma-fam%C3%ADlia-espiritualmente-forte/', videoUrl: null, coverUrl: 'https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg' },
+  { topic: 'Fortalecimento espiritual', title: 'Famílias cristãs — “fiquem despertas”', prompt: 'Escolham uma ação simples para manter a família espiritualmente desperta.', articleUrl: 'https://www.jw.org/pt/biblioteca/revistas/w20110515/Fam%C3%ADlias-crist%C3%A3s-fiquem-despertas/', videoUrl: null, coverUrl: 'https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg' },
   { topic: 'Amor', title: 'Um amor de verdade', prompt: 'Assistam juntos e conversem sobre como demonstrar amor nas atitudes diárias.', articleUrl: 'https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/', videoUrl: 'https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/' },
-  { topic: 'Bondade', title: 'Bondade — Uma qualidade que mostramos em palavras e ações', prompt: 'Pensem em uma ação bondosa que cada pessoa da família pode fazer nesta semana.', articleUrl: 'https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-novembro-2018/fruto-do-espirito-bondade/', videoUrl: null },
+  { topic: 'Bondade', title: 'Bondade — Uma qualidade que mostramos em palavras e ações', prompt: 'Pensem em uma ação bondosa que cada pessoa da família pode fazer nesta semana.', articleUrl: 'https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-novembro-2018/fruto-do-espirito-bondade/', videoUrl: null, coverUrl: 'https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg' },
   { topic: 'Luto e perda', title: 'Como lidar com a morte de alguém que eu amo?', prompt: 'Conversem com sensibilidade sobre como oferecer consolo a quem está sofrendo uma perda.', articleUrl: 'https://www.jw.org/pt/ensinos-biblicos/jovens/perguntam/lidar-morte-alguem-que-amo/', videoUrl: 'https://www.jw.org/pt-pt/biblioteca/videos/torna-te-amigo-jeova/lidar-com-a-morte-de-alguem-que-amamos/' }
 ];
 const familyStart = new Date(Date.UTC(2026, 7, 4));
@@ -94,6 +94,22 @@ function familyUpcomingFor(date, count = 4) {
   });
 }
 
+async function getOpenGraphImage(url) {
+  const response = await fetchWithTimeout(url);
+  if (!response.ok) throw new Error(`Imagem indisponível: ${response.status}`);
+  const html = await response.text();
+  const tag = html.match(/<meta\s+[^>]*property=["']og:image["'][^>]*>/i)?.[0];
+  return tag?.match(/content=["']([^"']+)["']/i)?.[1] || null;
+}
+
+async function addFamilyVisuals(item) {
+  const publicationImageUrl = item.coverUrl || await getOpenGraphImage(item.articleUrl).catch(() => null);
+  const videoImageUrl = !item.videoUrl ? null : item.videoUrl === item.articleUrl
+    ? publicationImageUrl
+    : await getOpenGraphImage(item.videoUrl).catch(() => null);
+  return { ...item, publicationImageUrl, videoImageUrl };
+}
+
 async function getMeeting(date) {
   const monday = mondayOf(date);
   const startMonth = monday.getUTCMonth();
@@ -130,8 +146,9 @@ const meeting = results[1].status === 'fulfilled' ? results[1].value : previous.
 if (!daily || !meeting) throw new Error('Não há conteúdo válido disponível para publicação.');
 const errors = results.filter((result) => result.status === 'rejected').map((result) => result.reason.message);
 const covers = { workbook: meeting.coverUrl || previous.covers?.workbook || null, watchtower: results[2].status === 'fulfilled' ? results[2].value : previous.covers?.watchtower || null };
-const familyWorship = familyWorshipFor(now);
-const content = { updatedAt: new Date().toISOString(), daily, meeting, covers, familyWorship, familyUpcoming: familyUpcomingFor(now), previousUpdatedAt: previous.updatedAt || null, errors };
+const familyUpcoming = await Promise.all(familyUpcomingFor(now).map(addFamilyVisuals));
+const familyWorship = familyUpcoming[0];
+const content = { updatedAt: new Date().toISOString(), daily, meeting, covers, familyWorship, familyUpcoming, previousUpdatedAt: previous.updatedAt || null, errors };
 await mkdir(new URL('../data/', import.meta.url), { recursive: true });
 await writeFile(contentFile, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
 console.log(`Conteúdo atualizado: ${daily.date}; semana de ${meeting.weekOf}.`);

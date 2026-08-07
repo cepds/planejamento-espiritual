@@ -124,6 +124,9 @@ async function loadOfficialContent() {
       document.querySelector('#panel-family-topic').textContent = family.topic;
       document.querySelector('#panel-family-title').textContent = family.title;
       document.querySelector('#panel-family-prompt').textContent = family.prompt;
+      const panelCover = document.querySelector('#panel-family-cover');
+      panelCover.hidden = !family.publicationImageUrl;
+      if (family.publicationImageUrl) panelCover.src = family.publicationImageUrl;
       document.querySelector('#family-topic').textContent = family.topic;
       document.querySelector('#family-title').textContent = family.title;
       document.querySelector('#family-week').textContent = `Tema iniciado em ${formatFamilyWeek(family.weekOf)}. Atualiza toda terça-feira.`;
@@ -133,6 +136,14 @@ async function loadOfficialContent() {
       const video = document.querySelector('#family-video');
       video.hidden = !family.videoUrl;
       if (family.videoUrl) video.href = family.videoUrl;
+      const publicationMedia = document.querySelector('#family-publication-media');
+      publicationMedia.hidden = !family.publicationImageUrl;
+      publicationMedia.href = family.articleUrl;
+      if (family.publicationImageUrl) document.querySelector('#family-publication-image').src = family.publicationImageUrl;
+      const videoMedia = document.querySelector('#family-video-media');
+      videoMedia.hidden = !family.videoImageUrl;
+      videoMedia.href = family.videoUrl || '#';
+      if (family.videoImageUrl) document.querySelector('#family-video-image').src = family.videoImageUrl;
     }
     if (content.familyUpcoming?.length) {
       const upcoming = document.querySelector('#family-upcoming');
