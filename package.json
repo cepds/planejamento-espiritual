@@ -1,0 +1,7 @@
+{
+  "name": "planejamento-espiritual-2",
+  "private": true,
+  "scripts": {
+    "update-content": "node scripts/update-content.mjs"
+  }
+}

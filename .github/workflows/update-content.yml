@@ -1,0 +1,30 @@
+name: Atualizar conteúdo espiritual
+
+on:
+  schedule:
+    - cron: '15 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm run update-content
+      - name: Salvar conteúdo atualizado
+        run: |
+          git config user.name "Planejamento Espiritual"
+          git config user.email "actions@github.com"
+          git add data/content.json
+          git diff --cached --quiet || git commit -m "Atualiza texto diário e reunião"
+          git push
+      - name: Publicar no Firebase
+        run: npx firebase-tools deploy --only hosting --project planejamento-espiritual --token "$FIREBASE_TOKEN"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

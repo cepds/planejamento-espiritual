@@ -1,0 +1,11 @@
+/* Destaques visuais exclusivos do Painel. */
+#panel .card{background:#11120f;border-color:#3c403b;box-shadow:none}
+#panel .daily-reading,#panel .events-card .card-heading,#panel .events-list,#panel .panel-card-inner{background:#1d251b}
+#panel .events-card .card-heading{margin:-5px -5px 12px;padding:13px;border-radius:11px}
+#panel .events-list{padding:0 14px;border-radius:11px}
+#panel .event-row{border-color:#465046}
+#panel .panel-card-inner{border-radius:11px;padding:18px;min-height:100%}
+#panel .watchtower-card,#panel .family-card{padding:18px}
+#panel .watchtower-card .section-label,#panel .family-card .section-label{color:#8ec09c}
+#panel .button-secondary{border-color:#74947b;background:#104e36;color:#fff}
+#panel .button-secondary:hover{background:#0c3d2b}
