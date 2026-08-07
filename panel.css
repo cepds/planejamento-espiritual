@@ -68,5 +68,10 @@
 @media(max-width:520px){#family .family-media{grid-template-columns:1fr}}
 @media(max-width:520px){#family .family-upcoming-row{grid-template-columns:1fr;gap:4px}#family h2{font-size:24px}}
 
+/* Texto diário completo. */
+#daily .card{background:#11120f;border-color:#3c403b;box-shadow:none}
+#daily .daily-divider{height:1px;margin:22px 0;background:#405043}
+#daily .daily-full-text{margin:0;white-space:pre-line;color:#deebdf;font-size:15px;line-height:1.72}
+
 /* No desktop, a navegação permanece fixa; somente o conteúdo rola. */
 @media(min-width:651px){body{overflow:hidden}.app-shell{height:100vh;min-height:0;overflow:hidden}.sidebar{height:100vh;overflow-y:auto}.content{height:100vh;overflow-y:auto}}

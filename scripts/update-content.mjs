@@ -44,6 +44,10 @@ function rtfToText(value) {
     .trim();
 }
 
+function htmlToParagraphs(value) {
+  return value.split(/<\/p>/i).map((paragraph) => decodeHtml(paragraph)).filter(Boolean).join('\n\n');
+}
+
 function extractStudyPoints(rtf, treasure) {
   const paragraphs = rtf.split(/\\par/).map(rtfToText).map((item) => item.replace(/^d(?=[A-ZÀ-Ú0-9“])/, '')).filter(Boolean);
   const start = paragraphs.findIndex((item) => item.includes(`1. ${treasure}`));
@@ -65,10 +69,12 @@ async function getDaily(date) {
   const item = (await response.json()).items?.[0];
   const sourceMatch = item?.content?.match(/class="themeScrp"[^>]*>([\s\S]*?)<\/p>/i);
   const referenceMatch = item?.content?.match(/<a[^>]*class="b"[^>]*>([\s\S]*?)<\/a>/i);
+  const bodyMatch = item?.content?.match(/<div class="bodyTxt">([\s\S]*?)<\/div>/i);
   const verse = decodeHtml(sourceMatch?.[1] || '');
   const reference = decodeHtml(referenceMatch?.[1] || '');
-  if (!verse || !reference) throw new Error('Texto diário retornou formato inesperado.');
-  return { date: date.toISOString().slice(0, 10), verse, reference, url: `https://wol.jw.org${item.url}` };
+  const content = htmlToParagraphs(bodyMatch?.[1] || '');
+  if (!verse || !reference || !content) throw new Error('Texto diário retornou formato inesperado.');
+  return { date: date.toISOString().slice(0, 10), verse, reference, content, url: `https://wol.jw.org${item.url}` };
 }
 
 function tuesdayOf(date) {

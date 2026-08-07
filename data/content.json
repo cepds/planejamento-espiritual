@@ -1,9 +1,10 @@
 {
-  "updatedAt": "2026-08-07T16:43:11.218Z",
+  "updatedAt": "2026-08-07T16:47:02.281Z",
   "daily": {
     "date": "2026-08-07",
     "verse": "Começou uma grande perseguição contra a congregação em Jerusalém. — Atos 8:1 .",
     "reference": "Atos 8:1",
+    "content": "Os cristãos hebreus que viviam em Jerusalém e na Judeia lidaram com situações difíceis nos anos após a morte de Jesus. Logo de início, eles sofreram com intensa perseguição. Daí, uns 20 anos depois, os cristãos enfrentaram problemas econômicos sérios, provavelmente por causa de uma fome naquela região. ( Atos 11:27-30 ) Mas, por volta do ano 61, os cristãos passaram por um período de paz comparado ao que estava por vir. Durante esse período tranquilo, eles receberam uma carta do apóstolo Paulo, e logo ficou claro que essa carta inspirada era exatamente o que eles estavam precisando. A carta aos hebreus veio na hora certa porque o período de paz que os cristãos estavam vivendo não duraria. Paulo deu conselhos que ajudariam os cristãos a enfrentar a tribulação que estava por vir. w24.09 8 §§ 1-2",
     "url": "https://wol.jw.org/wol/d/r5/lp-t/1102026207?#h=20:0-23:0"
   },
   "meeting": {
@@ -87,7 +88,5 @@
     }
   ],
   "previousUpdatedAt": "2026-08-07T16:39:50.065Z",
-  "errors": [
-    "This operation was aborted"
-  ]
+  "errors": []
 }
