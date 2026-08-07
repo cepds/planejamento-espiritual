@@ -56,6 +56,7 @@
 #family .family-schedule-note{margin:16px 0 0;color:#95aa98;font-size:12px}
 #family .family-media{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:22px}
 #family .family-media-link{display:block;overflow:hidden;border:1px solid #48604c;border-radius:10px;background:#11120f;color:#eaf4e9;text-decoration:none}
+#family .family-media-link[hidden]{display:none}
 #family .family-media-link img{display:block;width:100%;height:130px;object-fit:cover;border-bottom:1px solid #48604c}
 #family .family-media-link span{display:block;padding:10px 12px;font-size:12px;font-weight:700}
 #family .family-media-link:hover{border-color:#8ebd98;background:#172117}
