@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-07T17:20:50.037Z",
+  "updatedAt": "2026-08-07T17:21:22.463Z",
   "daily": {
     "date": "2026-08-07",
     "verse": "Começou uma grande perseguição contra a congregação em Jerusalém. — Atos 8:1 .",
@@ -100,6 +100,9 @@
       "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg"
     }
   ],
-  "previousUpdatedAt": "2026-08-07T17:20:01.100Z",
-  "errors": []
+  "previousUpdatedAt": "2026-08-07T17:20:50.037Z",
+  "errors": [
+    "This operation was aborted",
+    "This operation was aborted"
+  ]
 }
