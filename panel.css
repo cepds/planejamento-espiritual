@@ -5,6 +5,9 @@
 #panel .daily-reading .reading-label,#panel .daily-reading .reading-reference{color:#9fcea9}
 #panel .daily-reading .reading-verse{color:#f4f6ea}
 #panel .today,#panel .welcome p{color:#a9c1ae}
+#panel .watchtower-card .scripture{color:#f1f5e9}
+#panel .watchtower-card .scripture strong{color:#a8d4b0}
+#panel .watchtower-card .objective{color:#d5e7d7}
 #panel .daily-reading,#panel .events-card .card-heading,#panel .events-list,#panel .panel-card-inner{background:#1d251b}
 #panel .events-card .card-heading{margin:-5px -5px 12px;padding:13px;border-radius:11px}
 #panel .agenda-title{display:flex;align-items:center;gap:12px}
