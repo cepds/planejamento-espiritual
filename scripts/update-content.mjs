@@ -176,7 +176,7 @@ async function getWatchtowerStudy(date) {
   const theme = decodeHtml(html.match(/id="p4"[^>]*>([\s\S]*?)<\/p>/i)?.[1] || '');
   const objective = decodeHtml(html.match(/id="p6"[^>]*>([\s\S]*?)<\/p>/i)?.[1] || '');
   const content = articleParagraphs(html);
-  const images = [...html.matchAll(/<img\s+[^>]*src="([^"?]+\/wol\/mp\/[^"?]+)"[^>]*>/gi)].map((match) => `https://wol.jw.org${match[1]}`).slice(0, 3);
+  const images = [...html.matchAll(/<img\s+src="([^"?]+\/wol\/mp\/[^"?]+)"[^>]*>/gi)].map((match) => `https://wol.jw.org${match[1]}`).slice(0, 3);
   if (!title || !content) throw new Error('Estudo de A Sentinela retornou formato inesperado.');
   return { weekOf: mondayOf(date).toISOString().slice(0, 10), title, theme, objective, content, images, coverUrl: `${url}/thumbnail`, url };
 }
