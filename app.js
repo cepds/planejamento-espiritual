@@ -129,7 +129,6 @@ async function loadOfficialContent() {
       if (family.publicationImageUrl) panelCover.src = family.publicationImageUrl;
       document.querySelector('#family-topic').textContent = family.topic;
       document.querySelector('#family-title').textContent = family.title;
-      document.querySelector('#family-week').textContent = `Tema iniciado em ${formatFamilyWeek(family.weekOf)}. Atualiza toda terça-feira.`;
       document.querySelector('#family-prompt').textContent = family.prompt;
       const article = document.querySelector('#family-article');
       article.href = family.articleUrl;
