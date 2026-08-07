@@ -120,7 +120,7 @@ async function loadOfficialContent() {
       document.querySelector('#daily-page-reference').textContent = content.daily.reference;
       if (content.daily.content) document.querySelector('#daily-page-content').textContent = content.daily.content;
     }
-    if (content.meeting?.reading) {
+      if (content.meeting?.reading) {
       document.querySelector('#meeting-reading').textContent = content.meeting.reading;
       document.querySelector('#meeting-treasure').textContent = content.meeting.treasure;
       if (content.meeting.points?.length) {
@@ -132,9 +132,17 @@ async function loadOfficialContent() {
       document.querySelector('#midweek-reading').textContent = content.meeting.reading;
       document.querySelector('#midweek-treasure').textContent = content.meeting.treasure;
       const focusPoints = document.querySelector('#midweek-points');
-      focusPoints.replaceChildren(...(content.meeting.points || []).slice(0, 3).map((point) => { const item = document.createElement('li'); item.textContent = point; return item; }));
-    }
-    if (content.covers?.workbook) {
+        focusPoints.replaceChildren(...(content.meeting.points || []).slice(0, 3).map((point) => { const item = document.createElement('li'); item.textContent = point; return item; }));
+      }
+      if (content.midweekStudy?.content) {
+        const midweekStudy = content.midweekStudy;
+        document.querySelector('#meeting-reading').textContent = midweekStudy.title;
+        document.querySelector('#meeting-midweek-content').textContent = midweekStudy.content;
+        document.querySelector('#meeting-midweek-link').href = midweekStudy.url;
+        const images = document.querySelector('#meeting-midweek-images');
+        images.replaceChildren(...(midweekStudy.images || []).map((src) => { const image = document.createElement('img'); image.src = src; image.alt = `Imagem da apostila: ${midweekStudy.title}`; return image; }));
+      }
+      if (content.covers?.workbook) {
       const cover = document.querySelector('#workbook-cover');
       cover.src = content.covers.workbook;
       cover.hidden = false;

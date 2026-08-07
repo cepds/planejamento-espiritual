@@ -77,7 +77,7 @@ function articleParagraphs(html) {
   const start = html.indexOf('<article');
   const end = html.indexOf('</article>', start);
   if (start < 0 || end < 0) return '';
-  return [...html.slice(start, end).matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+  return [...html.slice(start, end).matchAll(/<(?:h[1-4]|p)\b[^>]*>([\s\S]*?)<\/(?:h[1-4]|p)>/gi)]
     .map((match) => decodeHtml(match[1]))
     .filter((paragraph) => paragraph && paragraph !== 'Sua resposta')
     .join('\n\n');
@@ -181,18 +181,33 @@ async function getWatchtowerStudy(date) {
   return { weekOf: mondayOf(date).toISOString().slice(0, 10), title, theme, objective, content, images, coverUrl: `${url}/thumbnail`, url };
 }
 
+async function getMidweekStudy(date) {
+  const { year, week } = isoWeek(date);
+  const schedule = await (await fetchWithTimeout(`https://wol.jw.org/pt/wol/meetings/r5/lp-t/${year}/${week}`)).text();
+  const studyHref = schedule.match(/<a href="([^"?]+\/wol\/d\/r5\/lp-t\/\d+)"/i)?.[1];
+  if (!studyHref) throw new Error('Apostila semanal não encontrada na programação.');
+  const url = `https://wol.jw.org${studyHref}`;
+  const html = await (await fetchWithTimeout(url)).text();
+  const title = decodeHtml(html.match(/id="p2"[^>]*>([\s\S]*?)<\/h2>/i)?.[1] || '');
+  const content = articleParagraphs(html);
+  const images = [...html.matchAll(/<img\s+src="([^"?]+\/wol\/mp\/[^"?]+)"[^>]*>/gi)].map((match) => `https://wol.jw.org${match[1]}`).slice(0, 4);
+  if (!title || !content) throw new Error('Apostila semanal retornou formato inesperado.');
+  return { weekOf: mondayOf(date).toISOString().slice(0, 10), title, content, images, coverUrl: `${url}/thumbnail`, url };
+}
+
 const now = new Date();
 const previous = JSON.parse(await readFile(contentFile, 'utf8'));
-const results = await Promise.allSettled([getDaily(now), getMeeting(now), getWatchtowerCover(now), getWatchtowerStudy(now)]);
+const results = await Promise.allSettled([getDaily(now), getMeeting(now), getWatchtowerCover(now), getWatchtowerStudy(now), getMidweekStudy(now)]);
 const daily = results[0].status === 'fulfilled' ? results[0].value : previous.daily;
 const meeting = results[1].status === 'fulfilled' ? results[1].value : previous.meeting;
 if (!daily || !meeting) throw new Error('Não há conteúdo válido disponível para publicação.');
 const errors = results.filter((result) => result.status === 'rejected').map((result) => result.reason.message);
 const watchtower = results[3].status === 'fulfilled' ? results[3].value : previous.watchtower || null;
-const covers = { workbook: meeting.coverUrl || previous.covers?.workbook || null, watchtower: watchtower?.coverUrl || (results[2].status === 'fulfilled' ? results[2].value : previous.covers?.watchtower || null) };
+const midweekStudy = results[4].status === 'fulfilled' ? results[4].value : previous.midweekStudy || null;
+const covers = { workbook: midweekStudy?.coverUrl || meeting.coverUrl || previous.covers?.workbook || null, watchtower: watchtower?.coverUrl || (results[2].status === 'fulfilled' ? results[2].value : previous.covers?.watchtower || null) };
 const familyUpcoming = await Promise.all(familyUpcomingFor(now).map(addFamilyVisuals));
 const familyWorship = familyUpcoming[0];
-const content = { updatedAt: new Date().toISOString(), daily, meeting, watchtower, covers, familyWorship, familyUpcoming, previousUpdatedAt: previous.updatedAt || null, errors };
+const content = { updatedAt: new Date().toISOString(), daily, meeting, midweekStudy, watchtower, covers, familyWorship, familyUpcoming, previousUpdatedAt: previous.updatedAt || null, errors };
 await mkdir(new URL('../data/', import.meta.url), { recursive: true });
 await writeFile(contentFile, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
 console.log(`Conteúdo atualizado: ${daily.date}; semana de ${meeting.weekOf}.`);
