@@ -3,6 +3,13 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 const contentFile = new URL('../data/content.json', import.meta.url);
 const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
 
+async function fetchWithTimeout(url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20000);
+  try { return await fetch(url, { signal: controller.signal }); }
+  finally { clearTimeout(timeout); }
+}
+
 function decodeHtml(value) {
   return value
     .replace(/<[^>]+>/g, ' ')
@@ -34,7 +41,7 @@ function mondayOf(date) {
 }
 
 async function getDaily(date) {
-  const response = await fetch(`https://wol.jw.org/wol/dt/r5/lp-t/${date.getUTCFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}`);
+  const response = await fetchWithTimeout(`https://wol.jw.org/wol/dt/r5/lp-t/${date.getUTCFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}`);
   if (!response.ok) throw new Error(`Texto diário indisponível: ${response.status}`);
   const item = (await response.json()).items?.[0];
   const sourceMatch = item?.content?.match(/class="themeScrp"[^>]*>([\s\S]*?)<\/p>/i);
@@ -51,14 +58,14 @@ async function getMeeting(date) {
   const issueMonth = startMonth % 2 === 0 ? startMonth + 1 : startMonth;
   const issue = `${monday.getUTCFullYear()}${String(issueMonth).padStart(2, '0')}`;
   const mediaUrl = `https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS?pub=mwb&issue=${issue}&langwritten=T&output=json`;
-  const media = await (await fetch(mediaUrl)).json();
+  const media = await (await fetchWithTimeout(mediaUrl)).json();
   const weeklyFiles = media.files?.T?.RTF?.filter((file) => file.hasTrack) || [];
   const prefix = `${monday.getUTCDate()} `;
   const current = weeklyFiles.find((file) => decodeHtml(file.title).toLowerCase().startsWith(prefix) && decodeHtml(file.title).toLowerCase().includes(`de ${months[startMonth]}`));
   if (!current) throw new Error('Apostila semanal não encontrada.');
   const title = decodeHtml(current.title);
   const reading = title.match(/\(([^)]+)\)/)?.[1]?.replace(/\s+a\s+/g, '–') || title;
-  const rtf = await (await fetch(current.file.url)).text();
+  const rtf = await (await fetchWithTimeout(current.file.url)).text();
   const text = rtfToText(rtf);
   const treasure = text.match(/1\.\s+(.+?)\s*\(10 min\)/i)?.[1] || 'Tesouros da Palavra de Deus';
   return { weekOf: monday.toISOString().slice(0, 10), reading, treasure, sourceUrl: current.file.url };

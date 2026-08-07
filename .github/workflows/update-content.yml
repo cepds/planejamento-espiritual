@@ -10,6 +10,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: atualizar-conteudo
+  cancel-in-progress: true
+
 jobs:
   update-and-publish:
     runs-on: ubuntu-latest
