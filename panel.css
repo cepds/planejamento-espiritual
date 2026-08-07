@@ -47,6 +47,11 @@
 #meetings .study-points{display:grid;gap:10px;margin:14px 0 0;padding:0;list-style:none}
 #meetings .study-points li{position:relative;padding:0 0 0 16px;color:#d9e9dc;font-size:13px;line-height:1.5}
 #meetings .study-points li::before{content:'';position:absolute;left:0;top:.58em;width:6px;height:6px;border-radius:50%;background:#dcb96c}
+#meetings .watchtower-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:20px 0}
+#meetings .watchtower-images img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid #536d58;border-radius:8px}
+#meetings .watchtower-full-content{margin:18px 0;white-space:pre-line;color:#dceadf;font-size:14px;line-height:1.7}
+#meetings .meeting-source-link{display:inline-flex;text-decoration:none;margin-top:8px}
+@media(max-width:520px){#meetings .watchtower-images{grid-template-columns:1fr}}
 
 /* Plano semanal de AdoraÃ§Ã£o em FamÃ­lia. */
 #family{max-width:760px;display:none;gap:18px}

@@ -154,6 +154,19 @@ async function loadOfficialContent() {
       meetingCover.src = content.covers.watchtower;
       meetingCover.hidden = false;
     }
+    if (content.watchtower?.title) {
+      const watchtower = content.watchtower;
+      document.querySelector('#meeting-watchtower-title').textContent = watchtower.title;
+      document.querySelector('#meeting-watchtower-theme').textContent = watchtower.theme;
+      document.querySelector('#meeting-watchtower-objective').textContent = watchtower.objective;
+      document.querySelector('#meeting-watchtower-content').textContent = watchtower.content;
+      document.querySelector('#meeting-watchtower-link').href = watchtower.url;
+      const cover = document.querySelector('#meeting-watchtower-cover');
+      cover.src = watchtower.coverUrl;
+      cover.hidden = false;
+      const images = document.querySelector('#meeting-watchtower-images');
+      images.replaceChildren(...(watchtower.images || []).map((src) => { const image = document.createElement('img'); image.src = src; image.alt = `Imagem do estudo: ${watchtower.title}`; return image; }));
+    }
     if (content.familyWorship?.title) {
       const family = content.familyWorship;
       document.querySelector('#panel-family-topic').textContent = family.topic;
