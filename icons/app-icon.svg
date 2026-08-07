@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title>Planejamento Espiritual</title>
+  <rect width="512" height="512" rx="112" fill="#103d2c"/>
+  <rect x="76" y="76" width="360" height="360" rx="74" fill="#0b2c20" stroke="#dcb96c" stroke-width="12"/>
+  <path d="M157 170h198v172c-31-18-63-27-99-27s-68 9-99 27V170Z" fill="#edf4e9"/>
+  <path d="M256 191v124" stroke="#103d2c" stroke-width="12" stroke-linecap="round"/>
+  <path d="M183 221h48M281 221h48M183 254h48M281 254h48" stroke="#5f7864" stroke-width="11" stroke-linecap="round"/>
+  <circle cx="256" cy="382" r="16" fill="#dcb96c"/>
+</svg>

@@ -1,0 +1,19 @@
+{
+  "name": "Planejamento Espiritual",
+  "short_name": "Planejamento",
+  "description": "Planejamento pessoal para reuniões, texto diário e adoração em família.",
+  "lang": "pt-BR",
+  "start_url": "/#panel",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#103d2c",
+  "theme_color": "#103d2c",
+  "icons": [
+    {
+      "src": "icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
