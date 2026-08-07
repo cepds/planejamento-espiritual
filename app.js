@@ -84,6 +84,10 @@ async function loadOfficialContent() {
     if (content.meeting?.reading) {
       document.querySelector('#meeting-reading').textContent = content.meeting.reading;
       document.querySelector('#meeting-treasure').textContent = content.meeting.treasure;
+      if (content.meeting.points?.length) {
+        const points = document.querySelector('#meeting-points');
+        points.replaceChildren(...content.meeting.points.map((point) => { const item = document.createElement('li'); item.textContent = point; return item; }));
+      }
       defaultEvents = [{ title: 'Reunião de meio de semana', meta: content.meeting.reading }, ...defaultEvents.slice(1)];
       if (!getEvents().length) renderEvents();
     }

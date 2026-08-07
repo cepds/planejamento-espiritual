@@ -33,6 +33,14 @@ function rtfToText(value) {
     .trim();
 }
 
+function extractStudyPoints(rtf, treasure) {
+  const paragraphs = rtf.split(/\\par/).map(rtfToText).map((item) => item.replace(/^d(?=[A-ZÀ-Ú0-9“])/, '')).filter(Boolean);
+  const start = paragraphs.findIndex((item) => item.includes(`1. ${treasure}`));
+  if (start < 0) return [];
+  const candidates = paragraphs.slice(start + 1).filter((item) => !item.includes('[Texto') && !item.includes('[Imagem') && !item.includes('[Fim')).filter((item) => !/^d?2\. /.test(item));
+  return candidates.filter((item) => item.length > 35 && item.length < 260).slice(0, 3);
+}
+
 function mondayOf(date) {
   const value = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   const shift = (value.getUTCDay() + 6) % 7;
@@ -68,7 +76,8 @@ async function getMeeting(date) {
   const rtf = await (await fetchWithTimeout(current.file.url)).text();
   const text = rtfToText(rtf);
   const treasure = text.match(/1\.\s+(.+?)\s*\(10 min\)/i)?.[1] || 'Tesouros da Palavra de Deus';
-  return { weekOf: monday.toISOString().slice(0, 10), reading, treasure, sourceUrl: current.file.url, coverUrl: media.pubImage?.url || null };
+  const points = extractStudyPoints(rtf, treasure);
+  return { weekOf: monday.toISOString().slice(0, 10), reading, treasure, points, sourceUrl: current.file.url, coverUrl: media.pubImage?.url || null };
 }
 
 async function getWatchtowerCover(date) {
