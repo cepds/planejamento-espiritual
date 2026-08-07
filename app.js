@@ -88,11 +88,17 @@ async function loadOfficialContent() {
       const cover = document.querySelector('#workbook-cover');
       cover.src = content.covers.workbook;
       cover.hidden = false;
+      const meetingCover = document.querySelector('#meeting-workbook-cover');
+      meetingCover.src = content.covers.workbook;
+      meetingCover.hidden = false;
     }
     if (content.covers?.watchtower) {
       const cover = document.querySelector('#watchtower-cover');
       cover.src = content.covers.watchtower;
       cover.hidden = false;
+      const meetingCover = document.querySelector('#meeting-watchtower-cover');
+      meetingCover.src = content.covers.watchtower;
+      meetingCover.hidden = false;
     }
   } catch (error) { console.warn('Conteúdo oficial não pôde ser atualizado.', error); }
 }
