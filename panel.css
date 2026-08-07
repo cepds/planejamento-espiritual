@@ -10,6 +10,9 @@
 #panel .watchtower-card,#panel .family-card{padding:18px}
 #panel .watchtower-layout{display:grid;grid-template-columns:82px minmax(0,1fr);gap:17px;align-items:start}
 #panel .watchtower-cover{width:82px;aspect-ratio:3/4;object-fit:cover;border-radius:7px;border:1px solid #6e9177;box-shadow:0 5px 14px rgba(0,0,0,.28)}
+#panel .focus-points{display:grid;gap:7px;margin:12px 0 0;padding:0;list-style:none}
+#panel .focus-points li{position:relative;padding-left:14px;color:#d7e8da;font-size:12px;line-height:1.45}
+#panel .focus-points li::before{content:'';position:absolute;left:0;top:.5em;width:5px;height:5px;border-radius:50%;background:#dcb96c}
 #panel .watchtower-card .section-label,#panel .family-card .section-label{color:#8ec09c}
 #panel .button-secondary{border-color:#74947b;background:#104e36;color:#fff}
 #panel .button-secondary:hover{background:#0c3d2b}

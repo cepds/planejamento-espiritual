@@ -90,6 +90,10 @@ async function loadOfficialContent() {
       }
       defaultEvents = [{ title: 'Reunião de meio de semana', meta: content.meeting.reading }, ...defaultEvents.slice(1)];
       if (!getEvents().length) renderEvents();
+      document.querySelector('#midweek-reading').textContent = content.meeting.reading;
+      document.querySelector('#midweek-treasure').textContent = content.meeting.treasure;
+      const focusPoints = document.querySelector('#midweek-points');
+      focusPoints.replaceChildren(...(content.meeting.points || []).slice(0, 3).map((point) => { const item = document.createElement('li'); item.textContent = point; return item; }));
     }
     if (content.covers?.workbook) {
       const cover = document.querySelector('#workbook-cover');
@@ -98,6 +102,9 @@ async function loadOfficialContent() {
       const meetingCover = document.querySelector('#meeting-workbook-cover');
       meetingCover.src = content.covers.workbook;
       meetingCover.hidden = false;
+      const midweekCover = document.querySelector('#midweek-cover');
+      midweekCover.src = content.covers.workbook;
+      midweekCover.hidden = false;
     }
     if (content.covers?.watchtower) {
       const cover = document.querySelector('#watchtower-cover');
@@ -107,6 +114,10 @@ async function loadOfficialContent() {
       meetingCover.src = content.covers.watchtower;
       meetingCover.hidden = false;
     }
+    const day = new Date().getDay();
+    const showWeekend = day === 0 || day === 5 || day === 6;
+    document.querySelector('#midweek-focus').hidden = showWeekend;
+    document.querySelector('#weekend-focus').hidden = !showWeekend;
   } catch (error) { console.warn('Conteúdo oficial não pôde ser atualizado.', error); }
 }
 
