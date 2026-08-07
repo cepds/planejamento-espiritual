@@ -65,7 +65,8 @@ function specialEventDetails(event) {
   const daysUntil = Math.round((target - today) / 86400000);
   if (daysUntil < 0 || daysUntil > 30) return null;
   const date = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long' }).format(target);
-  return { daysUntil, meta: daysUntil === 0 ? `${date} · é hoje` : `${date} · faltam ${daysUntil} dias` };
+  const countdown = daysUntil === 0 ? 'é hoje' : daysUntil === 1 ? 'falta 1 dia' : `faltam ${daysUntil} dias`;
+  return { daysUntil, meta: `${date} · ${countdown}` };
 }
 
 function renderEvents() {
