@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-10T14:15:46.137Z",
+  "updatedAt": "2026-08-10T14:21:10.940Z",
   "daily": {
     "date": "2026-08-10",
     "verse": "Você, marido, dê-lhe honra como a um vaso mais frágil, o feminino. — 1 Ped. 3:7 .",
@@ -111,6 +111,10 @@
       "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg"
     }
   ],
-  "previousUpdatedAt": "2026-08-10T14:15:07.689Z",
-  "errors": []
+  "previousUpdatedAt": "2026-08-10T14:15:46.137Z",
+  "errors": [
+    "This operation was aborted",
+    "This operation was aborted",
+    "This operation was aborted"
+  ]
 }
