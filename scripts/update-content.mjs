@@ -15,10 +15,20 @@ const familyStart = new Date(Date.UTC(2026, 7, 4));
 const familyEnd = '2027-08-31';
 
 async function fetchWithTimeout(url) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 20000);
-  try { return await fetch(url, { signal: controller.signal }); }
-  finally { clearTimeout(timeout); }
+  let lastError;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 60000);
+    try {
+      return await fetch(url, { signal: controller.signal });
+    } catch (error) {
+      lastError = error;
+      if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, attempt * 1500));
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+  throw lastError;
 }
 
 function decodeHtml(value) {
