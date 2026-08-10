@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-10T14:21:10.940Z",
+  "updatedAt": "2026-08-10T14:22:39.565Z",
   "daily": {
     "date": "2026-08-10",
     "verse": "Você, marido, dê-lhe honra como a um vaso mais frágil, o feminino. — 1 Ped. 3:7 .",
@@ -109,12 +109,21 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg",
       "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg"
+    },
+    {
+      "topic": "Bondade",
+      "title": "Bondade — Uma qualidade que mostramos em palavras e ações",
+      "prompt": "Pensem em uma ação bondosa que cada pessoa da família pode fazer nesta semana.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-novembro-2018/fruto-do-espirito-bondade/",
+      "videoUrl": null,
+      "coverUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
+      "weekOf": "2026-09-01",
+      "sequence": 5,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
+      "videoImageUrl": null
     }
   ],
   "previousUpdatedAt": "2026-08-10T14:15:46.137Z",
-  "errors": [
-    "This operation was aborted",
-    "This operation was aborted",
-    "This operation was aborted"
-  ]
+  "errors": []
 }

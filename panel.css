@@ -64,6 +64,7 @@
 #family .family-prompt{margin:18px 0;color:#d8e6d9;line-height:1.55}
 #family .family-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
 #family .button-secondary,#family .button-video{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid #74947b;background:#104e36;color:#fff}
+#family .button-video[hidden]{display:none}
 #family .button-secondary:hover,#family .button-video:hover{background:#0c3d2b}
 #family .button-video{background:transparent;color:#dceee0}
 #family .family-upcoming{display:grid}

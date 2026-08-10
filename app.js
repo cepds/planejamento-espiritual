@@ -188,8 +188,9 @@ async function loadOfficialContent() {
       const article = document.querySelector('#family-article');
       article.href = family.articleUrl;
       const video = document.querySelector('#family-video');
-      video.hidden = !family.videoUrl;
-      if (family.videoUrl) video.href = family.videoUrl;
+      const hasSeparateVideo = Boolean(family.videoUrl && family.videoUrl !== family.articleUrl);
+      video.hidden = !hasSeparateVideo;
+      if (hasSeparateVideo) video.href = family.videoUrl;
       const publicationMedia = document.querySelector('#family-publication-media');
       publicationMedia.hidden = !family.publicationImageUrl;
       publicationMedia.href = family.articleUrl;
@@ -201,10 +202,10 @@ async function loadOfficialContent() {
     }
     if (content.familyUpcoming?.length) {
       const upcoming = document.querySelector('#family-upcoming');
-      upcoming.replaceChildren(...content.familyUpcoming.map((item, index) => {
+      upcoming.replaceChildren(...content.familyUpcoming.slice(1).map((item) => {
         const row = document.createElement('div'); row.className = 'family-upcoming-row';
         const date = document.createElement('span'); date.className = 'family-upcoming-date';
-        date.textContent = index === 0 ? 'Esta semana' : formatFamilyWeek(item.weekOf);
+        date.textContent = formatFamilyWeek(item.weekOf);
         const copy = document.createElement('div');
         const topic = document.createElement('p'); topic.className = 'family-upcoming-topic'; topic.textContent = item.topic;
         const title = document.createElement('p'); title.className = 'family-upcoming-title'; title.textContent = item.title;

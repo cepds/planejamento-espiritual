@@ -121,7 +121,7 @@ function familyWorshipFor(date) {
   return { ...item, weekOf: tuesday.toISOString().slice(0, 10), sequence: weeks + 1, scheduleThrough: familyEnd };
 }
 
-function familyUpcomingFor(date, count = 4) {
+function familyUpcomingFor(date, count = 5) {
   const current = tuesdayOf(date);
   return Array.from({ length: count }, (_, index) => {
     const next = new Date(current);
