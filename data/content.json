@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-10T14:27:54.638Z",
+  "updatedAt": "2026-08-11T09:17:05.136Z",
   "daily": {
     "date": "2026-08-10",
     "verse": "Você, marido, dê-lhe honra como a um vaso mais frágil, o feminino. — 1 Ped. 3:7 .",
@@ -48,30 +48,19 @@
     "watchtower": "https://wol.jw.org/pt/wol/d/r5/lp-t/2026442/thumbnail"
   },
   "familyWorship": {
-    "topic": "Casamento",
-    "title": "Como ser feliz no casamento? — Mostre respeito",
-    "prompt": "Conversem sobre uma maneira prática de mostrar respeito no casamento nesta semana.",
-    "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
-    "videoUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
-    "weekOf": "2026-08-04",
-    "sequence": 1,
+    "topic": "Família",
+    "title": "Como desenvolver uma família espiritualmente forte",
+    "prompt": "Identifiquem uma prioridade que pode fortalecer a espiritualidade da família.",
+    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20010515/Como-desenvolver-uma-fam%C3%ADlia-espiritualmente-forte/",
+    "videoUrl": null,
+    "coverUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
+    "weekOf": "2026-08-11",
+    "sequence": 2,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg",
-    "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg"
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
+    "videoImageUrl": null
   },
   "familyUpcoming": [
-    {
-      "topic": "Casamento",
-      "title": "Como ser feliz no casamento? — Mostre respeito",
-      "prompt": "Conversem sobre uma maneira prática de mostrar respeito no casamento nesta semana.",
-      "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
-      "videoUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
-      "weekOf": "2026-08-04",
-      "sequence": 1,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg",
-      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg"
-    },
     {
       "topic": "Família",
       "title": "Como desenvolver uma família espiritualmente forte",
@@ -122,9 +111,21 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
       "videoImageUrl": null
+    },
+    {
+      "topic": "Luto e perda",
+      "title": "Como lidar com a morte de alguém que eu amo?",
+      "prompt": "Conversem com sensibilidade sobre como oferecer consolo a quem está sofrendo uma perda.",
+      "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/jovens/perguntam/lidar-morte-alguem-que-amo/",
+      "videoUrl": "https://www.jw.org/pt-pt/biblioteca/videos/torna-te-amigo-jeova/lidar-com-a-morte-de-alguem-que-amamos/",
+      "weekOf": "2026-09-08",
+      "sequence": 6,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500600119/univ/art/500600119_univ_lsr_lg.jpg",
+      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/502018101/univ/art/502018101_univ_lsr_lg.jpg"
     }
   ],
-  "previousUpdatedAt": "2026-08-10T14:24:28.500Z",
+  "previousUpdatedAt": "2026-08-10T14:27:54.638Z",
   "errors": [
     "This operation was aborted",
     "This operation was aborted",
