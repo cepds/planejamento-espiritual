@@ -54,8 +54,26 @@ function rtfToText(value) {
     .trim();
 }
 
-function htmlToParagraphs(value) {
-  return value.split(/<\/p>/i).map((paragraph) => decodeHtml(paragraph)).filter(Boolean).join('\n\n');
+function rtfToParagraphs(value) {
+  return value
+    .replace(/\{\\\*\\fldinst\s+\{HYPERLINK "[^"]+"\s*\}\}/g, '')
+    .replace(/\\u(-?\d+)\?/g, (_, code) => String.fromCodePoint(Number(code) < 0 ? Number(code) + 65536 : Number(code)))
+    .replace(/\\par[d]?/g, '\n')
+    .replace(/\\tab/g, ' ')
+    .replace(/\\'[0-9a-f]{2}/gi, '')
+    .replace(/\\[a-z]+-?\d* ?/gi, '')
+    .replace(/[{}]/g, '')
+    .split(/\n+/)
+    .map((paragraph) => paragraph.replace(/\s+/g, ' ').trim())
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+function normalizeReferences(value) {
+  return value
+    .replace(/ cap[ií]tulo (\d+) vers[ií]culos? (\d+) a (\d+)/gi, ' $1:$2-$3')
+    .replace(/ cap[ií]tulo (\d+) vers[ií]culos? (\d+), (\d+)/gi, ' $1:$2, $3')
+    .replace(/ cap[ií]tulo (\d+) vers[ií]culo (\d+)/gi, ' $1:$2');
 }
 
 function extractStudyPoints(rtf, treasure) {
@@ -73,38 +91,55 @@ function mondayOf(date) {
   return value;
 }
 
-function isoWeek(date) {
+function wolMeetingUrl(date) {
   const value = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   const day = value.getUTCDay() || 7;
   value.setUTCDate(value.getUTCDate() + 4 - day);
   const year = value.getUTCFullYear();
   const yearStart = new Date(Date.UTC(year, 0, 1));
   const week = Math.ceil((((value - yearStart) / 86400000) + 1) / 7);
-  return { year, week };
+  return `https://wol.jw.org/pt/wol/meetings/r5/lp-t/${year}/${week}`;
 }
 
-function articleParagraphs(html) {
-  const start = html.indexOf('<article');
-  const end = html.indexOf('</article>', start);
-  if (start < 0 || end < 0) return '';
-  return [...html.slice(start, end).matchAll(/<(?:h[1-4]|p)\b[^>]*>([\s\S]*?)<\/(?:h[1-4]|p)>/gi)]
-    .map((match) => decodeHtml(match[1]))
-    .filter((paragraph) => paragraph && paragraph !== 'Sua resposta')
-    .join('\n\n');
+function dateInSaoPaulo(now = new Date()) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(now).filter((part) => part.type !== 'literal').map((part) => [part.type, Number(part.value)]));
+  return new Date(Date.UTC(parts.year, parts.month - 1, parts.day));
+}
+
+function midweekTargetDate(date) {
+  const monday = mondayOf(date);
+  if (date.getUTCDay() === 0 || date.getUTCDay() >= 5) monday.setUTCDate(monday.getUTCDate() + 7);
+  return monday;
 }
 
 async function getDaily(date) {
-  const response = await fetchWithTimeout(`https://wol.jw.org/wol/dt/r5/lp-t/${date.getUTCFullYear()}/${date.getUTCMonth() + 1}/${date.getUTCDate()}`);
-  if (!response.ok) throw new Error(`Texto diário indisponível: ${response.status}`);
-  const item = (await response.json()).items?.[0];
-  const sourceMatch = item?.content?.match(/class="themeScrp"[^>]*>([\s\S]*?)<\/p>/i);
-  const referenceMatch = item?.content?.match(/<a[^>]*class="b"[^>]*>([\s\S]*?)<\/a>/i);
-  const bodyMatch = item?.content?.match(/<div class="bodyTxt">([\s\S]*?)<\/div>/i);
-  const verse = decodeHtml(sourceMatch?.[1] || '');
-  const reference = decodeHtml(referenceMatch?.[1] || '');
-  const content = htmlToParagraphs(bodyMatch?.[1] || '');
-  if (!verse || !reference || !content) throw new Error('Texto diário retornou formato inesperado.');
-  return { date: date.toISOString().slice(0, 10), verse, reference, content, url: `https://wol.jw.org${item.url}` };
+  const year = date.getUTCFullYear();
+  const mediaUrl = `https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS?pub=es${String(year).slice(-2)}&langwritten=T&output=json`;
+  const media = await (await fetchWithTimeout(mediaUrl)).json();
+  const monthFile = media.files?.T?.RTF?.find((file) => file.track === date.getUTCMonth() + 1 && file.hasTrack);
+  if (!monthFile?.file?.url) throw new Error(`Texto diário de ${months[date.getUTCMonth()]} não encontrado no JW.org.`);
+  const rtf = await (await fetchWithTimeout(monthFile.file.url)).text();
+  const text = rtfToParagraphs(rtf);
+  const weekday = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'][date.getUTCDay()];
+  const heading = `${weekday}, ${date.getUTCDate()} de ${months[date.getUTCMonth()]}`;
+  const start = text.indexOf(heading);
+  if (start < 0) throw new Error(`Texto diário de ${date.toISOString().slice(0, 10)} não localizado no arquivo oficial.`);
+  const remaining = text.slice(start + heading.length).trim();
+  const nextHeading = remaining.match(/\n\n(?:Domingo|Segunda-feira|Terça-feira|Quarta-feira|Quinta-feira|Sexta-feira|Sábado), \d{1,2} de /)?.index;
+  const section = normalizeReferences((nextHeading === undefined ? remaining : remaining.slice(0, nextHeading)).trim());
+  const paragraphs = section.split(/\n\n+/).filter(Boolean);
+  const devotional = paragraphs.shift() || '';
+  const separator = devotional.lastIndexOf(' — ');
+  const verse = separator > 0 ? devotional.slice(0, separator).trim() : devotional;
+  const reference = separator > 0 ? devotional.slice(separator + 3).trim() : '';
+  const content = paragraphs.join('\n\n');
+  if (!verse || !reference || !content) throw new Error('Texto diário retornou formato inesperado no arquivo oficial.');
+  return {
+    date: date.toISOString().slice(0, 10), verse, reference, content,
+    url: `https://wol.jw.org/pt/wol/h/r5/lp-t/${year}/${date.getUTCMonth() + 1}/${date.getUTCDate()}`
+  };
 }
 
 function tuesdayOf(date) {
@@ -146,6 +181,31 @@ async function addFamilyVisuals(item) {
   return { ...item, publicationImageUrl, videoImageUrl };
 }
 
+function issueCode(date, offset = 0) {
+  const value = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + offset, 1));
+  return `${value.getUTCFullYear()}${String(value.getUTCMonth() + 1).padStart(2, '0')}`;
+}
+
+function studyRange(title) {
+  const match = decodeHtml(title).toLowerCase().match(/^(\d{1,2})(?: de ([a-zç]+))? a (\d{1,2}) de ([a-zç]+) de (\d{4})/i);
+  if (!match) return null;
+  const [, startDay, explicitStartMonth, endDay, endMonthName, endYearText] = match;
+  const endMonth = months.indexOf(endMonthName);
+  const startMonth = months.indexOf(explicitStartMonth || endMonthName);
+  if (startMonth < 0 || endMonth < 0) return null;
+  const endYear = Number(endYearText);
+  const startYear = startMonth > endMonth ? endYear - 1 : endYear;
+  return {
+    start: new Date(Date.UTC(startYear, startMonth, Number(startDay))),
+    end: new Date(Date.UTC(endYear, endMonth, Number(endDay)))
+  };
+}
+
+function rangeIncludes(title, date) {
+  const range = studyRange(title);
+  return Boolean(range && date >= range.start && date <= range.end);
+}
+
 async function getMeeting(date) {
   const monday = mondayOf(date);
   const startMonth = monday.getUTCMonth();
@@ -161,63 +221,85 @@ async function getMeeting(date) {
   const reading = title.match(/\(([^)]+)\)/)?.[1]?.replace(/\s+a\s+/g, '–') || title;
   const rtf = await (await fetchWithTimeout(current.file.url)).text();
   const text = rtfToText(rtf);
+  const completeText = normalizeReferences(rtfToParagraphs(rtf));
   const treasure = text.match(/1\.\s+(.+?)\s*\(10 min\)/i)?.[1] || 'Tesouros da Palavra de Deus';
   const points = extractStudyPoints(rtf, treasure);
-  return { weekOf: monday.toISOString().slice(0, 10), reading, treasure, points, sourceUrl: current.file.url, coverUrl: media.pubImage?.url || null };
-}
-
-async function getWatchtowerCover(date) {
-  const issue = `${date.getUTCFullYear()}${String(date.getUTCMonth() + 1).padStart(2, '0')}`;
-  const url = `https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS?pub=w&issue=${issue}&langwritten=T&output=json`;
-  const media = await (await fetchWithTimeout(url)).json();
-  if (!media.pubImage?.url) throw new Error('Capa da Sentinela não encontrada.');
-  return media.pubImage.url;
+  const paragraphs = completeText.split(/\n\n+/);
+  const titleIndex = paragraphs.findIndex((paragraph) => paragraph === title);
+  const content = (titleIndex >= 0 ? paragraphs.slice(titleIndex + 1) : paragraphs).join('\n\n');
+  const image = current.trackImage?.url || null;
+  const meeting = {
+    weekOf: monday.toISOString().slice(0, 10), reading, treasure, points,
+    sourceUrl: current.file.url, coverUrl: media.pubImage?.url || image
+  };
+  const midweekStudy = {
+    weekOf: meeting.weekOf, title: reading.toUpperCase(), content,
+    images: image ? [image] : [], coverUrl: meeting.coverUrl, url: wolMeetingUrl(monday)
+  };
+  return { meeting, midweekStudy };
 }
 
 async function getWatchtowerStudy(date) {
-  const { year, week } = isoWeek(date);
-  const scheduleUrl = `https://wol.jw.org/pt/wol/meetings/r5/lp-t/${year}/${week}`;
-  const schedule = await (await fetchWithTimeout(scheduleUrl)).text();
-  const studyHref = schedule.match(/Estudo de A Sentinela[\s\S]*?<a href="([^"?]+\/wol\/d\/r5\/lp-t\/\d+)"/i)?.[1];
-  if (!studyHref) throw new Error('Estudo de A Sentinela não encontrado na programação semanal.');
-  const url = `https://wol.jw.org${studyHref}`;
-  const html = await (await fetchWithTimeout(url)).text();
-  const title = decodeHtml(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1] || '');
-  const theme = decodeHtml(html.match(/id="p4"[^>]*>([\s\S]*?)<\/p>/i)?.[1] || '');
-  const objective = decodeHtml(html.match(/id="p6"[^>]*>([\s\S]*?)<\/p>/i)?.[1] || '');
-  const content = articleParagraphs(html);
-  const images = [...html.matchAll(/<img\s+src="([^"?]+\/wol\/mp\/[^"?]+)"[^>]*>/gi)].map((match) => `https://wol.jw.org${match[1]}`).slice(0, 3);
-  if (!title || !content) throw new Error('Estudo de A Sentinela retornou formato inesperado.');
-  return { weekOf: mondayOf(date).toISOString().slice(0, 10), title, theme, objective, content, images, coverUrl: `${url}/thumbnail`, url };
+  const monday = mondayOf(date);
+  const mediaResults = await Promise.allSettled(Array.from({ length: 7 }, (_, offset) => {
+    const issue = issueCode(monday, -offset);
+    const url = `https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS?pub=w&issue=${issue}&langwritten=T&output=json`;
+    return fetchWithTimeout(url).then((response) => response.json()).then((media) => ({ issue, media }));
+  }));
+  let selected;
+  for (const result of mediaResults) {
+    if (result.status !== 'fulfilled') continue;
+    const file = result.value.media.files?.T?.RTF?.find((item) => item.hasTrack && rangeIncludes(item.title, monday));
+    if (file) { selected = { ...result.value, file }; break; }
+  }
+  if (!selected) throw new Error(`Estudo de A Sentinela da semana de ${monday.toISOString().slice(0, 10)} não encontrado no JW.org.`);
+  const fullTitle = decodeHtml(selected.file.title);
+  const title = fullTitle.includes(':') ? fullTitle.split(':').slice(1).join(':').trim() : fullTitle;
+  const rtf = await (await fetchWithTimeout(selected.file.file.url)).text();
+  const paragraphs = normalizeReferences(rtfToParagraphs(rtf)).split(/\n\n+/);
+  const titleIndex = paragraphs.findIndex((paragraph) => paragraph === fullTitle);
+  const body = titleIndex >= 0 ? paragraphs.slice(titleIndex + 1) : paragraphs;
+  const theme = body.find((paragraph) => paragraph.includes(' — ') && !/^Cântico/i.test(paragraph)) || '';
+  const objectiveIndex = body.findIndex((paragraph) => /objetivo/i.test(paragraph));
+  const objective = objectiveIndex >= 0 ? (body[objectiveIndex + 1] || '').replace(/\s*\[Fim do quadro\.\]\s*/i, '').trim() : '';
+  const contentStart = body.findIndex((paragraph) => /\[Fim do quadro\.\]/i.test(paragraph));
+  const content = body.slice(contentStart >= 0 ? contentStart + 1 : 0).join('\n\n');
+  const image = selected.file.trackImage?.url || null;
+  const issueYear = selected.issue.slice(0, 4);
+  const issueMonth = months[Number(selected.issue.slice(4, 6)) - 1];
+  const url = `https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-${issueMonth}-${issueYear}/`;
+  if (!title || !theme || !objective || !content) throw new Error('Estudo de A Sentinela retornou formato inesperado no arquivo oficial.');
+  return {
+    weekOf: monday.toISOString().slice(0, 10), title, theme, objective, content,
+    images: image ? [image] : [], coverUrl: selected.media.pubImage?.url || image, url
+  };
 }
 
-async function getMidweekStudy(date) {
-  const { year, week } = isoWeek(date);
-  const schedule = await (await fetchWithTimeout(`https://wol.jw.org/pt/wol/meetings/r5/lp-t/${year}/${week}`)).text();
-  const studyHref = schedule.match(/<a href="([^"?]+\/wol\/d\/r5\/lp-t\/\d+)"/i)?.[1];
-  if (!studyHref) throw new Error('Apostila semanal não encontrada na programação.');
-  const url = `https://wol.jw.org${studyHref}`;
-  const html = await (await fetchWithTimeout(url)).text();
-  const title = decodeHtml(html.match(/id="p2"[^>]*>([\s\S]*?)<\/h2>/i)?.[1] || '');
-  const content = articleParagraphs(html);
-  const images = [...html.matchAll(/<img\s+src="([^"?]+\/wol\/mp\/[^"?]+)"[^>]*>/gi)].map((match) => `https://wol.jw.org${match[1]}`).slice(0, 4);
-  if (!title || !content) throw new Error('Apostila semanal retornou formato inesperado.');
-  return { weekOf: mondayOf(date).toISOString().slice(0, 10), title, content, images, coverUrl: `${url}/thumbnail`, url };
-}
-
-const now = new Date();
+const requestedDate = process.env.CONTENT_DATE;
+const now = requestedDate ? new Date(`${requestedDate}T00:00:00Z`) : dateInSaoPaulo();
+if (Number.isNaN(now.getTime())) throw new Error(`Data de validação inválida: ${requestedDate}.`);
 const previous = JSON.parse(await readFile(contentFile, 'utf8'));
-const results = await Promise.allSettled([getDaily(now), getMeeting(now), getWatchtowerCover(now), getWatchtowerStudy(now), getMidweekStudy(now)]);
-const daily = results[0].status === 'fulfilled' ? results[0].value : previous.daily;
-const meeting = results[1].status === 'fulfilled' ? results[1].value : previous.meeting;
-if (!daily || !meeting) throw new Error('Não há conteúdo válido disponível para publicação.');
-const errors = results.filter((result) => result.status === 'rejected').map((result) => result.reason.message);
-const watchtower = results[3].status === 'fulfilled' ? results[3].value : previous.watchtower || null;
-const midweekStudy = results[4].status === 'fulfilled' ? results[4].value : previous.midweekStudy || null;
-const covers = { workbook: midweekStudy?.coverUrl || meeting.coverUrl || previous.covers?.workbook || null, watchtower: watchtower?.coverUrl || (results[2].status === 'fulfilled' ? results[2].value : previous.covers?.watchtower || null) };
+const meetingTarget = midweekTargetDate(now);
+const watchtowerTarget = mondayOf(now);
+const [daily, meetingBundle, watchtower] = await Promise.all([
+  getDaily(now), getMeeting(meetingTarget), getWatchtowerStudy(watchtowerTarget)
+]);
+const { meeting, midweekStudy } = meetingBundle;
+const expectedDaily = now.toISOString().slice(0, 10);
+const expectedMeeting = meetingTarget.toISOString().slice(0, 10);
+const expectedWatchtower = watchtowerTarget.toISOString().slice(0, 10);
+if (daily.date !== expectedDaily) throw new Error(`Texto diário desatualizado: esperado ${expectedDaily}, recebido ${daily.date}.`);
+if (meeting.weekOf !== expectedMeeting || midweekStudy.weekOf !== expectedMeeting) throw new Error(`Apostila desatualizada: esperada semana ${expectedMeeting}.`);
+if (watchtower.weekOf !== expectedWatchtower) throw new Error(`A Sentinela desatualizada: esperada semana ${expectedWatchtower}.`);
+const covers = { workbook: midweekStudy.coverUrl || meeting.coverUrl, watchtower: watchtower.coverUrl };
 const familyUpcoming = await Promise.all(familyUpcomingFor(now).map(addFamilyVisuals));
 const familyWorship = familyUpcoming[0];
-const content = { updatedAt: new Date().toISOString(), daily, meeting, midweekStudy, watchtower, covers, familyWorship, familyUpcoming, previousUpdatedAt: previous.updatedAt || null, errors };
+const content = {
+  updatedAt: new Date().toISOString(), timezone: 'America/Sao_Paulo',
+  updateRules: { daily: 'todos os dias', midweek: 'toda sexta-feira para a próxima semana', watchtower: 'toda segunda-feira', familyWorship: 'toda terça-feira' },
+  daily, meeting, midweekStudy, watchtower, covers, familyWorship, familyUpcoming,
+  previousUpdatedAt: previous.updatedAt || null, errors: []
+};
 await mkdir(new URL('../data/', import.meta.url), { recursive: true });
 await writeFile(contentFile, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
-console.log(`Conteúdo atualizado: ${daily.date}; semana de ${meeting.weekOf}.`);
+console.log(`Conteúdo validado: texto ${daily.date}; apostila ${meeting.weekOf}; Sentinela ${watchtower.weekOf}.`);

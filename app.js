@@ -163,6 +163,9 @@ async function loadOfficialContent() {
     }
     if (content.watchtower?.title) {
       const watchtower = content.watchtower;
+      document.querySelector('#panel-watchtower-title').textContent = watchtower.title;
+      document.querySelector('#panel-watchtower-theme').textContent = watchtower.theme;
+      document.querySelector('#panel-watchtower-objective').textContent = watchtower.objective;
       document.querySelector('#meeting-watchtower-title').textContent = watchtower.title;
       document.querySelector('#meeting-watchtower-theme').textContent = watchtower.theme;
       document.querySelector('#meeting-watchtower-objective').textContent = watchtower.objective;
