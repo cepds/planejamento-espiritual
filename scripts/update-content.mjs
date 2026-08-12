@@ -1,4 +1,5 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { inflateRawSync } from 'node:zlib';
 
 const contentFile = new URL('../data/content.json', import.meta.url);
 const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
@@ -253,6 +254,60 @@ function workbookProgramOnly(completeText, title) {
   return result.filter(Boolean).join('\n\n');
 }
 
+function zipEntries(buffer) {
+  const minimumEocdOffset = Math.max(0, buffer.length - 65_557);
+  let eocdOffset = buffer.length - 22;
+  while (eocdOffset >= minimumEocdOffset && buffer.readUInt32LE(eocdOffset) !== 0x06054b50) eocdOffset -= 1;
+  if (eocdOffset < minimumEocdOffset) throw new Error('Arquivo JWPUB invalido.');
+
+  const entries = [];
+  const totalEntries = buffer.readUInt16LE(eocdOffset + 10);
+  let offset = buffer.readUInt32LE(eocdOffset + 16);
+  for (let index = 0; index < totalEntries; index += 1) {
+    if (buffer.readUInt32LE(offset) !== 0x02014b50) throw new Error('Diretorio JWPUB invalido.');
+    const nameLength = buffer.readUInt16LE(offset + 28);
+    const extraLength = buffer.readUInt16LE(offset + 30);
+    const commentLength = buffer.readUInt16LE(offset + 32);
+    entries.push({
+      name: buffer.toString('utf8', offset + 46, offset + 46 + nameLength),
+      compression: buffer.readUInt16LE(offset + 10),
+      compressedSize: buffer.readUInt32LE(offset + 20),
+      localOffset: buffer.readUInt32LE(offset + 42),
+    });
+    offset += 46 + nameLength + extraLength + commentLength;
+  }
+  return entries;
+}
+
+function unzipEntry(buffer, entryName) {
+  const entry = zipEntries(buffer).find(({ name }) => name === entryName);
+  if (!entry) throw new Error(`Arquivo ${entryName} nao encontrado no JWPUB.`);
+  const nameLength = buffer.readUInt16LE(entry.localOffset + 26);
+  const extraLength = buffer.readUInt16LE(entry.localOffset + 28);
+  const dataStart = entry.localOffset + 30 + nameLength + extraLength;
+  const data = buffer.subarray(dataStart, dataStart + entry.compressedSize);
+  if (entry.compression === 0) return data;
+  if (entry.compression === 8) return inflateRawSync(data);
+  throw new Error(`Compactacao JWPUB nao suportada: ${entry.compression}.`);
+}
+
+async function workbookContentImages(media, track) {
+  const jwpubUrl = media.files?.T?.JWPUB?.[0]?.file?.url;
+  if (!jwpubUrl) return [];
+  const jwpub = Buffer.from(await (await fetchWithTimeout(jwpubUrl)).arrayBuffer());
+  const contents = unzipEntry(jwpub, 'contents');
+  const documentIds = [...new Set(zipEntries(contents)
+    .map(({ name }) => name.match(/^(\d+)_univ_cnt_1\.jpg$/)?.[1])
+    .filter(Boolean))].sort();
+  const documentId = documentIds[track];
+  if (!documentId) return [];
+  return zipEntries(contents)
+    .map(({ name }) => name)
+    .filter((name) => new RegExp(`^${documentId}_univ_cnt_\\d+\\.jpg$`).test(name))
+    .sort((left, right) => left.localeCompare(right, undefined, { numeric: true }))
+    .map((name) => `https://cms-imgp.jw-cdn.org/img/p/${documentId}/univ/art/${name.replace(/\.jpg$/, '_xl.jpg')}`);
+}
+
 async function getMeeting(date) {
   const monday = mondayOf(date);
   const startMonth = monday.getUTCMonth();
@@ -273,13 +328,14 @@ async function getMeeting(date) {
   const points = extractStudyPoints(rtf, treasure);
   const content = workbookProgramOnly(completeText, title);
   const image = current.trackImage?.url || null;
+  const contentImages = await workbookContentImages(media, current.track);
   const meeting = {
     weekOf: monday.toISOString().slice(0, 10), reading, treasure, points,
     sourceUrl: current.file.url, coverUrl: media.pubImage?.url || image
   };
   const midweekStudy = {
     weekOf: meeting.weekOf, title: reading.toUpperCase(), content,
-    images: image ? [image] : [], coverUrl: meeting.coverUrl, url: wolMeetingUrl(monday)
+    images: contentImages.length ? contentImages : (image ? [image] : []), coverUrl: meeting.coverUrl, url: wolMeetingUrl(monday)
   };
   return { meeting, midweekStudy };
 }

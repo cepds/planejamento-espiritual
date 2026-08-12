@@ -50,7 +50,7 @@
 #meetings .study-points li::before{content:'';position:absolute;left:0;top:.58em;width:6px;height:6px;border-radius:50%;background:#dcb96c}
 #meetings .watchtower-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:20px 0}
 #meetings .watchtower-images img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid #536d58;border-radius:8px}
-#meetings .watchtower-full-content{margin:18px 0;white-space:pre-line;color:#dceadf;font-size:14px;line-height:1.7}
+#meetings .watchtower-full-content{margin:18px 0;padding:16px;white-space:pre-line;color:#dceadf;background:#1d251b;border:1px solid #405443;border-radius:10px;font-size:14px;line-height:1.7}
 #meetings .meeting-source-link{display:inline-flex;text-decoration:none;margin-top:8px}
 @media(max-width:520px){#meetings .watchtower-images{grid-template-columns:1fr}}
 
