@@ -21,13 +21,21 @@ async function fetchWithTimeout(url) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 60000);
     try {
-      return await fetch(url, { signal: controller.signal });
+      const response = await fetch(url, { signal: controller.signal });
+      if (response.ok) return response;
+
+      const error = new Error(`Fonte oficial respondeu HTTP ${response.status}: ${url}`);
+      const retryable = [408, 425, 429, 500, 502, 503, 504].includes(response.status);
+      error.retryable = retryable;
+      if (!retryable || attempt === 3) throw error;
+      lastError = error;
     } catch (error) {
       lastError = error;
-      if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, attempt * 1500));
+      if (error.retryable === false || attempt === 3) throw error;
     } finally {
       clearTimeout(timeout);
     }
+    await new Promise((resolve) => setTimeout(resolve, attempt * 1500));
   }
   throw lastError;
 }
@@ -115,6 +123,11 @@ function midweekTargetDate(date) {
   return monday;
 }
 
+function dailyHeadingPattern(date) {
+  const weekday = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'][date.getUTCDay()];
+  return new RegExp(`${weekday}, ${date.getUTCDate()}(?:\\.º)? de ${months[date.getUTCMonth()]}`);
+}
+
 async function getDaily(date) {
   const year = date.getUTCFullYear();
   const mediaUrl = `https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS?pub=es${String(year).slice(-2)}&langwritten=T&output=json`;
@@ -123,12 +136,11 @@ async function getDaily(date) {
   if (!monthFile?.file?.url) throw new Error(`Texto diário de ${months[date.getUTCMonth()]} não encontrado no JW.org.`);
   const rtf = await (await fetchWithTimeout(monthFile.file.url)).text();
   const text = rtfToParagraphs(rtf);
-  const weekday = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'][date.getUTCDay()];
-  const heading = `${weekday}, ${date.getUTCDate()} de ${months[date.getUTCMonth()]}`;
-  const start = text.indexOf(heading);
-  if (start < 0) throw new Error(`Texto diário de ${date.toISOString().slice(0, 10)} não localizado no arquivo oficial.`);
-  const remaining = text.slice(start + heading.length).trim();
-  const nextHeading = remaining.match(/\n\n(?:Domingo|Segunda-feira|Terça-feira|Quarta-feira|Quinta-feira|Sexta-feira|Sábado), \d{1,2} de /)?.index;
+  const headingPattern = dailyHeadingPattern(date);
+  const heading = text.match(headingPattern);
+  if (heading?.index === undefined) throw new Error(`Texto diário de ${date.toISOString().slice(0, 10)} não localizado no arquivo oficial.`);
+  const remaining = text.slice(heading.index + heading[0].length).trim();
+  const nextHeading = remaining.match(/\n\n(?:Domingo|Segunda-feira|Terça-feira|Quarta-feira|Quinta-feira|Sexta-feira|Sábado), \d{1,2}(?:\.º)? de /)?.index;
   const section = normalizeReferences((nextHeading === undefined ? remaining : remaining.slice(0, nextHeading)).trim());
   const paragraphs = section.split(/\n\n+/).filter(Boolean);
   const devotional = paragraphs.shift() || '';
@@ -168,9 +180,9 @@ function familyUpcomingFor(date, count = 5) {
 
 async function getOpenGraphImage(url) {
   const response = await fetchWithTimeout(url);
-  if (!response.ok) throw new Error(`Imagem indisponível: ${response.status}`);
   const html = await response.text();
-  const tag = html.match(/<meta\s+[^>]*property=["']og:image["'][^>]*>/i)?.[0];
+  const tags = html.match(/<meta\s+[^>]*>/gi) || [];
+  const tag = tags.find((value) => /(?:property|name)=["']og:image["']/i.test(value));
   return tag?.match(/content=["']([^"']+)["']/i)?.[1] || null;
 }
 
@@ -376,6 +388,7 @@ async function getWatchtowerStudy(date) {
   };
 }
 
+if (process.env.SKIP_UPDATE_MAIN !== '1') {
 const requestedDate = process.env.CONTENT_DATE;
 const now = requestedDate ? new Date(`${requestedDate}T00:00:00Z`) : dateInSaoPaulo();
 if (Number.isNaN(now.getTime())) throw new Error(`Data de validação inválida: ${requestedDate}.`);
@@ -404,3 +417,6 @@ const content = {
 await mkdir(new URL('../data/', import.meta.url), { recursive: true });
 await writeFile(contentFile, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
 console.log(`Conteúdo validado: texto ${daily.date}; apostila ${meeting.weekOf}; Sentinela ${watchtower.weekOf}.`);
+}
+
+export { dailyHeadingPattern, dateInSaoPaulo, midweekTargetDate, mondayOf, tuesdayOf };

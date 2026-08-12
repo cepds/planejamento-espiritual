@@ -25,6 +25,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - run: npm run check
       - run: npm run update-content
       - name: Salvar conteúdo atualizado
         run: |

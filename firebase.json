@@ -2,7 +2,16 @@
   "hosting": {
     "site": "meu-painel-espiritual",
     "public": ".",
-    "ignore": ["firebase.json"],
+    "ignore": [
+      "firebase.json",
+      ".firebase/**",
+      ".git/**",
+      ".github/**",
+      "scripts/**",
+      "package.json",
+      "package-lock.json",
+      "CODEX_INSTRUCOES.md"
+    ],
     "headers": [
       {
         "source": "manifest.webmanifest",

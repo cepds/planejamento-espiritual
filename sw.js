@@ -1,4 +1,5 @@
-const CACHE_NAME = 'planejamento-espiritual-shell-v1';
+const CACHE_NAME = 'planejamento-espiritual-shell-v2';
+const CONTENT_CACHE_KEY = '/data/content.json';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(self.skipWaiting());
@@ -21,10 +22,12 @@ self.addEventListener('fetch', (event) => {
     try {
       const response = await fetch(event.request);
       const cache = await caches.open(CACHE_NAME);
-      cache.put(event.request, response.clone());
+      const cacheKey = url.pathname === CONTENT_CACHE_KEY ? CONTENT_CACHE_KEY : event.request;
+      cache.put(cacheKey, response.clone());
       return response;
     } catch {
-      const cached = await caches.match(event.request);
+      const cacheKey = url.pathname === CONTENT_CACHE_KEY ? CONTENT_CACHE_KEY : event.request;
+      const cached = await caches.match(cacheKey);
       if (cached) return cached;
       if (event.request.mode === 'navigate') return caches.match('/');
       return Response.error();

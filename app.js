@@ -40,7 +40,18 @@ function setPage(page, shouldScroll = true) {
   pageTitle.innerHTML = pageNames[page];
   document.querySelector('#add-event').hidden = page !== 'panel';
   window.location.hash = page;
-  if (shouldScroll) window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (shouldScroll) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.querySelector('.content')?.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function weekdayInSaoPaulo() {
+  const weekday = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Sao_Paulo',
+    weekday: 'short'
+  }).format(new Date());
+  return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(weekday);
 }
 
 function formatFamilyWeek(value) {
@@ -105,7 +116,9 @@ clearEvents.addEventListener('click', () => { localStorage.removeItem(eventKey);
 navigation.forEach((item) => item.addEventListener('click', () => setPage(item.dataset.page)));
 const initialPage = window.location.hash.slice(1);
 if (Object.hasOwn(pageNames, initialPage)) setPage(initialPage, false);
-document.querySelector('#today').textContent = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
+document.querySelector('#today').textContent = new Intl.DateTimeFormat('pt-BR', {
+  timeZone: 'America/Sao_Paulo', weekday: 'long', day: 'numeric', month: 'long'
+}).format(new Date());
 renderEvents();
 
 const midweekSections = {
@@ -346,7 +359,7 @@ async function loadOfficialContent() {
         return row;
       }));
     }
-    const day = new Date().getDay();
+    const day = weekdayInSaoPaulo();
     const showWeekend = day === 0 || day === 5 || day === 6;
     document.querySelector('#midweek-focus').hidden = showWeekend;
     document.querySelector('#weekend-focus').hidden = !showWeekend;

@@ -2,6 +2,8 @@
   "name": "planejamento-espiritual-2",
   "private": true,
   "scripts": {
+    "check": "node --check app.js && node --check sw.js && node --check scripts/update-content.mjs && npm test",
+    "test": "node --test scripts/update-content.test.mjs",
     "update-content": "node scripts/update-content.mjs"
   }
 }
