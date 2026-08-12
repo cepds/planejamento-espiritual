@@ -54,6 +54,67 @@
 #meetings .meeting-source-link{display:inline-flex;text-decoration:none;margin-top:8px}
 @media(max-width:520px){#meetings .watchtower-images{grid-template-columns:1fr}}
 
+/* Programa visual da Apostila. */
+#meetings .meetings-grid{grid-template-columns:minmax(0,920px);justify-content:start}
+#meeting-midweek-card{padding:0;overflow:hidden;background:#101210;border-color:#303631;box-shadow:0 18px 45px rgba(15,35,24,.13)}
+#meeting-midweek-card .meeting-cover-heading{margin:0;padding:22px 24px;background:#171a17;border-bottom:1px solid #353b36}
+#meeting-midweek-card .meeting-cover-heading .section-label{color:#8eaa96}
+#meeting-midweek-card .meeting-cover-heading h3{margin:0;color:#f5f5ed;font-size:27px;letter-spacing:-.01em}
+#meeting-midweek-card .meeting-cover{width:54px;border-color:#6f8975}
+#meeting-midweek-card .treasure-study,#meeting-midweek-card>#meeting-midweek-images,#meeting-midweek-card>#meeting-midweek-content{display:none}
+#meeting-midweek-card>.meeting-source-link{margin:0 24px 24px;border-color:#71947c;background:#104e36;color:#fff}
+#meeting-midweek-card>.meeting-source-link:hover{background:#0c3d2b}
+
+#meetings .meeting-program{display:grid;gap:18px;padding:20px 24px 24px;background:#101210;color:#edf2eb}
+#meetings .program-intro{overflow:hidden;border:1px solid #363c37;border-radius:12px;background:#181b18}
+#meetings .program-date{margin:0;padding:16px 18px;color:#f6f5ed;border-bottom:1px solid #363c37;font:800 21px/1.2 Georgia,serif;text-transform:uppercase;letter-spacing:.025em}
+#meetings .program-opening{display:flex;flex-wrap:wrap;gap:8px 22px;padding:14px 18px}
+#meetings .program-transition{display:flex;align-items:center;gap:9px;color:#d6ddd6;font-size:13px;font-weight:650;line-height:1.4}
+#meetings .program-transition-icon{display:grid;place-items:center;width:20px;height:20px;flex:0 0 20px;color:var(--section-accent,#9fc5ae);font-size:17px;font-weight:900}
+
+#meetings .program-section{--section-accent:#7fc2dd;--section-soft:#17252b;overflow:hidden;border:1px solid #354249;border-radius:13px;background:#171a18}
+#meetings .program-section--ministry{--section-accent:#f2b533;--section-soft:#29220f;border-color:#554621}
+#meetings .program-section--christian-life{--section-accent:#ee7474;--section-soft:#2a1919;border-color:#5c3030}
+#meetings .program-section-heading{display:flex;align-items:center;gap:12px;padding:13px 16px;color:var(--section-accent);background:var(--section-soft);border-bottom:1px solid currentColor}
+#meetings .program-section-heading h4{margin:0;color:inherit;font:800 21px/1.25 "Segoe UI",Arial,sans-serif;letter-spacing:.015em}
+#meetings .program-section-icon{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;color:#fff;background:var(--section-accent);border-radius:4px}
+#meetings .program-section-icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#meetings .program-section--christian-life .program-section-icon svg{fill:currentColor;stroke:none}
+#meetings .program-section-body{padding:0 18px}
+#meetings .program-section-body>.program-transition{padding:15px 0;border-bottom:1px solid #343a35}
+
+#meetings .program-part{padding:20px 0}
+#meetings .program-part+.program-part,#meetings .program-transition+.program-part,#meetings .program-part+.program-transition{border-top:1px solid #343a35}
+#meetings .program-part-heading{display:grid;grid-template-columns:30px minmax(0,1fr);gap:11px;align-items:start}
+#meetings .program-part-number{display:grid;place-items:center;width:29px;height:29px;color:#11150f;background:var(--section-accent);border-radius:50%;font-size:14px;font-weight:900}
+#meetings .program-part-copy{display:flex;align-items:baseline;justify-content:space-between;gap:15px;padding-top:2px}
+#meetings .program-part-copy h5{margin:0;color:var(--section-accent);font:800 17px/1.35 "Segoe UI",Arial,sans-serif}
+#meetings .program-part-duration{flex:0 0 auto;padding:4px 8px;color:#cbd4cc;background:#252a26;border:1px solid #3e4640;border-radius:999px;font-size:11px;font-weight:750}
+#meetings .program-part-points{display:grid;gap:11px;margin:15px 0 0;padding:0 0 0 41px;list-style:none}
+#meetings .program-part-points li{position:relative;color:#e1e8e1;font-size:14px;line-height:1.58}
+#meetings .program-part-points li::before{content:'';position:absolute;left:-17px;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--section-accent)}
+#meetings .program-part-details{display:grid;gap:9px;margin:13px 0 0;padding-left:41px}
+#meetings .program-part-details p{margin:0;color:#dce4dd;font-size:14px;line-height:1.58}
+#meetings .program-part-media{display:grid;gap:12px;margin:18px 0 0 41px}
+#meetings .program-part-media img{display:block;width:100%;max-height:470px;aspect-ratio:16/9;object-fit:cover;border:1px solid #526259;border-radius:10px;background:#222}
+
+@media(max-width:650px){
+  #meeting-midweek-card .meeting-cover-heading{padding:18px}
+  #meeting-midweek-card .meeting-cover-heading h3{font-size:23px}
+  #meetings .meeting-program{gap:14px;padding:16px}
+  #meetings .program-date{padding:14px 15px;font-size:18px}
+  #meetings .program-opening{display:grid;padding:13px 15px}
+  #meetings .program-section-heading{align-items:flex-start;padding:12px}
+  #meetings .program-section-heading h4{font-size:17px;line-height:1.35}
+  #meetings .program-section-body{padding:0 13px}
+  #meetings .program-part{padding:17px 0}
+  #meetings .program-part-copy{display:grid;gap:6px}
+  #meetings .program-part-duration{justify-self:start}
+  #meetings .program-part-points,#meetings .program-part-details{padding-left:39px}
+  #meetings .program-part-media{margin-left:0}
+  #meeting-midweek-card>.meeting-source-link{margin:0 16px 18px}
+}
+
 /* Plano semanal de AdoraÃ§Ã£o em FamÃ­lia. */
 #family{max-width:760px;display:none;gap:18px}
 #family.is-active{display:grid}
