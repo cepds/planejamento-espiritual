@@ -206,6 +206,53 @@ function rangeIncludes(title, date) {
   return Boolean(range && date >= range.start && date <= range.end);
 }
 
+function workbookProgramOnly(completeText, title) {
+  const paragraphs = completeText.split(/\n\n+/).filter(Boolean);
+  const titleIndex = paragraphs.findIndex((paragraph) => paragraph === title);
+  const body = titleIndex >= 0 ? paragraphs.slice(titleIndex + 1) : paragraphs;
+  const itemIndexes = body
+    .map((paragraph, index) => (/^(\d+)\.\s.*\(\d+\s+min\)/i.test(paragraph) ? index : -1))
+    .filter((index) => index >= 0);
+  const isProgramLabel = (paragraph) => /^(?:Cântico\b|Comentários (?:iniciais|finais)\b|Tesouros da Palavra de Deus$|Faça seu melhor no ministério$|Nossa vida cristã$)/i.test(paragraph);
+  const result = [title, ...body.slice(0, itemIndexes[0]).filter(isProgramLabel)];
+
+  function conciseTreasures(segment) {
+    const visible = [];
+    let chunk = [];
+    for (const paragraph of segment) {
+      if (/^\[Fim da matéria de referência\.\]$/i.test(paragraph)) {
+        const marker = chunk.findIndex((item) => /^\[(?:Texto|Imagem)/i.test(item));
+        visible.push(...(marker >= 0 ? chunk.slice(0, marker) : chunk.slice(0, 1)));
+        chunk = [];
+      } else {
+        chunk.push(paragraph);
+      }
+    }
+    const marker = chunk.findIndex((item) => /^\[(?:Texto|Imagem)/i.test(item));
+    visible.push(...(marker >= 0 ? chunk.slice(0, marker) : chunk));
+    return visible.filter((paragraph) => !/^\[/.test(paragraph));
+  }
+
+  itemIndexes.forEach((itemIndex, position) => {
+    const heading = body[itemIndex];
+    const itemNumber = Number(heading.match(/^(\d+)\./)?.[1]);
+    const nextIndex = itemIndexes[position + 1] ?? body.length;
+    const between = body.slice(itemIndex + 1, nextIndex);
+    const labelIndex = between.findIndex(isProgramLabel);
+    const details = labelIndex >= 0 ? between.slice(0, labelIndex) : between;
+    const labels = labelIndex >= 0 ? between.slice(labelIndex).filter(isProgramLabel) : [];
+    result.push(heading);
+    if (itemNumber <= 2) result.push(...conciseTreasures(details));
+    else {
+      const firstDetail = details.find((paragraph) => !/^\[/.test(paragraph));
+      if (firstDetail) result.push(firstDetail);
+    }
+    result.push(...labels);
+  });
+
+  return result.filter(Boolean).join('\n\n');
+}
+
 async function getMeeting(date) {
   const monday = mondayOf(date);
   const startMonth = monday.getUTCMonth();
@@ -224,9 +271,7 @@ async function getMeeting(date) {
   const completeText = normalizeReferences(rtfToParagraphs(rtf));
   const treasure = text.match(/1\.\s+(.+?)\s*\(10 min\)/i)?.[1] || 'Tesouros da Palavra de Deus';
   const points = extractStudyPoints(rtf, treasure);
-  const paragraphs = completeText.split(/\n\n+/);
-  const titleIndex = paragraphs.findIndex((paragraph) => paragraph === title);
-  const content = (titleIndex >= 0 ? paragraphs.slice(titleIndex + 1) : paragraphs).join('\n\n');
+  const content = workbookProgramOnly(completeText, title);
   const image = current.trackImage?.url || null;
   const meeting = {
     weekOf: monday.toISOString().slice(0, 10), reading, treasure, points,
