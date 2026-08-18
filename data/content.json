@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-17T22:01:19.178Z",
+  "updatedAt": "2026-08-18T04:20:47.581Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-08-17",
-    "verse": "Um será levado e o outro será abandonado.",
-    "reference": "Mateus 24:40.",
-    "content": "O tempo em que vivemos é emocionante! Grandes mudanças acontecerão em breve. Logo Jesus irá julgar cada pessoa na Terra. O próprio Jesus descreveu o período que levaria até esse julgamento quando deu aos discípulos um “sinal” profético da sua presença invisível e “do final do sistema de coisas”. (Mateus 24:3) Esse sinal está registrado em Mateus capítulos 24 e 25 e também nos relatos paralelos de Marcos capítulo 13 e Lucas capítulo 21. Jesus deu alguns avisos muito úteis por meio de três parábolas: a parábola das ovelhas e dos cabritos, a das virgens prudentes e das virgens tolas e a dos talentos. Cada parábola nos ajuda a entender como o comportamento de uma pessoa vai afetar a maneira como ela será julgada. w24.09 20 parágrafos 1 a 2",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/8/17"
+    "date": "2026-08-18",
+    "verse": "Que tudo que vocês fizerem seja com amor.",
+    "reference": "Primeira Coríntios 16:14.",
+    "content": "Jesus Cristo é o nosso melhor exemplo, e tudo o que ele fazia era motivado por amor — amor por seu Pai e pelas pessoas. Foi isso que moveu Jesus a se esforçar para ajudar outros, fazendo até mesmo tarefas humildes. (Mateus 20:28; João capítulo 13 versículos 5,14,15) Irmãos, se tudo que fizerem for com amor, Jeová vai abençoar e ajudar vocês a alcançar seus alvos espirituais, como o alvo de ser servo ministerial. (Primeira Pedro 5:5) No mundo, as pessoas que querem sempre mais e só pensam em crescer na vida são admiradas por outros. Mas na organização de Jeová não é assim. Alguém que serve outros por amor, assim como Jesus, não está atrás de poder, autoridade, nem quer parecer mais importante do que outros. Se um homem que só quer chamar atenção fosse designado servo ministerial, provavelmente ele se recusaria a fazer algumas tarefas humildes para cuidar das preciosas ovelhas de Jeová. Ele se acharia bom demais para realizar algumas dessas tarefas. — João 10:12. w24.11 15 parágrafos 6 a 7",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/8/18"
   },
   "meeting": {
     "weekOf": "2026-08-17",
@@ -53,32 +53,19 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/aafde7/1/ir/w_T_202606_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Família",
-    "title": "Como desenvolver uma família espiritualmente forte",
-    "prompt": "Identifiquem uma prioridade que pode fortalecer a espiritualidade da família.",
-    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20010515/Como-desenvolver-uma-fam%C3%ADlia-espiritualmente-forte/",
+    "topic": "Fortalecimento espiritual",
+    "title": "Famílias cristãs — “fiquem despertas”",
+    "prompt": "Escolham uma ação simples para manter a família espiritualmente desperta.",
+    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20110515/Fam%C3%ADlias-crist%C3%A3s-fiquem-despertas/",
     "videoUrl": null,
-    "coverUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
-    "weekOf": "2026-08-11",
-    "sequence": 2,
+    "coverUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
+    "weekOf": "2026-08-18",
+    "sequence": 3,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
+    "publicationImageUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
     "videoImageUrl": null
   },
   "familyUpcoming": [
-    {
-      "topic": "Família",
-      "title": "Como desenvolver uma família espiritualmente forte",
-      "prompt": "Identifiquem uma prioridade que pode fortalecer a espiritualidade da família.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20010515/Como-desenvolver-uma-fam%C3%ADlia-espiritualmente-forte/",
-      "videoUrl": null,
-      "coverUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
-      "weekOf": "2026-08-11",
-      "sequence": 2,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
-      "videoImageUrl": null
-    },
     {
       "topic": "Fortalecimento espiritual",
       "title": "Famílias cristãs — “fiquem despertas”",
@@ -128,8 +115,20 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500600119/univ/art/500600119_univ_lsr_lg.jpg",
       "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/502018101/univ/art/502018101_univ_lsr_lg.jpg"
+    },
+    {
+      "topic": "Casamento",
+      "title": "Como ser feliz no casamento? — Mostre respeito",
+      "prompt": "Conversem sobre uma maneira prática de mostrar respeito no casamento nesta semana.",
+      "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
+      "videoUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
+      "weekOf": "2026-09-15",
+      "sequence": 7,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg",
+      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg"
     }
   ],
-  "previousUpdatedAt": "2026-08-17T16:00:49.473Z",
+  "previousUpdatedAt": "2026-08-17T22:01:19.178Z",
   "errors": []
 }
