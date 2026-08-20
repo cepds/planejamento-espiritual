@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-20T16:13:26.659Z",
+  "updatedAt": "2026-08-20T22:03:01.808Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -129,6 +129,6 @@
       "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg"
     }
   ],
-  "previousUpdatedAt": "2026-08-20T10:12:58.253Z",
+  "previousUpdatedAt": "2026-08-20T16:13:26.659Z",
   "errors": []
 }
