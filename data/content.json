@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-24T22:02:57.485Z",
+  "updatedAt": "2026-08-25T04:24:38.737Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-08-24",
-    "verse": "Meu Deus é a minha rocha de refúgio.",
-    "reference": "Salmo 94 versículo 22.",
-    "content": "Jeová é um refúgio. Durante uma forte tempestade, podemos encontrar abrigo debaixo de uma grande rocha. Da mesma forma, quando passamos por dificuldades na vida, Jeová nos protege. Ele vai nos ajudar a proteger nossa amizade com ele. Ele nos garante que nenhum problema que estejamos passando agora vai nos causar dano permanente. Mas Jeová promete ainda mais. No futuro, ele vai eliminar qualquer coisa que nos cause ansiedade e sofrimento. (Ezequiel capítulo 34 versículos 25,26) Uma das maneiras de encontrar refúgio em Jeová é por meio da oração. Quando oramos, recebemos “a paz de Deus”, que guarda nosso coração e nossa mente. (Filipenses capítulo 4 versículos 6,7) Jeová está sempre ao nosso lado, disposto a nos ajudar. Podemos confiar nele porque “Jeová é a Rocha eterna”. (Isaías capítulo 26 versículos 3,4) Jeová vai estar sempre vivo e disposto a cumprir suas promessas, a escutar nossas orações e a nos ajudar onde precisarmos. Nós também podemos confiar em Jeová porque ele é leal àqueles que o servem. (Segundo Samuel 22:26) Ele nunca vai se esquecer daquilo que nós fizemos por ele e vai nos recompensar por isso. — Hebreus 6:10; 11:6. w24.06 27 parágrafos 4 a 6",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/8/24"
+    "date": "2026-08-25",
+    "verse": "Proteja o seu coração, pois dele procedem as fontes da vida.",
+    "reference": "Provérbios 4:23.",
+    "content": "Temos que ter cuidado com as coisas a que assistimos ou o que fazemos em nosso tempo livre. Também precisamos tomar cuidado com as nossas amizades e com o materialismo. Se percebermos que alguma coisa está enfraquecendo nosso amor por Jeová, temos que agir rapidamente. (Mateus capítulo 5 versículos 29,30) Não devemos permitir que nosso coração fique dividido. Poderíamos nos enganar, achando que, só porque fazemos muitas atividades espirituais, as más influências não terão nenhum efeito sobre nós. Para ilustrar: Imagine que você está do lado de fora da sua casa durante um dia muito frio. Você entra e liga o aquecedor. Será que adiantaria se você deixasse a porta aberta? Não, porque o ar frio entraria na sua casa. O que aprendemos? Precisamos fazer mais do que apenas nos alimentar espiritualmente para manter nossa amizade com Jeová. Também devemos fechar a porta para as influências ruins. Assim, o “ar” frio deste mundo e as atitudes que Jeová não aprova não vão entrar em nosso coração e dividi-lo. — Efésios 2:2. w24.07 21 parágrafos 6 a 7",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/8/25"
   },
   "meeting": {
     "weekOf": "2026-08-24",
@@ -54,32 +54,18 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/aafde7/1/ir/w_T_202606_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Fortalecimento espiritual",
-    "title": "Famílias cristãs — “fiquem despertas”",
-    "prompt": "Escolham uma ação simples para manter a família espiritualmente desperta.",
-    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20110515/Fam%C3%ADlias-crist%C3%A3s-fiquem-despertas/",
-    "videoUrl": null,
-    "coverUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
-    "weekOf": "2026-08-18",
-    "sequence": 3,
+    "topic": "Amor",
+    "title": "Um amor de verdade",
+    "prompt": "Assistam juntos e conversem sobre como demonstrar amor nas atitudes diárias.",
+    "articleUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
+    "videoUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
+    "weekOf": "2026-08-25",
+    "sequence": 4,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
-    "videoImageUrl": null
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg",
+    "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg"
   },
   "familyUpcoming": [
-    {
-      "topic": "Fortalecimento espiritual",
-      "title": "Famílias cristãs — “fiquem despertas”",
-      "prompt": "Escolham uma ação simples para manter a família espiritualmente desperta.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20110515/Fam%C3%ADlias-crist%C3%A3s-fiquem-despertas/",
-      "videoUrl": null,
-      "coverUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
-      "weekOf": "2026-08-18",
-      "sequence": 3,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
-      "videoImageUrl": null
-    },
     {
       "topic": "Amor",
       "title": "Um amor de verdade",
@@ -128,8 +114,21 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg",
       "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg"
+    },
+    {
+      "topic": "Família",
+      "title": "Como desenvolver uma família espiritualmente forte",
+      "prompt": "Identifiquem uma prioridade que pode fortalecer a espiritualidade da família.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20010515/Como-desenvolver-uma-fam%C3%ADlia-espiritualmente-forte/",
+      "videoUrl": null,
+      "coverUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
+      "weekOf": "2026-09-22",
+      "sequence": 8,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-08-24T16:16:41.258Z",
+  "previousUpdatedAt": "2026-08-24T22:02:57.485Z",
   "errors": []
 }
