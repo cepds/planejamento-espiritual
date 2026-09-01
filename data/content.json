@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-01T00:48:14.460Z",
+  "updatedAt": "2026-09-01T08:55:18.109Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-08-31",
-    "verse": "Por favor, recolhe as minhas lágrimas no teu odre.",
-    "reference": "Salmo 56 versículo 8.",
-    "content": "Durante sua vida, Davi teve que lidar com várias situações difíceis que o fizeram chorar. Ele enfrentou muitos problemas causados por outras pessoas e até foi traído por aqueles em quem ele confiava. (Primeiro Samuel capítulo 19 versículos 10,11; Segundo Samuel 15:10-14,30) Ele chegou ao ponto de dizer: “Estou exausto de tanto gemer; a noite inteira inundo de lágrimas a minha cama; faço o meu leito transbordar com o meu choro.” (Salmo 6 versículo 6) Apesar das dificuldades que Davi enfrentou, ele nunca duvidou de que Jeová o amava. Ele escreveu: “Jeová ouvirá o som do meu choro.” (Salmo 6 versículo 8) As palavras de Davi no texto de hoje são muito tocantes, porque mostram claramente como Jeová nos ama e se preocupa com a gente. Para Davi, era como se Jeová estivesse guardando num recipiente ou registrando num livro todas as lágrimas que ele derramava. Davi tinha certeza de que Jeová prestava atenção a ele e à dor que ele sentia. Davi estava convencido de que seu amoroso Pai, Jeová, entendia completamente o que ele estava passando e o efeito que isso tinha sobre ele. w24.12 22 parágrafos 11 a 12",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/8/31"
+    "date": "2026-09-01",
+    "verse": "Persistam em examinar se estão na fé.",
+    "reference": "Segunda Coríntios 13:5.",
+    "content": "Nós precisamos nos esforçar não só para alcançar a madureza, mas também para mantê-la. Isso significa que não devemos achar que já somos maduros o suficiente ou que nada pode abalar nossa amizade com Jeová. (Primeira Coríntios 10:12) Também devemos ‘persistir em nos examinar’ para ter certeza que estamos fazendo progresso. Na carta aos colossenses, o apóstolo Paulo mais uma vez fala sobre a necessidade de continuar maduro. Os colossenses já eram plenamente desenvolvidos, mas Paulo os avisou sobre o perigo de pensar como as pessoas do mundo. (Colossenses 2:6-10) E Epafras, que provavelmente conhecia muito bem os irmãos daquela congregação, orava constantemente por eles para que ‘por fim estivessem completos’, ou seja, maduros. (Colossenses 4:12) O que aprendemos com isso? Tanto Paulo quanto Epafras sabiam que para continuar maduro é preciso bastante esforço e ajuda de Deus. Eles queriam que os colossenses continuassem progredindo, independentemente de qualquer desafio que enfrentassem. w24.04 6 parágrafos 16 a 17",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/9/1"
   },
   "meeting": {
     "weekOf": "2026-08-31",
@@ -54,30 +54,19 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/aafde7/1/ir/w_T_202606_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Amor",
-    "title": "Um amor de verdade",
-    "prompt": "Assistam juntos e conversem sobre como demonstrar amor nas atitudes diárias.",
-    "articleUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
-    "videoUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
-    "weekOf": "2026-08-25",
-    "sequence": 4,
+    "topic": "Bondade",
+    "title": "Bondade — Uma qualidade que mostramos em palavras e ações",
+    "prompt": "Pensem em uma ação bondosa que cada pessoa da família pode fazer nesta semana.",
+    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-novembro-2018/fruto-do-espirito-bondade/",
+    "videoUrl": null,
+    "coverUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
+    "weekOf": "2026-09-01",
+    "sequence": 5,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg",
-    "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg"
+    "publicationImageUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
+    "videoImageUrl": null
   },
   "familyUpcoming": [
-    {
-      "topic": "Amor",
-      "title": "Um amor de verdade",
-      "prompt": "Assistam juntos e conversem sobre como demonstrar amor nas atitudes diárias.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
-      "videoUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
-      "weekOf": "2026-08-25",
-      "sequence": 4,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg",
-      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg"
-    },
     {
       "topic": "Bondade",
       "title": "Bondade — Uma qualidade que mostramos em palavras e ações",
@@ -127,8 +116,21 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
       "videoImageUrl": null
+    },
+    {
+      "topic": "Fortalecimento espiritual",
+      "title": "Famílias cristãs — “fiquem despertas”",
+      "prompt": "Escolham uma ação simples para manter a família espiritualmente desperta.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20110515/Fam%C3%ADlias-crist%C3%A3s-fiquem-despertas/",
+      "videoUrl": null,
+      "coverUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
+      "weekOf": "2026-09-29",
+      "sequence": 9,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
+      "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-08-31T21:06:31.790Z",
+  "previousUpdatedAt": "2026-09-01T00:48:14.460Z",
   "errors": []
 }
