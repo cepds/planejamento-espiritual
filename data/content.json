@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-07T15:17:27.199Z",
+  "updatedAt": "2026-09-07T19:23:38.074Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -131,6 +131,6 @@
       "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-09-07T08:38:54.061Z",
+  "previousUpdatedAt": "2026-09-07T15:17:27.199Z",
   "errors": []
 }
