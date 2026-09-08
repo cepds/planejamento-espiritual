@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-07T23:47:10.079Z",
+  "updatedAt": "2026-09-08T08:22:48.173Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-09-07",
-    "verse": "Ele se torna o recompensador dos que o buscam seriamente.",
-    "reference": "Hebreus 11:6.",
-    "content": "Jeová nos dá paz e contentamento agora e vai nos dar a vida eterna no futuro. Nós confiamos em Jeová de olhos fechados porque sabemos que ele vai nos recompensar e tem todo o poder para fazer isso. Por isso, continuamos fazendo o nosso melhor para adorá-lo, assim como os servos do passado fizeram. Foi isso que Timóteo fez. (Hebreus 6:10-12) Ele tinha fé no Deus vivente. (Primeira Timóteo 4:10) Por isso, ele deu seu melhor para trabalhar para Jeová e para os irmãos. De que maneiras? Ele seguiu o incentivo que o apóstolo Paulo deu e se tornou um bom instrutor, tanto na congregação como no ministério. Timóteo também deu um bom exemplo a todos os irmãos — jovens e idosos. Além disso, ele precisou dar conselhos firmes, mas amorosos, para os que precisavam; e isso nem sempre era fácil. (Primeira Timóteo 4:11-16; Segunda Timóteo 4:1-5) Sendo assim, Timóteo podia ter certeza que Jeová iria recompensá-lo. — Romanos capítulo 2 versículos 6,7. w24.06 22 a 23 parágrafos 10 a 11",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/9/7"
+    "date": "2026-09-08",
+    "verse": "Jeová continuou a advertir Israel e Judá por meio de todos os seus profetas.",
+    "reference": "Segundo Reis 17:13.",
+    "content": "Veja alguns casos em que Jeová usou os profetas para avisar os israelitas sobre a consequência dos seus erros e para ajudá-los a fazer mudanças. Por exemplo, Deus usou Jeremias para dizer: “Volte para mim, rebelde Israel ... Não olharei com ira para vocês, pois eu sou leal ... Não ficarei ressentido para sempre. Apenas reconheça a sua culpa, pois você se rebelou contra Jeová.” (Jeremias capítulo 3 versículos 12,13) Por meio de Joel, Jeová disse: “Voltem para mim de todo o coração.” (Joel capítulo 2 versículos 12,13) Jeová também usou Isaías para dizer: “Limpem-se, removam de diante dos meus olhos a sua maldade; parem de fazer o mal.” (Isaías 1:16-19) E por meio de Ezequiel Jeová perguntou: “Por acaso eu tenho algum prazer na morte de uma pessoa má? ... Não prefiro que ele abandone os seus caminhos e continue vivo? Eu não tenho prazer na morte de ninguém, ... portanto, deem meia-volta e vivam.” (Ezequiel capítulo 18 versículos 23,32) Jeová fica muito feliz quando vê que uma pessoa se arrepende, porque ele quer que todos vivam para sempre! w24.08 9 parágrafos 5 a 6",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/9/8"
   },
   "meeting": {
     "weekOf": "2026-09-07",
@@ -54,32 +54,18 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/ea3ed9/1/ir/w_T_202607_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Bondade",
-    "title": "Bondade — Uma qualidade que mostramos em palavras e ações",
-    "prompt": "Pensem em uma ação bondosa que cada pessoa da família pode fazer nesta semana.",
-    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-novembro-2018/fruto-do-espirito-bondade/",
-    "videoUrl": null,
-    "coverUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
-    "weekOf": "2026-09-01",
-    "sequence": 5,
+    "topic": "Luto e perda",
+    "title": "Como lidar com a morte de alguém que eu amo?",
+    "prompt": "Conversem com sensibilidade sobre como oferecer consolo a quem está sofrendo uma perda.",
+    "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/jovens/perguntam/lidar-morte-alguem-que-amo/",
+    "videoUrl": "https://www.jw.org/pt-pt/biblioteca/videos/torna-te-amigo-jeova/lidar-com-a-morte-de-alguem-que-amamos/",
+    "weekOf": "2026-09-08",
+    "sequence": 6,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
-    "videoImageUrl": null
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500600119/univ/art/500600119_univ_lsr_lg.jpg",
+    "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/502018101/univ/art/502018101_univ_lsr_lg.jpg"
   },
   "familyUpcoming": [
-    {
-      "topic": "Bondade",
-      "title": "Bondade — Uma qualidade que mostramos em palavras e ações",
-      "prompt": "Pensem em uma ação bondosa que cada pessoa da família pode fazer nesta semana.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-novembro-2018/fruto-do-espirito-bondade/",
-      "videoUrl": null,
-      "coverUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
-      "weekOf": "2026-09-01",
-      "sequence": 5,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
-      "videoImageUrl": null
-    },
     {
       "topic": "Luto e perda",
       "title": "Como lidar com a morte de alguém que eu amo?",
@@ -129,8 +115,20 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
       "videoImageUrl": null
+    },
+    {
+      "topic": "Amor",
+      "title": "Um amor de verdade",
+      "prompt": "Assistam juntos e conversem sobre como demonstrar amor nas atitudes diárias.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
+      "videoUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
+      "weekOf": "2026-10-06",
+      "sequence": 10,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg",
+      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg"
     }
   ],
-  "previousUpdatedAt": "2026-09-07T19:23:38.074Z",
+  "previousUpdatedAt": "2026-09-07T23:47:10.079Z",
   "errors": []
 }
