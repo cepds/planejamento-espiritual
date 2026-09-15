@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-15T00:00:35.027Z",
+  "updatedAt": "2026-09-15T08:58:58.844Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-09-14",
-    "verse": "A menos que comam a carne do Filho do Homem e bebam o seu sangue, vocês não têm vida em si mesmos.",
-    "reference": "João 6:53.",
-    "content": "Nos dias de Noé, Deus proibiu os humanos de comer sangue. (Gênesis capítulo 9 versículos 3,4) Mais tarde, Jeová repetiu essa proibição aos israelitas. Qualquer um que comesse sangue ‘seria morto’. (Levítico 7:27, nota) Jesus ensinava as pessoas a obedecer às leis de Deus. (Mateus 5:17-19) Então, com certeza, ele nunca pediria que os judeus comessem sua carne literal ou bebessem seu sangue. Ao falar com aquela multidão, Jesus estava usando uma linguagem simbólica. Ele também fez isso quando disse à mulher samaritana: ‘A água que eu lhe der vai dar vida eterna.’ (João capítulo 4 versículos 7,14) Jesus não estava dizendo que, para a samaritana viver para sempre, bastava ela beber de uma água literal. Da mesma forma, Jesus não estava dizendo que a multidão em Cafarnaum viveria para sempre se comesse sua carne ou bebesse seu sangue literal. w24.12 9 parágrafos 4 a 6",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/9/14"
+    "date": "2026-09-15",
+    "verse": "Apresentem o seu corpo como sacrifício vivo, santo e aceitável a Deus, prestando assim um serviço sagrado com a sua faculdade de raciocínio.",
+    "reference": "Romanos 12:1.",
+    "content": "Um marido cristão precisa tomar cuidado para não adotar um ponto de vista errado sobre as mulheres. Por quê? Um dos motivos é que os nossos pensamentos muitas vezes nos levam a ações. O apóstolo Paulo disse que os cristãos ungidos em Roma deveriam ‘parar de se amoldar a este mundo’. (Romanos capítulo 12 versículos 1,2) Quando Paulo escreveu essas palavras aos cristãos em Roma, a congregação ali já existia por alguns anos. Mas as palavras de Paulo dão a entender que alguns naquela congregação ainda estavam sendo influenciados pelos costumes e pelo modo de pensar do mundo. Foi por isso que Paulo os aconselhou a mudar sua mentalidade e seu comportamento. Esse mesmo conselho serve para os maridos cristãos hoje. Infelizmente, alguns maridos estão sendo influenciados pelo modo de pensar do mundo, e isso faz com que eles maltratem suas esposas. w25.01 9 parágrafo 4",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/9/15"
   },
   "meeting": {
     "weekOf": "2026-09-14",
@@ -54,30 +54,18 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/ea3ed9/1/ir/w_T_202607_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Luto e perda",
-    "title": "Como lidar com a morte de alguém que eu amo?",
-    "prompt": "Conversem com sensibilidade sobre como oferecer consolo a quem está sofrendo uma perda.",
-    "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/jovens/perguntam/lidar-morte-alguem-que-amo/",
-    "videoUrl": "https://www.jw.org/pt-pt/biblioteca/videos/torna-te-amigo-jeova/lidar-com-a-morte-de-alguem-que-amamos/",
-    "weekOf": "2026-09-08",
-    "sequence": 6,
+    "topic": "Casamento",
+    "title": "Como ser feliz no casamento? — Mostre respeito",
+    "prompt": "Conversem sobre uma maneira prática de mostrar respeito no casamento nesta semana.",
+    "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
+    "videoUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
+    "weekOf": "2026-09-15",
+    "sequence": 7,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500600119/univ/art/500600119_univ_lsr_lg.jpg",
-    "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/502018101/univ/art/502018101_univ_lsr_lg.jpg"
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg",
+    "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg"
   },
   "familyUpcoming": [
-    {
-      "topic": "Luto e perda",
-      "title": "Como lidar com a morte de alguém que eu amo?",
-      "prompt": "Conversem com sensibilidade sobre como oferecer consolo a quem está sofrendo uma perda.",
-      "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/jovens/perguntam/lidar-morte-alguem-que-amo/",
-      "videoUrl": "https://www.jw.org/pt-pt/biblioteca/videos/torna-te-amigo-jeova/lidar-com-a-morte-de-alguem-que-amamos/",
-      "weekOf": "2026-09-08",
-      "sequence": 6,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500600119/univ/art/500600119_univ_lsr_lg.jpg",
-      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/502018101/univ/art/502018101_univ_lsr_lg.jpg"
-    },
     {
       "topic": "Casamento",
       "title": "Como ser feliz no casamento? — Mostre respeito",
@@ -127,8 +115,21 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg",
       "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg"
+    },
+    {
+      "topic": "Bondade",
+      "title": "Bondade — Uma qualidade que mostramos em palavras e ações",
+      "prompt": "Pensem em uma ação bondosa que cada pessoa da família pode fazer nesta semana.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-novembro-2018/fruto-do-espirito-bondade/",
+      "videoUrl": null,
+      "coverUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
+      "weekOf": "2026-10-13",
+      "sequence": 11,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
+      "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-09-14T15:59:58.962Z",
+  "previousUpdatedAt": "2026-09-15T00:00:35.027Z",
   "errors": []
 }
