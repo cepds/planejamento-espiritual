@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-22T00:18:09.031Z",
+  "updatedAt": "2026-09-22T08:49:18.163Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-09-21",
-    "verse": "Certifiquem-se de todas as coisas.",
-    "reference": "Primeira Tessalonicenses 5:21.",
-    "content": "Devemos nos certificar se nossas dúvidas fazem sentido por comparar o que pensamos com o que a Bíblia diz. Por exemplo, veja o caso do jovem que duvida que Jeová se preocupa com ele. Será que ele deve simplesmente aceitar esse pensamento e acreditar nisso? Não. Ele precisa ‘se certificar de todas as coisas’, descobrindo o que Jeová realmente pensa. Ler a Bíblia é como ouvir Jeová. Mas para entender o que Jeová pensa sobre uma dúvida específica que temos, precisamos nos esforçar. Para começar, é preciso ler partes da Bíblia que têm a ver com a nossa dúvida. Nós também podemos usar as muitas ferramentas de estudo que a organização de Jeová nos dá para fazer pesquisas sobre esse assunto. (Provérbios 2:3-6) Além disso, podemos orar para que Jeová abençoe a nossa pesquisa e nos ajude a descobrir o que ele realmente pensa. Daí, devemos buscar princípios bíblicos e exemplos que têm a ver com a nossa situação. w24.10 25 parágrafos 4 a 5",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/9/21"
+    "date": "2026-09-22",
+    "verse": "O amor não procura os seus próprios interesses.",
+    "reference": "Primeira Coríntios 13:5.",
+    "content": "Jeová nunca abençoa quem faz as coisas por orgulho ou para parecer importante. (Primeira Coríntios capítulo 10 versículos 24,33; 13:4) Em algumas ocasiões, até os amigos mais próximos de Jesus tentaram alcançar privilégios com o objetivo errado. Veja o caso de dois apóstolos de Jesus: Tiago e João. Eles pediram para ter um lugar mais importante no Reino. Em vez de os elogiar por buscarem uma posição de destaque, Jesus deu o seguinte conselho aos 12 apóstolos: “Quem quiser se tornar grande entre vocês tem de ser o seu servo, e quem quiser ser o primeiro entre vocês tem de ser o escravo de todos.” (Marcos 10:35-37,43,44) Quando um irmão tenta ser servo ministerial com o objetivo certo, que é servir outros, ele se torna uma bênção para a congregação. — Primeira Tessalonicenses 2:8. w24.11 15 a 16 parágrafos 7 a 8",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/9/22"
   },
   "meeting": {
     "weekOf": "2026-09-21",
@@ -54,30 +54,19 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/ea3ed9/1/ir/w_T_202607_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Casamento",
-    "title": "Como ser feliz no casamento? — Mostre respeito",
-    "prompt": "Conversem sobre uma maneira prática de mostrar respeito no casamento nesta semana.",
-    "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
-    "videoUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
-    "weekOf": "2026-09-15",
-    "sequence": 7,
+    "topic": "Família",
+    "title": "Como desenvolver uma família espiritualmente forte",
+    "prompt": "Identifiquem uma prioridade que pode fortalecer a espiritualidade da família.",
+    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20010515/Como-desenvolver-uma-fam%C3%ADlia-espiritualmente-forte/",
+    "videoUrl": null,
+    "coverUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
+    "weekOf": "2026-09-22",
+    "sequence": 8,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg",
-    "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg"
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
+    "videoImageUrl": null
   },
   "familyUpcoming": [
-    {
-      "topic": "Casamento",
-      "title": "Como ser feliz no casamento? — Mostre respeito",
-      "prompt": "Conversem sobre uma maneira prática de mostrar respeito no casamento nesta semana.",
-      "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
-      "videoUrl": "https://www.jw.org/pt/ensinos-biblicos/familia/casamento-mostrar-respeito/",
-      "weekOf": "2026-09-15",
-      "sequence": 7,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg",
-      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500300128/univ/art/500300128_univ_lsr_lg.jpg"
-    },
     {
       "topic": "Família",
       "title": "Como desenvolver uma família espiritualmente forte",
@@ -128,8 +117,20 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
       "videoImageUrl": null
+    },
+    {
+      "topic": "Luto e perda",
+      "title": "Como lidar com a morte de alguém que eu amo?",
+      "prompt": "Conversem com sensibilidade sobre como oferecer consolo a quem está sofrendo uma perda.",
+      "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/jovens/perguntam/lidar-morte-alguem-que-amo/",
+      "videoUrl": "https://www.jw.org/pt-pt/biblioteca/videos/torna-te-amigo-jeova/lidar-com-a-morte-de-alguem-que-amamos/",
+      "weekOf": "2026-10-20",
+      "sequence": 12,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500600119/univ/art/500600119_univ_lsr_lg.jpg",
+      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/502018101/univ/art/502018101_univ_lsr_lg.jpg"
     }
   ],
-  "previousUpdatedAt": "2026-09-21T16:01:56.372Z",
+  "previousUpdatedAt": "2026-09-22T00:18:09.031Z",
   "errors": []
 }
