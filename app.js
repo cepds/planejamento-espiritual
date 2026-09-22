@@ -5,7 +5,7 @@ const pageTitle = document.querySelector('#page-title');
 const eventList = document.querySelector('#events');
 const clearEvents = document.querySelector('#clear-events');
 
-const pageNames = { panel: 'Painel', meetings: 'Reuni&otilde;es', daily: 'Texto di&aacute;rio', family: 'Adora&ccedil;&atilde;o em fam&iacute;lia' };
+const pageNames = { panel: 'Painel', meetings: 'Reuniões', daily: 'Texto diário', family: 'Adoração em família' };
 let defaultEvents = [
   { title: 'Reuni\u00e3o de meio de semana', meta: 'Esta semana' },
   { title: 'A Sentinela', meta: 'Fim de semana' }
@@ -14,7 +14,8 @@ let defaultEvents = [
 function getEvents() {
   try {
     const events = JSON.parse(localStorage.getItem(eventKey)) || [];
-    return events.map((event) => ({
+    if (!Array.isArray(events)) return [];
+    return events.filter((event) => event && typeof event.title === 'string').map((event) => ({
       ...event,
       title: decodeLegacyText(event.title),
       meta: decodeLegacyText(event.meta)
@@ -35,14 +36,19 @@ function decodeLegacyText(value) {
 }
 
 function setPage(page, shouldScroll = true) {
+  if (!Object.hasOwn(pageNames, page)) page = 'panel';
   pages.forEach((item) => item.classList.toggle('is-active', item.id === page));
   document.querySelectorAll('.nav-item').forEach((item) => item.classList.toggle('is-active', item.dataset.page === page));
-  pageTitle.innerHTML = pageNames[page];
+  document.querySelectorAll('.nav-item').forEach((item) => {
+    if (item.dataset.page === page) item.setAttribute('aria-current', 'page');
+    else item.removeAttribute('aria-current');
+  });
+  pageTitle.textContent = pageNames[page];
   document.querySelector('#add-event').hidden = page !== 'panel';
-  window.location.hash = page;
+  if (window.location.hash !== `#${page}`) window.location.hash = page;
   if (shouldScroll) {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    document.querySelector('.content')?.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+    document.querySelector('.content')?.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   }
 }
 
@@ -56,26 +62,18 @@ function weekdayInSaoPaulo() {
 
 function formatFamilyWeek(value) {
   const [year, month, day] = String(value).split('-').map(Number);
-  return new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long' }).format(new Date(year, month - 1, day));
-}
-
-function parseEventDate(value) {
-  const match = String(value || '').trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-  if (!match) return null;
-  const [, day, month, year] = match.map(Number);
   const date = new Date(year, month - 1, day);
-  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
-    ? `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-    : null;
+  return Number.isNaN(date.getTime()) ? 'Data indisponível' : new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
 }
 
 function specialEventDetails(event) {
   if (!event.special || !event.date) return null;
-  const target = new Date(`${event.date}T00:00:00`);
-  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const target = new Date(`${event.date}T00:00:00Z`);
+  if (Number.isNaN(target.getTime())) return null;
+  const today = new Date(`${saoPauloDate()}T00:00:00Z`);
   const daysUntil = Math.round((target - today) / 86400000);
-  if (daysUntil < 0 || daysUntil > 30) return null;
-  const date = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', month: 'long' }).format(target);
+  if (daysUntil < 0) return null;
+  const date = new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' }).format(target);
   const countdown = daysUntil === 0 ? 'é hoje' : daysUntil === 1 ? 'falta 1 dia' : `faltam ${daysUntil} dias`;
   return { daysUntil, meta: `${date} · ${countdown}` };
 }
@@ -83,15 +81,15 @@ function specialEventDetails(event) {
 function renderEvents() {
   const savedEvents = getEvents();
   const visibleSavedEvents = savedEvents.map((event, savedIndex) => ({ event, savedIndex, special: specialEventDetails(event) }))
-    .filter(({ event, special }) => !event.special || special);
+    .sort((a, b) => String(a.event.date || '').localeCompare(String(b.event.date || '')));
   const events = [...defaultEvents.map((event) => ({ event, savedIndex: null, special: null })), ...visibleSavedEvents];
   eventList.replaceChildren();
   events.forEach(({ event, savedIndex, special }) => {
-    const row = document.createElement('div'); row.className = `event-row${special ? ' is-special' : ''}`;
+    const row = document.createElement('div'); row.className = `event-row${special && special.daysUntil <= 30 ? ' is-special' : ''}`;
     const dot = document.createElement('span'); dot.className = 'event-dot';
     const copy = document.createElement('div');
     const title = document.createElement('p'); title.className = 'event-title'; title.textContent = decodeLegacyText(event.title);
-    const meta = document.createElement('p'); meta.className = 'event-meta'; meta.textContent = special?.meta || decodeLegacyText(event.meta);
+    const meta = document.createElement('p'); meta.className = 'event-meta'; meta.textContent = special?.meta || (event.special && event.date ? `${formatFamilyWeek(event.date)} · Evento encerrado` : decodeLegacyText(event.meta));
     copy.append(title, meta); row.append(dot, copy);
     if (savedIndex !== null) { const remove = document.createElement('button'); remove.className = 'event-remove'; remove.type = 'button'; remove.textContent = 'Remover'; remove.addEventListener('click', () => removeEvent(savedIndex)); row.append(remove); }
     eventList.append(row);
@@ -99,26 +97,55 @@ function renderEvents() {
   clearEvents.hidden = !savedEvents.length;
 }
 
-function removeEvent(index) { const events = getEvents(); events.splice(index, 1); localStorage.setItem(eventKey, JSON.stringify(events)); renderEvents(); }
-document.querySelector('#add-event').addEventListener('click', () => {
-  const types = { '1': 'Congresso', '2': 'Assembleia', '3': 'Visita', congresso: 'Congresso', assembleia: 'Assembleia', visita: 'Visita' };
-  const selected = prompt('Evento especial:\n1 — Congresso\n2 — Assembleia\n3 — Visita\n\nDigite o número ou o nome do evento.');
-  if (selected === null) return;
-  const title = types[selected.trim().toLowerCase()];
-  if (!title) { alert('Escolha Congresso, Assembleia ou Visita.'); return; }
-  const date = parseEventDate(prompt(`Data do ${title} (dd/mm/aaaa):`));
-  if (!date) { alert('Informe uma data válida no formato dd/mm/aaaa.'); return; }
+function saveEvents(events) {
+  try {
+    localStorage.setItem(eventKey, JSON.stringify(events));
+    renderEvents();
+    return true;
+  } catch {
+    alert('Não foi possível salvar neste navegador. Verifique se o armazenamento está disponível.');
+    return false;
+  }
+}
+function removeEvent(index) {
   const events = getEvents();
-  events.push({ title, meta: 'Evento especial', date, special: true });
-  localStorage.setItem(eventKey, JSON.stringify(events)); renderEvents();
+  if (!confirm(`Remover ${events[index]?.title || 'este evento'}?`)) return;
+  events.splice(index, 1);
+  saveEvents(events);
+}
+const eventDialog = document.querySelector('#event-dialog');
+const eventForm = document.querySelector('#event-form');
+document.querySelector('#add-event').addEventListener('click', () => {
+  eventForm.reset();
+  document.querySelector('#event-date').min = saoPauloDate();
+  eventDialog.showModal();
 });
-clearEvents.addEventListener('click', () => { localStorage.removeItem(eventKey); renderEvents(); });
+document.querySelector('#cancel-event').addEventListener('click', () => eventDialog.close());
+eventForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const title = document.querySelector('#event-type').value;
+  const date = document.querySelector('#event-date').value;
+  if (!eventForm.reportValidity()) return;
+  const events = getEvents();
+  if (events.some((item) => item.title === title && item.date === date)) {
+    alert('Esse evento já está na agenda para essa data.');
+    return;
+  }
+  if (saveEvents([...events, { title, meta: 'Evento especial', date, special: true }])) eventDialog.close();
+});
+clearEvents.addEventListener('click', () => {
+  if (confirm('Remover todos os seus eventos? As reuniões da semana serão mantidas.')) saveEvents([]);
+});
 navigation.forEach((item) => item.addEventListener('click', () => setPage(item.dataset.page)));
 const initialPage = window.location.hash.slice(1);
-if (Object.hasOwn(pageNames, initialPage)) setPage(initialPage, false);
-document.querySelector('#today').textContent = new Intl.DateTimeFormat('pt-BR', {
-  timeZone: 'America/Sao_Paulo', weekday: 'long', day: 'numeric', month: 'long'
-}).format(new Date());
+setPage(initialPage, false);
+window.addEventListener('hashchange', () => setPage(window.location.hash.slice(1)));
+function refreshToday() {
+  document.querySelector('#today').textContent = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Sao_Paulo', weekday: 'long', day: 'numeric', month: 'long'
+  }).format(new Date());
+}
+refreshToday();
 renderEvents();
 
 const midweekSections = {
@@ -252,11 +279,44 @@ function renderMidweekProgram(content, imageSources = []) {
   });
 }
 
+function saoPauloDate(now = new Date()) {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit'
+  }).formatToParts(now).map((part) => [part.type, part.value]));
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+let selectedMeeting;
+function selectMeeting(value) {
+  selectedMeeting = value;
+  document.querySelector('#meeting-midweek-card').hidden = value !== 'midweek';
+  document.querySelector('#meeting-weekend-card').hidden = value !== 'weekend';
+  document.querySelectorAll('[data-meeting]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.meeting === value)));
+}
+document.querySelectorAll('[data-meeting]').forEach((button) => button.addEventListener('click', () => selectMeeting(button.dataset.meeting)));
+let loadingContent = false;
+let lastContentDate;
 async function loadOfficialContent() {
+  if (loadingContent) return;
+  loadingContent = true;
+  const status = document.querySelector('#content-status');
+  const retry = document.querySelector('#retry-content');
+  retry.disabled = true;
   try {
-    const response = await fetch(`data/content.json?v=${Date.now()}`, { cache: 'no-store' });
+    const response = await fetch(`data/content.json?v=${Date.now()}`, { cache: 'no-store', signal: AbortSignal.timeout(15000) });
     if (!response.ok) throw new Error('Conteúdo indisponível.');
     const content = await response.json();
+    if (!content.daily?.date || !content.daily?.verse || !content.daily?.reference || !content.daily?.content || !content.meeting?.reading || !content.midweekStudy?.content || !content.watchtower?.title || !content.familyWorship?.title) {
+      throw new Error('Conteúdo incompleto.');
+    }
+    const dailyIsCurrent = content.daily.date === saoPauloDate();
+    const dailyLabel = dailyIsCurrent ? 'Leitura do dia' : `Texto de ${formatFamilyWeek(content.daily.date)}`;
+    document.querySelectorAll('.reading-label').forEach((label) => { label.textContent = dailyLabel; });
+    document.querySelector('#daily-link').textContent = dailyIsCurrent ? 'Ler o texto de hoje' : 'Ler o texto disponível';
+    document.querySelector('#daily-source').href = content.daily.url || 'https://wol.jw.org/pt/';
+    const updated = new Date(content.updatedAt);
+    const updateLabel = Number.isNaN(updated.getTime()) ? '' : ` Atualizado em ${new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' }).format(updated)}.`;
+    status.textContent = (dailyIsCurrent ? 'Conteúdo carregado.' : 'O texto disponível ainda não é o de hoje.') + updateLabel + (!navigator.onLine ? ' Sem conexão: exibindo a cópia salva.' : '');
+    refreshToday();
     if (content.daily?.verse && content.daily?.reference) {
       document.querySelector('#panel-daily-verse').textContent = `“${content.daily.verse}”`;
       document.querySelector('#panel-daily-reference').textContent = content.daily.reference;
@@ -273,7 +333,7 @@ async function loadOfficialContent() {
         if (points) points.replaceChildren(...content.meeting.points.map((point) => { const item = document.createElement('li'); item.textContent = point; return item; }));
       }
       defaultEvents = [{ title: 'Reunião de meio de semana', meta: content.meeting.reading }, ...defaultEvents.slice(1)];
-      if (!getEvents().length) renderEvents();
+      renderEvents();
       document.querySelector('#midweek-reading').textContent = content.meeting.reading;
       document.querySelector('#midweek-treasure').textContent = content.meeting.treasure;
       const focusPoints = document.querySelector('#midweek-points');
@@ -363,11 +423,24 @@ async function loadOfficialContent() {
     const showWeekend = day === 0 || day === 5 || day === 6;
     document.querySelector('#midweek-focus').hidden = showWeekend;
     document.querySelector('#weekend-focus').hidden = !showWeekend;
-    document.querySelector('#meeting-midweek-card').hidden = showWeekend;
-    document.querySelector('#meeting-weekend-card').hidden = !showWeekend;
-  } catch (error) { console.warn('Conteúdo oficial não pôde ser atualizado.', error); }
+    selectMeeting(selectedMeeting || (showWeekend ? 'weekend' : 'midweek'));
+    document.querySelectorAll('[data-official]').forEach((element) => { element.hidden = false; });
+    lastContentDate = saoPauloDate();
+  } catch (error) {
+    status.textContent = 'Não foi possível atualizar o conteúdo. Verifique sua conexão e tente novamente.';
+    if (lastContentDate) status.textContent += ' A tela mantém o último conteúdo carregado.';
+    console.warn('Conteúdo oficial não pôde ser atualizado.', error);
+  } finally {
+    loadingContent = false;
+    retry.disabled = false;
+  }
 }
 
+document.querySelector('#retry-content').addEventListener('click', loadOfficialContent);
+window.addEventListener('online', loadOfficialContent);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && lastContentDate !== saoPauloDate()) loadOfficialContent();
+});
 loadOfficialContent();
 
 if ('serviceWorker' in navigator) {

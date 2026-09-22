@@ -12,7 +12,7 @@
   <link rel="icon" type="image/png" href="icons/favicon-3d.png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="panel.css?v=20260810-11">
+  <link rel="stylesheet" href="panel.css?v=20260922-1">
 </head>
 <body>
   <div class="app-shell">
@@ -32,6 +32,8 @@
         <button id="add-event" class="button button-primary" type="button">+ Adicionar evento</button>
       </header>
 
+      <div class="content-status-bar"><p id="content-status" role="status">Carregando conteúdo…</p><button id="retry-content" class="button button-secondary" type="button">Atualizar</button></div>
+      <div id="official-content">
       <section id="panel" class="page is-active" aria-labelledby="page-title">
         <div class="welcome"><div><p>Vis&atilde;o geral</p></div><span id="today" class="today"></span></div>
         <div class="dashboard-grid">
@@ -40,7 +42,7 @@
             <div id="events" class="events-list" aria-live="polite"></div>
           </article>
 
-          <article class="card daily-card">
+          <article class="card daily-card" data-official hidden>
             <p class="section-label">TEXTO DI&Aacute;RIO</p>
             <div class="daily-reading">
               <p class="reading-label">Leitura do dia</p>
@@ -50,14 +52,14 @@
             </div>
           </article>
 
-          <article class="card watchtower-card">
+          <article class="card watchtower-card" data-official hidden>
             <div class="panel-card-inner">
               <div id="midweek-focus" class="watchtower-layout" hidden><img id="midweek-cover" class="watchtower-cover" alt="Capa da apostila da reuni&atilde;o" hidden><div><p class="section-label">REUNI&Atilde;O DE MEIO DE SEMANA</p><h3 id="midweek-reading">Jeremias 22&ndash;23</h3><p id="midweek-treasure" class="scripture">Tesouros da Palavra de Deus</p><ul id="midweek-points" class="focus-points"></ul><button class="button button-secondary panel-meeting-link" type="button" data-page="meetings">Ver reuni&atilde;o da semana</button></div></div>
               <div id="weekend-focus" class="watchtower-layout"><img id="watchtower-cover" class="watchtower-cover" alt="Capa de A Sentinela" hidden><div><p class="section-label">A SENTINELA &mdash; FIM DE SEMANA</p><h3 id="panel-watchtower-title">Respeite as decis&otilde;es de outros</h3><p id="panel-watchtower-theme" class="scripture">&ldquo;N&atilde;o fa&ccedil;am julgamentos sobre opini&otilde;es divergentes.&rdquo; <strong>&mdash; ROM. 14:1.</strong></p><p class="objective"><strong>Objetivo:</strong> <span id="panel-watchtower-objective">Ver como respeitar a decis&atilde;o de outros irm&atilde;os mesmo quando n&atilde;o concordamos.</span></p><button class="button button-secondary panel-meeting-link" type="button" data-page="meetings">Ver reuni&atilde;o da semana</button></div></div>
             </div>
           </article>
 
-          <article class="card family-card">
+          <article class="card family-card" data-official hidden>
             <div class="panel-card-inner">
               <p class="section-label">ADORA&Ccedil;&Atilde;O EM FAM&Iacute;LIA</p>
               <p id="panel-family-topic" class="family-topic">Tema da semana</p>
@@ -70,17 +72,17 @@
         </div>
       </section>
 
-      <section id="meetings" class="page" aria-labelledby="meetings-title">
-        <div class="page-intro"></div>
-        <div class="meetings-grid">
+      <section id="meetings" class="page" aria-labelledby="page-title">
+        <div class="page-intro meeting-switch" role="group" aria-label="Escolher reunião"><button type="button" class="button button-secondary" data-meeting="midweek" aria-pressed="false">Meio de semana</button><button type="button" class="button button-secondary" data-meeting="weekend" aria-pressed="false">Fim de semana</button></div>
+        <div class="meetings-grid" data-official hidden>
             <article id="meeting-midweek-card" class="card meeting-card"><div class="meeting-cover-heading"><img id="meeting-workbook-cover" class="meeting-cover" alt="Capa da apostila da reuni&atilde;o" hidden><div><p class="section-label">MEIO DE SEMANA</p><h3 id="meeting-reading">Jeremias 22&ndash;23</h3></div></div><section class="treasure-study"><p class="section-label">TESOUROS DA PALAVRA DE DEUS</p><h4 id="meeting-treasure">A import&acirc;ncia de ter bons pastores</h4><span class="study-duration">10 min</span><ul id="meeting-points" class="study-points"><li>Os pastores em Jud&aacute; n&atilde;o cuidaram do povo de Deus.</li><li>Pelas coisas que falavam e pelo seu mau exemplo, os falsos profetas incentivavam o povo a fazer o que era errado.</li><li>Hoje, os anci&atilde;os pastoreiam as ovelhas com zelo e se esfor&ccedilam para ser bons exemplos.</li></ul></section><div id="meeting-midweek-images" class="watchtower-images"></div><p id="meeting-midweek-content" class="watchtower-full-content"></p><a id="meeting-midweek-link" class="button button-secondary meeting-source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></article>
           <article id="meeting-weekend-card" class="card meeting-card"><div class="meeting-cover-heading"><img id="meeting-watchtower-cover" class="meeting-cover" alt="Capa de A Sentinela" hidden><div><p class="section-label">FIM DE SEMANA</p><h3 id="meeting-watchtower-title">Respeite as decis&otilde;es de outros</h3></div></div><blockquote id="meeting-watchtower-theme">&ldquo;N&atilde;o fa&ccedil;am julgamentos sobre opini&otilde;es divergentes.&rdquo;<cite>&mdash; ROM. 14:1.</cite></blockquote><div class="meeting-divider"></div><p><strong>OBJETIVO</strong></p><p id="meeting-watchtower-objective">Ver como respeitar a decis&atilde;o de outros irm&atilde;os mesmo quando n&atilde;o concordamos.</p><div id="meeting-watchtower-images" class="watchtower-images"></div><p id="meeting-watchtower-content" class="watchtower-full-content"></p><a id="meeting-watchtower-link" class="button button-secondary meeting-source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></article>
         </div>
       </section>
 
-      <section id="daily" class="page simple-page"><div class="card"><p class="reading-label">Leitura do dia</p><p id="daily-page-verse" class="reading-verse">&ldquo;A tua palavra &eacute; l&acirc;mpada para o meu p&eacute; e luz para o meu caminho.&rdquo;</p><p id="daily-page-reference" class="reading-reference">Salmo 119:105</p><div class="daily-divider"></div><p id="daily-page-content" class="daily-full-text">Carregando o texto completo...</p></div></section>
+      <section id="daily" class="page simple-page"><div class="card" data-official hidden><p class="reading-label">Leitura do dia</p><p id="daily-page-verse" class="reading-verse">&ldquo;A tua palavra &eacute; l&acirc;mpada para o meu p&eacute; e luz para o meu caminho.&rdquo;</p><p id="daily-page-reference" class="reading-reference">Salmo 119:105</p><div class="daily-divider"></div><p id="daily-page-content" class="daily-full-text">Carregando o texto completo...</p><a id="daily-source" class="button button-secondary source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></div></section>
       <section id="family" class="page simple-page">
-        <article class="card family-study-card">
+        <article class="card family-study-card" data-official hidden>
           <p class="section-label">ADORA&Ccedil;&Atilde;O EM FAM&Iacute;LIA</p>
           <p id="family-topic" class="family-topic">Tema da semana</p>
           <h2 id="family-title">Fortale&ccedil;a a sua fam&iacute;lia</h2>
@@ -94,14 +96,26 @@
             <a id="family-video-media" class="family-media-link" href="#" target="_blank" rel="noopener" hidden><img id="family-video-image" alt="Capa do v&iacute;deo da semana"><span>Assistir ao v&iacute;deo na fonte</span></a>
           </div>
         </article>
-        <article class="card family-upcoming-card">
+        <article class="card family-upcoming-card" data-official hidden>
           <p class="section-label">PR&Oacute;XIMOS TEMAS</p>
           <div id="family-upcoming" class="family-upcoming"></div>
           <p class="family-schedule-note">Plano rotativo semanal dispon&iacute;vel at&eacute; agosto de 2027.</p>
         </article>
       </section>
+      </div>
     </main>
   </div>
-    <script src="app.js?v=20260812-15"></script>
+  <dialog id="event-dialog" aria-labelledby="event-dialog-title">
+    <form id="event-form">
+      <p class="section-label">SUA AGENDA</p><h2 id="event-dialog-title">Adicionar evento</h2>
+      <label for="event-type">Tipo de evento</label>
+      <select id="event-type" required><option value="Congresso">Congresso</option><option value="Assembleia">Assembleia</option><option value="Visita">Visita</option></select>
+      <label for="event-date">Data</label><input id="event-date" type="date" required>
+      <p class="event-storage-note">Seus eventos ficam salvos neste navegador. Eventos nos próximos 30 dias recebem destaque.</p>
+      <div class="dialog-actions"><button id="cancel-event" class="button button-secondary" type="button">Cancelar</button><button class="button button-primary" type="submit">Salvar evento</button></div>
+    </form>
+  </dialog>
+  <noscript>Ative o JavaScript no navegador para acessar o painel.</noscript>
+    <script src="app.js?v=20260922-1"></script>
 </body>
 </html>
