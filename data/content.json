@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-23T08:50:44.321Z",
+  "updatedAt": "2026-09-23T11:32:24.807Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -70,7 +70,9 @@
     "videoUrl": null,
     "weekOf": "2026-09-22",
     "sequence": 1,
-    "scheduleThrough": "2027-08-31"
+    "scheduleThrough": "2027-08-31",
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2023480/univ/art/2023480_univ_lsr_lg.jpg",
+    "videoImageUrl": null
   },
   "familyUpcoming": [
     {
@@ -90,7 +92,9 @@
       "videoUrl": null,
       "weekOf": "2026-09-22",
       "sequence": 1,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2023480/univ/art/2023480_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     },
     {
       "topic": "Fé e coragem",
@@ -109,7 +113,9 @@
       "videoUrl": null,
       "weekOf": "2026-09-29",
       "sequence": 2,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2019485/univ/art/2019485_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     },
     {
       "topic": "Exemplo de fé • Abraão",
@@ -128,7 +134,9 @@
       "videoUrl": null,
       "weekOf": "2026-10-06",
       "sequence": 3,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": null,
+      "videoImageUrl": null
     },
     {
       "topic": "Exemplo de firmeza • José",
@@ -147,7 +155,9 @@
       "videoUrl": null,
       "weekOf": "2026-10-13",
       "sequence": 4,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2014807/univ/art/2014807_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     },
     {
       "topic": "Exemplo de alerta • Mulher de Ló",
@@ -166,7 +176,9 @@
       "videoUrl": null,
       "weekOf": "2026-10-20",
       "sequence": 5,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/202018284/univ/art/202018284_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     },
     {
       "topic": "Exemplo de perseverança • Pedro",
@@ -185,7 +197,9 @@
       "videoUrl": null,
       "weekOf": "2026-10-27",
       "sequence": 6,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2023565/univ/art/2023565_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     },
     {
       "topic": "Exemplo de bom senso • Abigail",
@@ -204,7 +218,9 @@
       "videoUrl": null,
       "weekOf": "2026-11-03",
       "sequence": 7,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2017446/univ/art/2017446_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     },
     {
       "topic": "Exemplos em contraste • Saul e Daniel",
@@ -223,9 +239,11 @@
       "videoUrl": null,
       "weekOf": "2026-11-10",
       "sequence": 8,
-      "scheduleThrough": "2027-08-31"
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2020525/univ/art/2020525_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-09-22T23:51:37.017Z",
+  "previousUpdatedAt": "2026-09-23T08:50:44.321Z",
   "errors": []
 }
