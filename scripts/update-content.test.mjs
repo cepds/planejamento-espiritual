@@ -32,3 +32,22 @@ test('Sentinela muda na segunda-feira e adoração em família na terça-feira',
   assert.equal(tuesdayOf(utcDate('2026-08-17')).toISOString().slice(0, 10), '2026-08-11');
   assert.equal(tuesdayOf(utcDate('2026-08-18')).toISOString().slice(0, 10), '2026-08-18');
 });
+
+test('novo ciclo de adoração começa na terça e mantém o tema até segunda', async () => {
+  const { familyWorshipFor } = await import('./update-content.mjs');
+  const first = familyWorshipFor(utcDate('2026-09-22'));
+  assert.equal(first.title, 'Como se preparar espiritualmente agora');
+  assert.equal(familyWorshipFor(utcDate('2026-09-28')).title, first.title);
+  assert.notEqual(familyWorshipFor(utcDate('2026-09-29')).title, first.title);
+});
+
+test('plano exibe oito semanas distintas e reinicia após o ciclo completo', async () => {
+  const { familyUpcomingFor, familyWorshipFor } = await import('./update-content.mjs');
+  const weeks = familyUpcomingFor(utcDate('2026-09-22'));
+  assert.equal(weeks.length, 8);
+  assert.equal(new Set(weeks.map((item) => item.title)).size, 8);
+  assert.equal(familyWorshipFor(utcDate('2026-11-17')).title, weeks[0].title);
+  for (let index = 1; index < weeks.length; index++) {
+    assert.equal(utcDate(weeks[index].weekOf) - utcDate(weeks[index-1].weekOf), 7 * 86400000);
+  }
+});

@@ -279,6 +279,39 @@ function renderMidweekProgram(content, imageSources = []) {
   });
 }
 
+function familyStudyGuide(item) {
+  const guide = document.createElement('div');
+  guide.className = 'family-study-guide';
+  const parts = [
+    ['Leitura bíblica', item.reading],
+    ['O que fazer', item.doThis],
+    ['O que evitar', item.avoidThis]
+  ];
+  for (const [label, value] of parts) {
+    if (!value) continue;
+    const section = document.createElement('section');
+    const title = document.createElement('h3'); title.textContent = label;
+    const text = document.createElement('p'); text.textContent = value;
+    section.append(title, text); guide.append(section);
+  }
+  if (item.questions?.length) {
+    const section = document.createElement('section');
+    const title = document.createElement('h3'); title.textContent = 'Para conversar';
+    const list = document.createElement('ol');
+    list.append(...item.questions.map((question) => {
+      const row = document.createElement('li'); row.textContent = question; return row;
+    }));
+    section.append(title, list); guide.append(section);
+  }
+  if (item.action) {
+    const section = document.createElement('section'); section.className = 'family-week-action';
+    const title = document.createElement('h3'); title.textContent = 'Nesta semana';
+    const text = document.createElement('p'); text.textContent = item.action;
+    section.append(title, text); guide.append(section);
+  }
+  return guide;
+}
+
 function saoPauloDate(now = new Date()) {
   const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
     timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit'
@@ -391,6 +424,8 @@ async function loadOfficialContent() {
       document.querySelector('#family-topic').textContent = family.topic;
       document.querySelector('#family-title').textContent = family.title;
       document.querySelector('#family-prompt').textContent = family.prompt;
+      document.querySelector('#family-guide').replaceChildren(familyStudyGuide(family));
+      document.querySelector('#family-source-title').textContent = `Fonte: ${family.sourceTitle || family.title}`;
       const article = document.querySelector('#family-article');
       article.href = family.articleUrl;
       const video = document.querySelector('#family-video');
@@ -409,13 +444,19 @@ async function loadOfficialContent() {
     if (content.familyUpcoming?.length) {
       const upcoming = document.querySelector('#family-upcoming');
       upcoming.replaceChildren(...content.familyUpcoming.slice(1).map((item) => {
-        const row = document.createElement('div'); row.className = 'family-upcoming-row';
+        const row = document.createElement('details'); row.className = 'family-topic-details';
+        const summary = document.createElement('summary'); summary.className = 'family-upcoming-row';
         const date = document.createElement('span'); date.className = 'family-upcoming-date';
         date.textContent = formatFamilyWeek(item.weekOf);
         const copy = document.createElement('div');
         const topic = document.createElement('p'); topic.className = 'family-upcoming-topic'; topic.textContent = item.topic;
         const title = document.createElement('p'); title.className = 'family-upcoming-title'; title.textContent = item.title;
-        copy.append(topic, title); row.append(date, copy);
+        copy.append(topic, title); summary.append(date, copy); row.append(summary);
+        const guide = familyStudyGuide(item);
+        const source = document.createElement('a'); source.className = 'button button-secondary source-link';
+        source.href = item.articleUrl; source.target = '_blank'; source.rel = 'noopener';
+        source.textContent = `Fonte: ${item.sourceTitle || item.title}`;
+        guide.append(source); row.append(guide);
         return row;
       }));
     }

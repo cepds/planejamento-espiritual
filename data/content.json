@@ -54,81 +54,176 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/ea3ed9/1/ir/w_T_202607_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Família",
-    "title": "Como desenvolver uma família espiritualmente forte",
-    "prompt": "Identifiquem uma prioridade que pode fortalecer a espiritualidade da família.",
-    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20010515/Como-desenvolver-uma-fam%C3%ADlia-espiritualmente-forte/",
+    "topic": "Preparação espiritual",
+    "title": "Como se preparar espiritualmente agora",
+    "prompt": "Fortaleçam a perseverança, a compaixão e o amor nas situações comuns do dia a dia.",
+    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-julho-2023/Voc%C3%AA-est%C3%A1-pronto-para-a-grande-tribula%C3%A7%C3%A3o/",
+    "sourceTitle": "Você está pronto para a grande tribulação?",
+    "reading": "Lucas 21:19; Colossenses 3:12; 1 Tessalonicenses 4:9, 10",
+    "doThis": "Treinar a perseverança nas dificuldades atuais e oferecer ajuda a quem precisa.",
+    "avoidThis": "Adiar o desenvolvimento dessas qualidades até surgir uma crise.",
+    "questions": [
+      "Qual dificuldade atual pode nos ensinar a perseverar?",
+      "Como podemos demonstrar compaixão de maneira concreta?"
+    ],
+    "action": "Escolham uma pessoa para ajudar nesta semana e combinem como farão isso.",
     "videoUrl": null,
-    "coverUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
     "weekOf": "2026-09-22",
-    "sequence": 8,
-    "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
-    "videoImageUrl": null
+    "sequence": 1,
+    "scheduleThrough": "2027-08-31"
   },
   "familyUpcoming": [
     {
-      "topic": "Família",
-      "title": "Como desenvolver uma família espiritualmente forte",
-      "prompt": "Identifiquem uma prioridade que pode fortalecer a espiritualidade da família.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20010515/Como-desenvolver-uma-fam%C3%ADlia-espiritualmente-forte/",
+      "topic": "Preparação espiritual",
+      "title": "Como se preparar espiritualmente agora",
+      "prompt": "Fortaleçam a perseverança, a compaixão e o amor nas situações comuns do dia a dia.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-julho-2023/Voc%C3%AA-est%C3%A1-pronto-para-a-grande-tribula%C3%A7%C3%A3o/",
+      "sourceTitle": "Você está pronto para a grande tribulação?",
+      "reading": "Lucas 21:19; Colossenses 3:12; 1 Tessalonicenses 4:9, 10",
+      "doThis": "Treinar a perseverança nas dificuldades atuais e oferecer ajuda a quem precisa.",
+      "avoidThis": "Adiar o desenvolvimento dessas qualidades até surgir uma crise.",
+      "questions": [
+        "Qual dificuldade atual pode nos ensinar a perseverar?",
+        "Como podemos demonstrar compaixão de maneira concreta?"
+      ],
+      "action": "Escolham uma pessoa para ajudar nesta semana e combinem como farão isso.",
       "videoUrl": null,
-      "coverUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
       "weekOf": "2026-09-22",
-      "sequence": 8,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1011205/univ/art/1011205_univ_lsr_lg.jpg",
-      "videoImageUrl": null
+      "sequence": 1,
+      "scheduleThrough": "2027-08-31"
     },
     {
-      "topic": "Fortalecimento espiritual",
-      "title": "Famílias cristãs — “fiquem despertas”",
-      "prompt": "Escolham uma ação simples para manter a família espiritualmente desperta.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20110515/Fam%C3%ADlias-crist%C3%A3s-fiquem-despertas/",
+      "topic": "Fé e coragem",
+      "title": "Construir confiança antes das dificuldades",
+      "prompt": "Uma rotina de oração e estudo pode fortalecer a confiança em Jeová sem alimentar medo do futuro.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-julho-2019/prepare-se-agora-para-a-perseguicao/",
+      "sourceTitle": "Prepare-se agora para a perseguição",
+      "reading": "Hebreus 13:5, 6; Salmo 56:3, 4",
+      "doThis": "Conhecer melhor a Jeová e conversar com ele sobre os próprios receios.",
+      "avoidThis": "Ficar imaginando cenários assustadores como se já fossem certos.",
+      "questions": [
+        "Que motivos temos para confiar no cuidado de Jeová?",
+        "Qual hábito de estudo precisamos fortalecer?"
+      ],
+      "action": "Reservem um horário realista para ler e conversar sobre um texto encorajador.",
       "videoUrl": null,
-      "coverUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
       "weekOf": "2026-09-29",
-      "sequence": 9,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cfp2.jw-cdn.org/a/8abb908/1/ir/w_T_20110515_lg.jpg",
-      "videoImageUrl": null
+      "sequence": 2,
+      "scheduleThrough": "2027-08-31"
     },
     {
-      "topic": "Amor",
-      "title": "Um amor de verdade",
-      "prompt": "Assistam juntos e conversem sobre como demonstrar amor nas atitudes diárias.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
-      "videoUrl": "https://www.jw.org/pt/biblioteca/videos/amor-de-verdade/",
-      "weekOf": "2026-10-06",
-      "sequence": 10,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg",
-      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/1102012808/univ/art/1102012808_univ_lsr_lg.jpg"
-    },
-    {
-      "topic": "Bondade",
-      "title": "Bondade — Uma qualidade que mostramos em palavras e ações",
-      "prompt": "Pensem em uma ação bondosa que cada pessoa da família pode fazer nesta semana.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-novembro-2018/fruto-do-espirito-bondade/",
+      "topic": "Exemplo de fé • Abraão",
+      "title": "Abraão: confiar e promover a paz",
+      "prompt": "Observem como a fé pode orientar decisões quando é preciso fazer concessões.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20040515/Abra%C3%A3o-e-Sara-Voc%C3%AA-pode-ter-f%C3%A9-igual-%C3%A0-deles/",
+      "sourceTitle": "Abraão e Sara — Você pode ter fé igual à deles!",
+      "reading": "Gênesis 13:5-17; Hebreus 11:8",
+      "doThis": "Valorizar a paz e considerar os interesses de outros ao decidir.",
+      "avoidThis": "Insistir em ter vantagem pessoal a qualquer custo.",
+      "questions": [
+        "O que a proposta de Abraão a Ló revela sobre sua confiança?",
+        "Em que situação poderíamos ceder para preservar a paz?"
+      ],
+      "action": "Identifiquem uma decisão em que possam demonstrar consideração e confiança em Jeová.",
       "videoUrl": null,
-      "coverUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
-      "weekOf": "2026-10-13",
-      "sequence": 11,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cfp2.jw-cdn.org/a/de4be04/1/ir/w_T_201811_lg.jpg",
-      "videoImageUrl": null
+      "weekOf": "2026-10-06",
+      "sequence": 3,
+      "scheduleThrough": "2027-08-31"
     },
     {
-      "topic": "Luto e perda",
-      "title": "Como lidar com a morte de alguém que eu amo?",
-      "prompt": "Conversem com sensibilidade sobre como oferecer consolo a quem está sofrendo uma perda.",
-      "articleUrl": "https://www.jw.org/pt/ensinos-biblicos/jovens/perguntam/lidar-morte-alguem-que-amo/",
-      "videoUrl": "https://www.jw.org/pt-pt/biblioteca/videos/torna-te-amigo-jeova/lidar-com-a-morte-de-alguem-que-amamos/",
+      "topic": "Exemplo de firmeza • José",
+      "title": "José: manter a lealdade sob pressão",
+      "prompt": "Estudem como José protegeu sua amizade com Deus diante de uma tentação persistente.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/wp20141101/jose-biblia/",
+      "sourceTitle": "José — “Como poderia eu cometer esta grande maldade?”",
+      "reading": "Gênesis 39:7-12",
+      "doThis": "Definir limites claros e se afastar de situações que favoreçam uma conduta errada.",
+      "avoidThis": "Justificar uma concessão porque ninguém está vendo ou porque a pressão se repete.",
+      "questions": [
+        "O que motivou José a dizer não?",
+        "Que limite prático pode proteger nossa lealdade hoje?"
+      ],
+      "action": "Escolham um limite para conversas, entretenimento ou relacionamentos e coloquem em prática.",
+      "videoUrl": null,
+      "weekOf": "2026-10-13",
+      "sequence": 4,
+      "scheduleThrough": "2027-08-31"
+    },
+    {
+      "topic": "Exemplo de alerta • Mulher de Ló",
+      "title": "Não deixar as coisas materiais dirigir a vida",
+      "prompt": "Usem o alerta de Jesus para avaliar prioridades, sem presumir motivos que a Bíblia não explica.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/agosto-2018-mwb/programa-reuniao-ago6-12/lembre-se-da-mulher-lo-perguntas/",
+      "sourceTitle": "Lembre-se da Mulher de Ló",
+      "reading": "Gênesis 19:17, 26; Lucas 17:31, 32; Mateus 6:24, 33",
+      "doThis": "Examinar se o desejo de conforto ou de possuir mais está ocupando o lugar das atividades espirituais.",
+      "avoidThis": "Permitir que a busca por bens determine todas as escolhas.",
+      "questions": [
+        "Qual é o alerta de Jesus para nós?",
+        "Há algo na nossa rotina que mostra prioridades fora de equilíbrio?"
+      ],
+      "action": "Revejam um compromisso ou objetivo material e ajustem o que estiver prejudicando a rotina espiritual.",
+      "videoUrl": null,
       "weekOf": "2026-10-20",
-      "sequence": 12,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/500600119/univ/art/500600119_univ_lsr_lg.jpg",
-      "videoImageUrl": "https://cms-imgp.jw-cdn.org/img/p/502018101/univ/art/502018101_univ_lsr_lg.jpg"
+      "sequence": 5,
+      "scheduleThrough": "2027-08-31"
+    },
+    {
+      "topic": "Exemplo de perseverança • Pedro",
+      "title": "Pedro: aprender com os erros e continuar",
+      "prompt": "O exemplo de Pedro ajuda a encarar as próprias fraquezas sem desistir de melhorar.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-setembro-2023/Assim-como-Pedro-n%C3%A3o-desista/",
+      "sourceTitle": "Assim como Pedro, não desista!",
+      "reading": "Lucas 22:31, 32; João 21:15-17",
+      "doThis": "Aceitar ajuda e correção, reconhecer falhas e continuar se esforçando.",
+      "avoidThis": "Concluir que um erro torna impossível voltar a agir com fé.",
+      "questions": [
+        "Como Jesus mostrou que não havia desistido de Pedro?",
+        "Que ajuda precisamos aceitar para continuar melhorando?"
+      ],
+      "action": "Definam um passo pequeno e concreto para trabalhar uma dificuldade nesta semana.",
+      "videoUrl": null,
+      "weekOf": "2026-10-27",
+      "sequence": 6,
+      "scheduleThrough": "2027-08-31"
+    },
+    {
+      "topic": "Exemplo de bom senso • Abigail",
+      "title": "Abigail: acalmar conflitos com sensatez",
+      "prompt": "Comparem a atitude conciliadora de Abigail com a grosseria de Nabal e a reação impulsiva de Davi.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/a-sentinela-estudo-junho-2017/abigail-uma-mulher-sensata/",
+      "sourceTitle": "Uma mulher sensata",
+      "reading": "1 Samuel 25:14-19, 23-35",
+      "doThis": "Agir com respeito, reconhecer a ajuda recebida e procurar acalmar situações tensas.",
+      "avoidThis": "Responder com grosseria ou tomar decisões enquanto se está dominado pela raiva.",
+      "questions": [
+        "Como Abigail ajudou Davi a reconsiderar sua reação?",
+        "Que resposta poderia diminuir a tensão em uma conversa nossa?"
+      ],
+      "action": "Combinem uma maneira respeitosa de fazer uma pausa antes de uma discussão crescer.",
+      "videoUrl": null,
+      "weekOf": "2026-11-03",
+      "sequence": 7,
+      "scheduleThrough": "2027-08-31"
+    },
+    {
+      "topic": "Exemplos em contraste • Saul e Daniel",
+      "title": "Reconhecer limites e evitar a arrogância",
+      "prompt": "Comparem a precipitação de Saul com a modéstia de Daniel ao reconhecer a ajuda de Deus.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-agosto-2020/Seja-humilde-e-modesto-ao-andar-com-Deus/",
+      "sourceTitle": "Seja humilde e modesto ao andar com Deus",
+      "reading": "1 Samuel 13:8-14; Daniel 2:26-28",
+      "doThis": "Reconhecer limitações e buscar orientação antes de agir.",
+      "avoidThis": "Deixar a impaciência justificar atitudes arrogantes ou atribuir todo mérito a si mesmo.",
+      "questions": [
+        "Como a impaciência influenciou a decisão de Saul?",
+        "O que podemos aprender com a resposta de Daniel?"
+      ],
+      "action": "Antes de uma decisão importante, pesquisem um princípio bíblico e conversem sobre como aplicá-lo.",
+      "videoUrl": null,
+      "weekOf": "2026-11-10",
+      "sequence": 8,
+      "scheduleThrough": "2027-08-31"
     }
   ],
   "previousUpdatedAt": "2026-09-22T23:51:37.017Z",

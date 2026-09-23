@@ -8,7 +8,7 @@ function harness(fetchResult, failWrite = false) {
   const saved = new Response('{"cached":true}');
   const context = { URL, Response, fetch: fetchResult, caches: {
     open: async () => ({ addAll: async () => {}, put: async (key) => { if (failWrite) throw Error('quota'); writes.push(key); }, match: async () => saved }),
-    keys: async () => ['planejamento-espiritual-shell-v2', 'another-app', 'planejamento-espiritual-shell-v3'],
+    keys: async () => ['planejamento-espiritual-shell-v2', 'another-app', 'planejamento-espiritual-shell-v4'],
     delete: async (key) => deleted.push(key)
   }, self: { location: {origin:'https://example.com'}, addEventListener: (type, handler) => handlers[type] = handler, skipWaiting: async () => {}, clients: {claim: async () => {}} }};
   vm.runInNewContext(source, context);

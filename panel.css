@@ -175,3 +175,23 @@ button:disabled{opacity:.6;cursor:wait}
 #panel .text-button{color:#cce3ce;min-height:40px}
 .event-remove{min-height:36px}
 @media(max-width:650px){.content-status-bar{align-items:flex-start}.topbar h1{overflow-wrap:anywhere}.topbar .button{flex-shrink:0}}
+
+/* Roteiros de adoração em família. */
+#family{max-width:850px}
+#family .family-study-guide{display:grid;gap:14px;margin:24px 0}
+#family .family-study-guide section{padding:16px;border:1px solid #465d4b;border-radius:10px;background:#1d251b}
+#family .family-study-guide h3{margin:0 0 8px;font:700 15px/1.4 "Segoe UI",Arial,sans-serif;color:#e9f0e4;letter-spacing:0}
+#family .family-study-guide p,#family .family-study-guide li{margin:0;color:#d5e7d7;font-size:14px;line-height:1.65}
+#family .family-study-guide ol{margin:0;padding-left:22px}
+#family .family-study-guide li+li{margin-top:10px}
+#family .family-study-guide .family-week-action{border-color:#b09a58;background:#293022}
+#family .family-source-title{color:#bbd2bf;font-size:13px}
+#family .family-topic-details{border-top:1px solid #405443}
+#family .family-topic-details summary{cursor:pointer;list-style:none}
+#family .family-topic-details summary::after{content:'+';color:#dcb96c;font-size:22px}
+#family .family-topic-details[open] summary::after{content:'−'}
+#family .family-topic-details summary::-webkit-details-marker{display:none}
+#family .family-topic-details .family-upcoming-row{grid-template-columns:95px minmax(0,1fr) 20px;border:0}
+#family .family-topic-details .source-link{white-space:normal;overflow-wrap:anywhere;margin-top:0}
+#family .family-topic-details summary:focus-visible{outline:3px solid #dcb96c;outline-offset:3px}
+@media(max-width:520px){#family .family-topic-details .family-upcoming-row{grid-template-columns:1fr 20px}#family .family-upcoming-date{grid-column:1/-1}#family .family-study-guide section{padding:13px}}
