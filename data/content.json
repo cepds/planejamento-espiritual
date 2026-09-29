@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-29T01:17:16.866Z",
+  "updatedAt": "2026-09-29T10:09:13.168Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-09-28",
-    "verse": "Removam do meio de vocês a pessoa má.",
-    "reference": "Primeira Coríntios 5:13.",
-    "content": "Uma pessoa é removida da congregação quando ela não quer mudar, mesmo depois de os anciãos terem tentado ajudá-la várias vezes a se arrepender. (Segundo Reis 17:12-15) As ações dela deixam claro que ela não quer obedecer aos padrões de Jeová. (Deuteronômio capítulo 30 versículos 19,20) É feito um anúncio para avisar a toda a congregação que aquela pessoa não é mais uma Testemunha de Jeová. O objetivo desse anúncio não é humilhar a pessoa. Na verdade, isso é feito para que a congregação possa seguir a ordem bíblica de ‘parar de ter convivência’ e ‘nem sequer comer com’ ela. (Primeira Coríntios 5:9-11) Jeová deixou esse aviso por bons motivos. O apóstolo Paulo disse: “Um pouco de fermento leveda a massa toda.” (Primeira Coríntios 5:6) Aqueles que pecam e não se arrependem podem acabar enfraquecendo a determinação de quem está tentando viver de acordo com os padrões justos de Jeová. — Provérbios 13:20; Primeira Coríntios 15:33. w24.08 27 parágrafos 3 a 4",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/9/28"
+    "date": "2026-09-29",
+    "verse": "Para todas as coisas tenho forças graças àquele que me dá poder.",
+    "reference": "Filipenses 4:13.",
+    "content": "Não é possível dividir a nossa força e energia com outros. Mesmo assim, podemos usar a força que temos para ajudar outros, por exemplo, fazendo compras ou algumas tarefas domésticas para um irmão idoso ou doente. Ou também podemos ajudar na limpeza e manutenção do Salão do Reino. Não se esqueça que as palavras também têm poder. Você consegue pensar em uma pessoa que ficaria muito feliz com um elogio sincero ou que está precisando de consolo? Que tal tomar a iniciativa e dizer que você tem um carinho muito grande por ela? Você pode fazer isso pessoalmente, por telefone ou talvez enviar um cartãozinho ou uma mensagem. Você não precisa se preocupar muito com o que vai dizer. Palavras simples, mas de coração, podem ser exatamente o que a pessoa precisa para continuar fiel por mais um dia ou para voltar a ter esperança. — Provérbios 12:25; Efésios 4:29. w24.09 28 parágrafos 8 a 10",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/9/29"
   },
   "meeting": {
     "weekOf": "2026-09-28",
@@ -56,48 +56,27 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/ea3ed9/1/ir/w_T_202607_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Preparação espiritual",
-    "title": "Como se preparar espiritualmente agora",
-    "prompt": "Fortaleçam a perseverança, a compaixão e o amor nas situações comuns do dia a dia.",
-    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-julho-2023/Voc%C3%AA-est%C3%A1-pronto-para-a-grande-tribula%C3%A7%C3%A3o/",
-    "sourceTitle": "Você está pronto para a grande tribulação?",
-    "reading": "Lucas 21:19; Colossenses 3:12; 1 Tessalonicenses 4:9, 10",
-    "doThis": "Treinar a perseverança nas dificuldades atuais e oferecer ajuda a quem precisa.",
-    "avoidThis": "Adiar o desenvolvimento dessas qualidades até surgir uma crise.",
+    "topic": "Fé e coragem",
+    "title": "Construir confiança antes das dificuldades",
+    "prompt": "Uma rotina de oração e estudo pode fortalecer a confiança em Jeová sem alimentar medo do futuro.",
+    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-julho-2019/prepare-se-agora-para-a-perseguicao/",
+    "sourceTitle": "Prepare-se agora para a perseguição",
+    "reading": "Hebreus 13:5, 6; Salmo 56:3, 4",
+    "doThis": "Conhecer melhor a Jeová e conversar com ele sobre os próprios receios.",
+    "avoidThis": "Ficar imaginando cenários assustadores como se já fossem certos.",
     "questions": [
-      "Qual dificuldade atual pode nos ensinar a perseverar?",
-      "Como podemos demonstrar compaixão de maneira concreta?"
+      "Que motivos temos para confiar no cuidado de Jeová?",
+      "Qual hábito de estudo precisamos fortalecer?"
     ],
-    "action": "Escolham uma pessoa para ajudar nesta semana e combinem como farão isso.",
+    "action": "Reservem um horário realista para ler e conversar sobre um texto encorajador.",
     "videoUrl": null,
-    "weekOf": "2026-09-22",
-    "sequence": 1,
+    "weekOf": "2026-09-29",
+    "sequence": 2,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2023480/univ/art/2023480_univ_lsr_lg.jpg",
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2019485/univ/art/2019485_univ_lsr_lg.jpg",
     "videoImageUrl": null
   },
   "familyUpcoming": [
-    {
-      "topic": "Preparação espiritual",
-      "title": "Como se preparar espiritualmente agora",
-      "prompt": "Fortaleçam a perseverança, a compaixão e o amor nas situações comuns do dia a dia.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-julho-2023/Voc%C3%AA-est%C3%A1-pronto-para-a-grande-tribula%C3%A7%C3%A3o/",
-      "sourceTitle": "Você está pronto para a grande tribulação?",
-      "reading": "Lucas 21:19; Colossenses 3:12; 1 Tessalonicenses 4:9, 10",
-      "doThis": "Treinar a perseverança nas dificuldades atuais e oferecer ajuda a quem precisa.",
-      "avoidThis": "Adiar o desenvolvimento dessas qualidades até surgir uma crise.",
-      "questions": [
-        "Qual dificuldade atual pode nos ensinar a perseverar?",
-        "Como podemos demonstrar compaixão de maneira concreta?"
-      ],
-      "action": "Escolham uma pessoa para ajudar nesta semana e combinem como farão isso.",
-      "videoUrl": null,
-      "weekOf": "2026-09-22",
-      "sequence": 1,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2023480/univ/art/2023480_univ_lsr_lg.jpg",
-      "videoImageUrl": null
-    },
     {
       "topic": "Fé e coragem",
       "title": "Construir confiança antes das dificuldades",
@@ -244,8 +223,29 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2020525/univ/art/2020525_univ_lsr_lg.jpg",
       "videoImageUrl": null
+    },
+    {
+      "topic": "Preparação espiritual",
+      "title": "Como se preparar espiritualmente agora",
+      "prompt": "Fortaleçam a perseverança, a compaixão e o amor nas situações comuns do dia a dia.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-julho-2023/Voc%C3%AA-est%C3%A1-pronto-para-a-grande-tribula%C3%A7%C3%A3o/",
+      "sourceTitle": "Você está pronto para a grande tribulação?",
+      "reading": "Lucas 21:19; Colossenses 3:12; 1 Tessalonicenses 4:9, 10",
+      "doThis": "Treinar a perseverança nas dificuldades atuais e oferecer ajuda a quem precisa.",
+      "avoidThis": "Adiar o desenvolvimento dessas qualidades até surgir uma crise.",
+      "questions": [
+        "Qual dificuldade atual pode nos ensinar a perseverar?",
+        "Como podemos demonstrar compaixão de maneira concreta?"
+      ],
+      "action": "Escolham uma pessoa para ajudar nesta semana e combinem como farão isso.",
+      "videoUrl": null,
+      "weekOf": "2026-11-17",
+      "sequence": 9,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2023480/univ/art/2023480_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-09-28T21:23:35.269Z",
+  "previousUpdatedAt": "2026-09-29T01:17:16.866Z",
   "errors": []
 }
