@@ -1,7 +1,7 @@
 const CACHE_PREFIX = 'planejamento-espiritual-shell-';
 const CACHE_NAME = `${CACHE_PREFIX}v6`;
 const CONTENT_CACHE_KEY = '/data/content.json';
-const SHELL = ['/', '/index.html', '/styles.css', '/panel.css?v=20261001-2', '/app.js?v=20261001-2', '/workspace.css?v=20261001-2', '/study-state.js?v=20261001-2', '/workspace.js?v=20261001-2', '/manifest.webmanifest', '/icons/favicon-3d.png'];
+const SHELL = ['/', '/index.html', '/styles.css', '/panel.css?v=20261001-2', '/app.js?v=20261001-2', '/workspace.css?v=20261001-3', '/study-state.js?v=20261001-2', '/workspace.js?v=20261001-2', '/manifest.webmanifest', '/icons/favicon-3d.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {

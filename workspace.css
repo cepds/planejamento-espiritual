@@ -92,3 +92,7 @@ html[data-theme] .content-status-bar .button{min-height:28px;padding:4px 8px;fon
 #reading-toolbar{position:relative;top:auto}html[data-focus="true"] #reading-toolbar{position:sticky;top:0}
 #personal-save-status{margin-top:24px;padding-top:14px;border-top:1px solid var(--line)}
 @media(max-width:650px){#panel .welcome{flex-wrap:wrap}.appearance-options{position:fixed;left:18px;top:auto}.today-actions .button{min-width:120px}}
+
+/* A subtle lift for card surfaces in the dark theme. */
+html[data-theme="dark"] :is(.card,#meeting-midweek-card,.today-reading,.today-next,.today-path,.preparation-panel){background:#29312c!important}
+html[data-theme="dark"] .today-path:hover{background:#303a33!important}
