@@ -3,7 +3,7 @@
   let content = window.officialContent || null;
   let meeting = 'midweek';
   let viewedWeek = null;
-  let settings = { theme: 'system', size: 16 };
+  let settings = { theme: 'light', size: 16 };
   let focus = false;
   const $ = (selector) => document.querySelector(selector);
   function read(key) {
@@ -52,7 +52,7 @@
     $('#today-reading-label').textContent = available ? 'TEXTO DE HOJE' : content ? `TEXTO DE ${formatFamilyWeek(content.daily.date)}` : 'TEXTO DIÁRIO';
     document.querySelectorAll('[data-daily-done]').forEach((button) => {
       button.disabled = !available;
-      button.textContent = done ? '✓ Leitura concluída — desfazer' : 'Marcar leitura como concluída';
+      button.textContent = done ? '✓ Leitura concluída — desfazer' : 'Concluir leitura';
       button.setAttribute('aria-pressed', String(Boolean(done)));
     });
     $('#today-family-title').textContent = content?.familyWorship?.title || 'Adoração em família';
@@ -139,7 +139,7 @@
     document.querySelector('meta[name="theme-color"]').content = dark ? '#111e18' : '#f6f7f2';
   }
   const saved = read('preferences');
-  settings.theme = ['light','dark','system'].includes(saved.theme) ? saved.theme : 'system';
+  settings.theme = ['light','dark','system'].includes(saved.theme) ? saved.theme : 'light';
   settings.size = [16,18,20,22].includes(saved.size) ? saved.size : 16;
   function saveSettings() { write('preferences', settings); applySettings(); }
   $('#reading-theme').addEventListener('change', (event) => { settings.theme = event.target.value; saveSettings(); });

@@ -12,8 +12,8 @@
   <link rel="icon" type="image/png" href="icons/favicon-3d.png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="panel.css?v=20261001-1">
-  <link rel="stylesheet" href="workspace.css?v=20261001-1">
+  <link rel="stylesheet" href="panel.css?v=20261001-2">
+  <link rel="stylesheet" href="workspace.css?v=20261001-2">
 </head>
 <body>
   <div class="app-shell">
@@ -34,11 +34,11 @@
       </header>
 
       <div id="reading-toolbar" role="group" aria-label="Preferências de leitura">
-        <label class="theme-choice" for="reading-theme">Aparência <select id="reading-theme"><option value="system">Automática</option><option value="light">Clara</option><option value="dark">Escura</option></select></label>
+        <details class="appearance-menu"><summary>Ajustar leitura</summary><div class="appearance-options"><label class="theme-choice" for="reading-theme">Aparência <select id="reading-theme"><option value="system">Automática</option><option value="light">Clara</option><option value="dark">Escura</option></select></label>
         <div class="font-controls" role="group" aria-label="Tamanho do texto"><button id="font-smaller" type="button" aria-label="Diminuir texto">A−</button><output id="reading-size" aria-live="polite">100%</output><button id="font-larger" type="button" aria-label="Aumentar texto">A+</button></div>
+        </div></details>
         <button id="reading-focus" type="button" class="button button-secondary" aria-pressed="false">Modo de leitura</button>
       </div>
-      <p id="personal-save-status" class="save-status" role="status">Marcações e anotações ficam neste navegador.</p>
       <div class="content-status-bar"><p id="content-status" role="status">Carregando conteúdo…</p><button id="retry-content" class="button button-secondary" type="button">Atualizar</button></div>
       <div id="official-content">
       <section id="panel" class="page is-active" aria-labelledby="page-title">
@@ -46,7 +46,7 @@
         <section class="today-overview" aria-label="Seu planejamento de hoje">
           <article class="today-reading">
             <p id="today-reading-label" class="section-label">TEXTO DE HOJE</p>
-            <h2>Reserve um momento para a leitura</h2>
+            <h2>Um momento para fortalecer a fé</h2>
             <p id="today-verse">Carregando a leitura…</p><p id="today-reference"></p>
             <div class="today-actions"><button id="today-open-daily" class="button button-primary" type="button">Abrir leitura</button><button class="button button-secondary" type="button" data-daily-done disabled>Marcar leitura como concluída</button></div>
           </article>
@@ -135,6 +135,7 @@
         </article>
       </section>
       </div>
+          <p id="personal-save-status" class="save-status" role="status">Marcações e anotações ficam neste navegador.</p>
     </main>
   </div>
   <dialog id="event-dialog" aria-labelledby="event-dialog-title">
@@ -148,8 +149,8 @@
     </form>
   </dialog>
   <noscript>Ative o JavaScript no navegador para acessar o painel.</noscript>
-    <script src="app.js?v=20261001-1"></script>
-    <script src="study-state.js?v=20261001-1"></script>
-    <script src="workspace.js?v=20261001-1"></script>
+    <script src="app.js?v=20261001-2"></script>
+    <script src="study-state.js?v=20261001-2"></script>
+    <script src="workspace.js?v=20261001-2"></script>
 </body>
 </html>
