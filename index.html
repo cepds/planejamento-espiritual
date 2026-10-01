@@ -12,14 +12,15 @@
   <link rel="icon" type="image/png" href="icons/favicon-3d.png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="panel.css?v=20260923-family-1">
+  <link rel="stylesheet" href="panel.css?v=20261001-1">
+  <link rel="stylesheet" href="workspace.css?v=20261001-1">
 </head>
 <body>
   <div class="app-shell">
     <aside class="sidebar" aria-label="Navega&ccedil;&atilde;o principal">
       <a class="brand" href="#panel" data-page-link="panel">Planejamento<br><em>Espiritual</em></a>
       <nav>
-        <button class="nav-item is-active" type="button" data-page="panel">Painel</button>
+        <button class="nav-item is-active" type="button" data-page="panel">Hoje</button>
         <button class="nav-item" type="button" data-page="meetings">Reuni&otilde;es</button>
         <button class="nav-item" type="button" data-page="daily">Texto di&aacute;rio</button>
         <button class="nav-item" type="button" data-page="family">Adora&ccedil;&atilde;o em fam&iacute;lia</button>
@@ -28,14 +29,35 @@
 
     <main class="content">
       <header class="topbar">
-        <div><p class="eyeline">PLANEJAMENTO PESSOAL</p><h1 id="page-title">Painel</h1></div>
+        <div><p class="eyeline">PLANEJAMENTO PESSOAL</p><h1 id="page-title">Hoje</h1></div>
         <button id="add-event" class="button button-primary" type="button">+ Adicionar evento</button>
       </header>
 
+      <div id="reading-toolbar" role="group" aria-label="Preferências de leitura">
+        <label class="theme-choice" for="reading-theme">Aparência <select id="reading-theme"><option value="system">Automática</option><option value="light">Clara</option><option value="dark">Escura</option></select></label>
+        <div class="font-controls" role="group" aria-label="Tamanho do texto"><button id="font-smaller" type="button" aria-label="Diminuir texto">A−</button><output id="reading-size" aria-live="polite">100%</output><button id="font-larger" type="button" aria-label="Aumentar texto">A+</button></div>
+        <button id="reading-focus" type="button" class="button button-secondary" aria-pressed="false">Modo de leitura</button>
+      </div>
+      <p id="personal-save-status" class="save-status" role="status">Marcações e anotações ficam neste navegador.</p>
       <div class="content-status-bar"><p id="content-status" role="status">Carregando conteúdo…</p><button id="retry-content" class="button button-secondary" type="button">Atualizar</button></div>
       <div id="official-content">
       <section id="panel" class="page is-active" aria-labelledby="page-title">
-        <div class="welcome"><div><p>Vis&atilde;o geral</p></div><span id="today" class="today"></span></div>
+        <div class="welcome"><div><p>Um passo de cada vez</p></div><span id="today" class="today"></span></div>
+        <section class="today-overview" aria-label="Seu planejamento de hoje">
+          <article class="today-reading">
+            <p id="today-reading-label" class="section-label">TEXTO DE HOJE</p>
+            <h2>Reserve um momento para a leitura</h2>
+            <p id="today-verse">Carregando a leitura…</p><p id="today-reference"></p>
+            <div class="today-actions"><button id="today-open-daily" class="button button-primary" type="button">Abrir leitura</button><button class="button button-secondary" type="button" data-daily-done disabled>Marcar leitura como concluída</button></div>
+          </article>
+          <aside class="today-next"><p class="section-label">NA SUA AGENDA</p><h3 id="today-next-title">Nenhum evento cadastrado</h3><p id="today-next-date"></p><button id="today-add-event" class="button button-secondary" type="button">Adicionar evento</button></aside>
+        </section>
+        <section class="today-paths" aria-label="Continuar sua preparação">
+          <button type="button" data-open-prep="midweek" class="today-path"><span class="section-label">MEIO DE SEMANA</span><strong>Preparar a reunião</strong><span id="today-midweek-progress"></span><span aria-hidden="true">→</span></button>
+          <button type="button" data-open-prep="weekend" class="today-path"><span class="section-label">A SENTINELA</span><strong>Preparar o estudo</strong><span id="today-weekend-progress"></span><span aria-hidden="true">→</span></button>
+          <button id="today-family" type="button" class="today-path"><span class="section-label">ADORAÇÃO EM FAMÍLIA</span><strong id="today-family-title">Estudo da semana</strong><span>Abrir roteiro</span><span aria-hidden="true">→</span></button>
+        </section>
+        <details class="weekly-overview"><summary>Visão geral da semana e agenda</summary>
         <div class="dashboard-grid">
           <article class="card events-card">
             <div class="card-heading"><div class="agenda-title"><img id="workbook-cover" class="workbook-cover" alt="Capa da apostila da reuni&atilde;o" hidden><div><p class="section-label">AGENDA</p><h3>Pr&oacute;ximos eventos</h3></div></div><button id="clear-events" class="text-button" type="button" hidden>Limpar</button></div>
@@ -70,17 +92,25 @@
             </div>
           </article>
         </div>
+        </details>
       </section>
 
       <section id="meetings" class="page" aria-labelledby="page-title">
         <div class="page-intro meeting-switch" role="group" aria-label="Escolher reunião"><button type="button" class="button button-secondary" data-meeting="midweek" aria-pressed="false">Meio de semana</button><button type="button" class="button button-secondary" data-meeting="weekend" aria-pressed="false">Fim de semana</button></div>
+        <section id="meeting-preparation" class="preparation-panel" hidden aria-labelledby="prep-title">
+          <div class="prep-heading"><div><p class="section-label">PREPARAÇÃO PESSOAL</p><h2 id="prep-title">Meu preparo</h2></div><label for="prep-week">Consultar semana<select id="prep-week"></select></label></div>
+          <p id="prep-archive-note" hidden>Você está consultando anotações de outra semana. O conteúdo da reunião abaixo é o atual.</p>
+          <div class="prep-meter"><span id="prep-progress" role="status"></span><progress id="prep-progress-bar" max="1" value="0" aria-label="Etapas preparadas"></progress></div>
+          <div class="prep-columns"><div><h3>O que já preparei</h3><div id="prep-checklist"></div></div><div class="prep-writing"><label for="prep-notes">Comentário e ideias que quero lembrar</label><textarea id="prep-notes" rows="6" maxlength="12000" placeholder="Escreva com suas palavras…"></textarea><label for="prep-scriptures">Textos bíblicos que quero usar</label><textarea id="prep-scriptures" rows="3" maxlength="4000" placeholder="Referências e pontos que quero destacar…"></textarea><p class="save-status">Salvamento automático neste navegador, separado por semana.</p></div></div>
+          <button id="prep-show-content" type="button" class="button button-secondary">Ir para o conteúdo da reunião ↓</button>
+        </section>
         <div class="meetings-grid" data-official hidden>
             <article id="meeting-midweek-card" class="card meeting-card"><div class="meeting-cover-heading"><img id="meeting-workbook-cover" class="meeting-cover" alt="Capa da apostila da reuni&atilde;o" hidden><div><p class="section-label">MEIO DE SEMANA</p><h3 id="meeting-reading">Jeremias 22&ndash;23</h3></div></div><section class="treasure-study"><p class="section-label">TESOUROS DA PALAVRA DE DEUS</p><h4 id="meeting-treasure">A import&acirc;ncia de ter bons pastores</h4><span class="study-duration">10 min</span><ul id="meeting-points" class="study-points"><li>Os pastores em Jud&aacute; n&atilde;o cuidaram do povo de Deus.</li><li>Pelas coisas que falavam e pelo seu mau exemplo, os falsos profetas incentivavam o povo a fazer o que era errado.</li><li>Hoje, os anci&atilde;os pastoreiam as ovelhas com zelo e se esfor&ccedilam para ser bons exemplos.</li></ul></section><div id="meeting-midweek-images" class="watchtower-images"></div><p id="meeting-midweek-content" class="watchtower-full-content"></p><a id="meeting-midweek-link" class="button button-secondary meeting-source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></article>
           <article id="meeting-weekend-card" class="card meeting-card"><div class="meeting-cover-heading"><img id="meeting-watchtower-cover" class="meeting-cover" alt="Capa de A Sentinela" hidden><div><p class="section-label">FIM DE SEMANA</p><h3 id="meeting-watchtower-title">Respeite as decis&otilde;es de outros</h3></div></div><blockquote id="meeting-watchtower-theme">&ldquo;N&atilde;o fa&ccedil;am julgamentos sobre opini&otilde;es divergentes.&rdquo;<cite>&mdash; ROM. 14:1.</cite></blockquote><div class="meeting-divider"></div><p><strong>OBJETIVO</strong></p><p id="meeting-watchtower-objective">Ver como respeitar a decis&atilde;o de outros irm&atilde;os mesmo quando n&atilde;o concordamos.</p><div id="meeting-watchtower-images" class="watchtower-images"></div><p id="meeting-watchtower-content" class="watchtower-full-content"></p><a id="meeting-watchtower-link" class="button button-secondary meeting-source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></article>
         </div>
       </section>
 
-      <section id="daily" class="page simple-page"><div class="card" data-official hidden><p class="reading-label">Leitura do dia</p><p id="daily-page-verse" class="reading-verse">&ldquo;A tua palavra &eacute; l&acirc;mpada para o meu p&eacute; e luz para o meu caminho.&rdquo;</p><p id="daily-page-reference" class="reading-reference">Salmo 119:105</p><div class="daily-divider"></div><p id="daily-page-content" class="daily-full-text">Carregando o texto completo...</p><a id="daily-source" class="button button-secondary source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></div></section>
+      <section id="daily" class="page simple-page"><div class="card" data-official hidden><p class="reading-label">Leitura do dia</p><p id="daily-page-verse" class="reading-verse">&ldquo;A tua palavra &eacute; l&acirc;mpada para o meu p&eacute; e luz para o meu caminho.&rdquo;</p><p id="daily-page-reference" class="reading-reference">Salmo 119:105</p><div class="daily-divider"></div><p id="daily-page-content" class="daily-full-text">Carregando o texto completo...</p><div class="daily-completion"><button type="button" class="button button-secondary" data-daily-done disabled>Marcar leitura como concluída</button></div><a id="daily-source" class="button button-secondary source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></div></section>
       <section id="family" class="page simple-page">
         <article class="card family-study-card" data-official hidden>
           <p class="section-label">ADORA&Ccedil;&Atilde;O EM FAM&Iacute;LIA</p>
@@ -118,6 +148,8 @@
     </form>
   </dialog>
   <noscript>Ative o JavaScript no navegador para acessar o painel.</noscript>
-    <script src="app.js?v=20260923-family-1"></script>
+    <script src="app.js?v=20261001-1"></script>
+    <script src="study-state.js?v=20261001-1"></script>
+    <script src="workspace.js?v=20261001-1"></script>
 </body>
 </html>

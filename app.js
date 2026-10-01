@@ -5,7 +5,7 @@ const pageTitle = document.querySelector('#page-title');
 const eventList = document.querySelector('#events');
 const clearEvents = document.querySelector('#clear-events');
 
-const pageNames = { panel: 'Painel', meetings: 'Reuniões', daily: 'Texto diário', family: 'Adoração em família' };
+const pageNames = { panel: 'Hoje', meetings: 'Reuniões', daily: 'Texto diário', family: 'Adoração em família' };
 let defaultEvents = [
   { title: 'Reuni\u00e3o de meio de semana', meta: 'Esta semana' },
   { title: 'A Sentinela', meta: 'Fim de semana' }
@@ -37,6 +37,7 @@ function decodeLegacyText(value) {
 
 function setPage(page, shouldScroll = true) {
   if (!Object.hasOwn(pageNames, page)) page = 'panel';
+  const pageChanged = document.querySelector('.page.is-active')?.id !== page;
   pages.forEach((item) => item.classList.toggle('is-active', item.id === page));
   document.querySelectorAll('.nav-item').forEach((item) => item.classList.toggle('is-active', item.dataset.page === page));
   document.querySelectorAll('.nav-item').forEach((item) => {
@@ -44,6 +45,7 @@ function setPage(page, shouldScroll = true) {
     else item.removeAttribute('aria-current');
   });
   pageTitle.textContent = pageNames[page];
+  if (pageChanged) window.dispatchEvent(new CustomEvent('page-changed', { detail: page }));
   document.querySelector('#add-event').hidden = page !== 'panel';
   if (window.location.hash !== `#${page}`) window.location.hash = page;
   if (shouldScroll) {
@@ -95,6 +97,7 @@ function renderEvents() {
     eventList.append(row);
   });
   clearEvents.hidden = !savedEvents.length;
+  window.dispatchEvent(new Event('events-changed'));
 }
 
 function saveEvents(events) {
@@ -321,6 +324,7 @@ function saoPauloDate(now = new Date()) {
 let selectedMeeting;
 function selectMeeting(value) {
   selectedMeeting = value;
+  window.dispatchEvent(new CustomEvent('meeting-selected', { detail: value }));
   document.querySelector('#meeting-midweek-card').hidden = value !== 'midweek';
   document.querySelector('#meeting-weekend-card').hidden = value !== 'weekend';
   document.querySelectorAll('[data-meeting]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.meeting === value)));
@@ -467,6 +471,8 @@ async function loadOfficialContent() {
     selectMeeting(selectedMeeting || (showWeekend ? 'weekend' : 'midweek'));
     document.querySelectorAll('[data-official]').forEach((element) => { element.hidden = false; });
     lastContentDate = saoPauloDate();
+    window.officialContent = content;
+    window.dispatchEvent(new CustomEvent('official-content-ready', { detail: content }));
   } catch (error) {
     status.textContent = 'Não foi possível atualizar o conteúdo. Verifique sua conexão e tente novamente.';
     if (lastContentDate) status.textContent += ' A tela mantém o último conteúdo carregado.';
