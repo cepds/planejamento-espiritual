@@ -117,3 +117,6 @@ html[data-focus="true"] .utility-row{position:sticky;top:0;z-index:25;background
 #panel>.weekly-overview{margin:0 0 28px;padding-top:0;border-top:0}
 
 #meetings>.preparation-panel{margin-top:28px}
+
+html[data-theme] #daily .daily-full-text{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:20px}
+@media(max-width:650px){html[data-theme] #daily .daily-full-text{padding:16px}}
