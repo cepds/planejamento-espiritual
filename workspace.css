@@ -115,3 +115,5 @@ html[data-focus="true"] .utility-row{position:sticky;top:0;z-index:25;background
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
 
 #panel>.weekly-overview{margin:0 0 28px;padding-top:0;border-top:0}
+
+#meetings>.preparation-panel{margin-top:28px}

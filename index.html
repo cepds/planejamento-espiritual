@@ -13,7 +13,7 @@
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="panel.css?v=20261001-4">
-  <link rel="stylesheet" href="workspace.css?v=20261003-1">
+  <link rel="stylesheet" href="workspace.css?v=20261003-2">
 </head>
 <body>
   <div class="app-shell">
@@ -99,17 +99,18 @@
 
       <section id="meetings" class="page" aria-labelledby="page-title">
         <div class="page-intro meeting-switch" role="group" aria-label="Escolher reunião"><button type="button" class="button button-secondary" data-meeting="midweek" aria-pressed="false">Meio de semana</button><button type="button" class="button button-secondary" data-meeting="weekend" aria-pressed="false">Fim de semana</button></div>
-        <section id="meeting-preparation" class="preparation-panel" hidden aria-labelledby="prep-title">
-          <div class="prep-heading"><div><p class="section-label">PREPARAÇÃO PESSOAL</p><h2 id="prep-title">Meu preparo</h2></div><label for="prep-week">Consultar semana<select id="prep-week"></select></label></div>
-          <p id="prep-archive-note" hidden>Você está consultando anotações de outra semana. O conteúdo da reunião abaixo é o atual.</p>
-          <div class="prep-meter"><span id="prep-progress" role="status"></span><progress id="prep-progress-bar" max="1" value="0" aria-label="Etapas preparadas"></progress></div>
-          <div class="prep-columns"><div><h3>O que já preparei</h3><div id="prep-checklist"></div></div><div class="prep-writing"><label for="prep-notes">Comentário e ideias que quero lembrar</label><textarea id="prep-notes" rows="6" maxlength="12000" placeholder="Escreva com suas palavras…"></textarea><label for="prep-scriptures">Textos bíblicos que quero usar</label><textarea id="prep-scriptures" rows="3" maxlength="4000" placeholder="Referências e pontos que quero destacar…"></textarea><p class="save-status">Salvamento automático neste navegador, separado por semana.</p></div></div>
-          <button id="prep-show-content" type="button" class="button button-secondary">Ir para o conteúdo da reunião ↓</button>
-        </section>
+        
         <div class="meetings-grid" data-official hidden>
             <article id="meeting-midweek-card" class="card meeting-card"><div class="meeting-cover-heading"><img id="meeting-workbook-cover" class="meeting-cover" alt="Capa da apostila da reuni&atilde;o" hidden><div><p class="section-label">MEIO DE SEMANA</p><h3 id="meeting-reading">Jeremias 22&ndash;23</h3></div></div><section class="treasure-study"><p class="section-label">TESOUROS DA PALAVRA DE DEUS</p><h4 id="meeting-treasure">A import&acirc;ncia de ter bons pastores</h4><span class="study-duration">10 min</span><ul id="meeting-points" class="study-points"><li>Os pastores em Jud&aacute; n&atilde;o cuidaram do povo de Deus.</li><li>Pelas coisas que falavam e pelo seu mau exemplo, os falsos profetas incentivavam o povo a fazer o que era errado.</li><li>Hoje, os anci&atilde;os pastoreiam as ovelhas com zelo e se esfor&ccedilam para ser bons exemplos.</li></ul></section><div id="meeting-midweek-images" class="watchtower-images"></div><p id="meeting-midweek-content" class="watchtower-full-content"></p><a id="meeting-midweek-link" class="button button-secondary meeting-source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></article>
           <article id="meeting-weekend-card" class="card meeting-card"><div class="meeting-cover-heading"><img id="meeting-watchtower-cover" class="meeting-cover" alt="Capa de A Sentinela" hidden><div><p class="section-label">FIM DE SEMANA</p><h3 id="meeting-watchtower-title">Respeite as decis&otilde;es de outros</h3></div></div><blockquote id="meeting-watchtower-theme">&ldquo;N&atilde;o fa&ccedil;am julgamentos sobre opini&otilde;es divergentes.&rdquo;<cite>&mdash; ROM. 14:1.</cite></blockquote><div class="meeting-divider"></div><p><strong>OBJETIVO</strong></p><p id="meeting-watchtower-objective">Ver como respeitar a decis&atilde;o de outros irm&atilde;os mesmo quando n&atilde;o concordamos.</p><div id="meeting-watchtower-images" class="watchtower-images"></div><p id="meeting-watchtower-content" class="watchtower-full-content"></p><a id="meeting-watchtower-link" class="button button-secondary meeting-source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></article>
         </div>
+      <section id="meeting-preparation" class="preparation-panel" hidden aria-labelledby="prep-title">
+          <div class="prep-heading"><div><p class="section-label">PREPARAÇÃO PESSOAL</p><h2 id="prep-title">Meu preparo</h2></div><label for="prep-week">Consultar semana<select id="prep-week"></select></label></div>
+          <p id="prep-archive-note" hidden>Você está consultando anotações de outra semana. O conteúdo da reunião acima é o atual.</p>
+          <div class="prep-meter"><span id="prep-progress" role="status"></span><progress id="prep-progress-bar" max="1" value="0" aria-label="Etapas preparadas"></progress></div>
+          <div class="prep-columns"><div><h3>O que já preparei</h3><div id="prep-checklist"></div></div><div class="prep-writing"><label for="prep-notes">Comentário e ideias que quero lembrar</label><textarea id="prep-notes" rows="6" maxlength="12000" placeholder="Escreva com suas palavras…"></textarea><label for="prep-scriptures">Textos bíblicos que quero usar</label><textarea id="prep-scriptures" rows="3" maxlength="4000" placeholder="Referências e pontos que quero destacar…"></textarea><p class="save-status">Salvamento automático neste navegador, separado por semana.</p></div></div>
+          <button id="prep-show-content" type="button" class="button button-secondary">Voltar ao conteúdo da reunião ↑</button>
+        </section>
       </section>
 
       <section id="daily" class="page simple-page"><div class="card" data-official hidden><p class="reading-label">Leitura do dia</p><p id="daily-page-verse" class="reading-verse">&ldquo;A tua palavra &eacute; l&acirc;mpada para o meu p&eacute; e luz para o meu caminho.&rdquo;</p><p id="daily-page-reference" class="reading-reference">Salmo 119:105</p><div class="daily-divider"></div><p id="daily-page-content" class="daily-full-text">Carregando o texto completo...</p><div class="daily-completion"><button type="button" class="button button-secondary" data-daily-done disabled>Marcar leitura como concluída</button></div><a id="daily-source" class="button button-secondary source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></div></section>
