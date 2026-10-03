@@ -42,6 +42,10 @@
   function renderToday() {
     $('#today-midweek-progress').textContent = progressText('midweek');
     $('#today-weekend-progress').textContent = progressText('weekend');
+    for (const kind of ['midweek', 'weekend']) {
+      const progress = state.progress(recordFor(kind), itemsFor(kind));
+      $('#today-' + kind + '-bar').style.width = (progress.total ? progress.done / progress.total * 100 : 0) + '%';
+    }
     const next = getEvents().filter((event) => specialEventDetails(event)).sort((a, b) => a.date.localeCompare(b.date))[0];
     $('#today-next-title').textContent = next?.title || 'Nenhum evento cadastrado';
     $('#today-next-date').textContent = next ? specialEventDetails(next).meta : 'Adicione congressos, assembleias e visitas à sua agenda.';
