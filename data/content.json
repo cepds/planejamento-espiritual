@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-07T01:02:11.187Z",
+  "updatedAt": "2026-10-07T10:35:38.979Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-10-06",
-    "verse": "A Lei tem uma sombra das coisas boas que viriam.",
-    "reference": "Hebreus 10:1.",
-    "content": "Os primeiros judeus que se tornaram cristãos tiveram que fazer grandes mudanças. No passado, os judeus tinham sido o povo escolhido por Jeová. Jerusalém foi um lugar importante porque era ali que ficava o rei escolhido por Jeová e o templo, que era o centro da adoração pura. Todos os judeus fiéis seguiam a Lei mosaica e as regras que os líderes religiosos ensinavam. Aqueles ensinamentos controlavam o que podiam comer, como encaravam a circuncisão e até como lidavam com pessoas de outras nações. Mas após a morte de Jesus, a Lei foi cancelada e não era mais preciso fazer sacrifícios no templo. Isso foi um desafio para os judeus que tinham se tornado cristãos e estavam acostumados a seguir a Lei. (Hebreus capítulo 10 versículos 1,4,10) Até cristãos maduros, como o apóstolo Pedro, tiveram dificuldade para se adaptar a essas mudanças. (Atos 10:9-14; Gálatas 2:11-14) Por causa dessas novas crenças, os cristãos foram perseguidos pelos líderes religiosos judaicos. w24.09 9 parágrafo 4",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/10/6"
+    "date": "2026-10-07",
+    "verse": "Lembrem-se dos que exercem liderança entre vocês, os que lhes falaram a palavra de Deus.",
+    "reference": "Hebreus 13:7.",
+    "content": "Sempre que Jeová dá ao seu povo um trabalho para fazer, ele espera que seja feito de forma organizada. (Primeira Coríntios 14:33) Por exemplo, Deus quer que as boas novas sejam “pregadas em toda a terra habitada”. (Mateus 24:14) Jeová deu a Jesus a responsabilidade de orientar esse trabalho, e Jesus está cuidando para que ele seja feito de forma organizada. No primeiro século, quando as congregações foram formadas, alguns anciãos foram designados para liderar e dar orientação. (Atos 14:23) E em Jerusalém, um grupo formado por apóstolos e anciãos tomavam decisões que depois eram enviadas para os irmãos. (Atos 15:2; 16:4) Como resultado, “as congregações eram fortalecidas na fé e cresciam a cada dia”. — Atos 16:5. w24.04 8 parágrafo 1",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/10/7"
   },
   "meeting": {
     "weekOf": "2026-10-05",
@@ -244,6 +244,6 @@
       "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-10-06T20:34:45.695Z",
+  "previousUpdatedAt": "2026-10-07T01:02:11.187Z",
   "errors": []
 }
