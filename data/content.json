@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-12T22:36:46.930Z",
+  "updatedAt": "2026-10-13T11:09:28.262Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-10-12",
-    "verse": "O homem é declarado justo apenas por meio da fé em Jesus Cristo.",
-    "reference": "Gálatas 2:16.",
-    "content": "De acordo com a Bíblia, Jeová pode nos declarar justos. Assim, nossos pecados são apagados. Mas isso não significa que Jeová deixa de lado seus padrões de justiça. Ele não nos declara justos porque merecemos e nem faz vista grossa aos nossos pecados. Na verdade, Jeová está disposto a cancelar nossa dívida por causa da fé que temos no que ele e Jesus fizeram para nos resgatar. (Romanos 3:24) O que isso significa para cada um de nós? Para aqueles que foram escolhidos para reinar com Jesus no céu significa que já foram declarados justos como filhos de Deus. (Tito 3:7; Primeira João 3:1) Os pecados deles são perdoados. É como se eles nunca tivessem pecado e, assim, são aprovados para estar no Reino. (Romanos capítulo 8 versículos 1,2,30) Já os que têm a esperança de viver na Terra para sempre foram declarados justos como amigos de Deus e seus pecados são perdoados. — Tiago 2:21-23. w25.02 5 parágrafo 17; 7 parágrafo 18",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/10/12"
+    "date": "2026-10-13",
+    "verse": "Você não tem os pensamentos de Deus, mas os de homens.",
+    "reference": "Mateus 16:23.",
+    "content": "Certa vez, o apóstolo Pedro não teve o mesmo ponto de vista de Jeová sobre as coisas. Jesus disse para os apóstolos que iria a Jerusalém e lá ele seria preso pelos líderes religiosos, torturado e morto. (Mateus 16:21) Pedro sabia que Jesus era o prometido Messias que salvaria o povo de Deus. Por isso, deve ter sido difícil para ele aceitar que Jeová ia permitir que seu Filho sofresse assim. (Mateus 16:16) Então, Pedro chamou Jesus e disse: “Tenha compaixão de si mesmo, Senhor! Isso de modo algum lhe acontecerá.” (Mateus 16:22) Mas Jesus não concordou com isso, porque Pedro não estava pensando como Jeová. As intenções de Pedro podiam até ser boas, mas Jesus rejeitou o conselho dele. Jesus sabia que Jeová não queria que ele pensasse só em si mesmo. Nessa ocasião, Pedro aprendeu a importância de pensar como Jeová. E essa é uma grande lição para nós também. w25.03 9 parágrafos 5 a 6",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/10/13"
   },
   "meeting": {
     "weekOf": "2026-10-12",
@@ -54,48 +54,27 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/d03461/1/ir/w_T_202608_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Exemplo de fé • Abraão",
-    "title": "Abraão: confiar e promover a paz",
-    "prompt": "Observem como a fé pode orientar decisões quando é preciso fazer concessões.",
-    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20040515/Abra%C3%A3o-e-Sara-Voc%C3%AA-pode-ter-f%C3%A9-igual-%C3%A0-deles/",
-    "sourceTitle": "Abraão e Sara — Você pode ter fé igual à deles!",
-    "reading": "Gênesis 13:5-17; Hebreus 11:8",
-    "doThis": "Valorizar a paz e considerar os interesses de outros ao decidir.",
-    "avoidThis": "Insistir em ter vantagem pessoal a qualquer custo.",
+    "topic": "Exemplo de firmeza • José",
+    "title": "José: manter a lealdade sob pressão",
+    "prompt": "Estudem como José protegeu sua amizade com Deus diante de uma tentação persistente.",
+    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/wp20141101/jose-biblia/",
+    "sourceTitle": "José — “Como poderia eu cometer esta grande maldade?”",
+    "reading": "Gênesis 39:7-12",
+    "doThis": "Definir limites claros e se afastar de situações que favoreçam uma conduta errada.",
+    "avoidThis": "Justificar uma concessão porque ninguém está vendo ou porque a pressão se repete.",
     "questions": [
-      "O que a proposta de Abraão a Ló revela sobre sua confiança?",
-      "Em que situação poderíamos ceder para preservar a paz?"
+      "O que motivou José a dizer não?",
+      "Que limite prático pode proteger nossa lealdade hoje?"
     ],
-    "action": "Identifiquem uma decisão em que possam demonstrar consideração e confiança em Jeová.",
+    "action": "Escolham um limite para conversas, entretenimento ou relacionamentos e coloquem em prática.",
     "videoUrl": null,
-    "weekOf": "2026-10-06",
-    "sequence": 3,
+    "weekOf": "2026-10-13",
+    "sequence": 4,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": null,
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2014807/univ/art/2014807_univ_lsr_lg.jpg",
     "videoImageUrl": null
   },
   "familyUpcoming": [
-    {
-      "topic": "Exemplo de fé • Abraão",
-      "title": "Abraão: confiar e promover a paz",
-      "prompt": "Observem como a fé pode orientar decisões quando é preciso fazer concessões.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20040515/Abra%C3%A3o-e-Sara-Voc%C3%AA-pode-ter-f%C3%A9-igual-%C3%A0-deles/",
-      "sourceTitle": "Abraão e Sara — Você pode ter fé igual à deles!",
-      "reading": "Gênesis 13:5-17; Hebreus 11:8",
-      "doThis": "Valorizar a paz e considerar os interesses de outros ao decidir.",
-      "avoidThis": "Insistir em ter vantagem pessoal a qualquer custo.",
-      "questions": [
-        "O que a proposta de Abraão a Ló revela sobre sua confiança?",
-        "Em que situação poderíamos ceder para preservar a paz?"
-      ],
-      "action": "Identifiquem uma decisão em que possam demonstrar consideração e confiança em Jeová.",
-      "videoUrl": null,
-      "weekOf": "2026-10-06",
-      "sequence": 3,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": null,
-      "videoImageUrl": null
-    },
     {
       "topic": "Exemplo de firmeza • José",
       "title": "José: manter a lealdade sob pressão",
@@ -242,8 +221,29 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2019485/univ/art/2019485_univ_lsr_lg.jpg",
       "videoImageUrl": null
+    },
+    {
+      "topic": "Exemplo de fé • Abraão",
+      "title": "Abraão: confiar e promover a paz",
+      "prompt": "Observem como a fé pode orientar decisões quando é preciso fazer concessões.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/w20040515/Abra%C3%A3o-e-Sara-Voc%C3%AA-pode-ter-f%C3%A9-igual-%C3%A0-deles/",
+      "sourceTitle": "Abraão e Sara — Você pode ter fé igual à deles!",
+      "reading": "Gênesis 13:5-17; Hebreus 11:8",
+      "doThis": "Valorizar a paz e considerar os interesses de outros ao decidir.",
+      "avoidThis": "Insistir em ter vantagem pessoal a qualquer custo.",
+      "questions": [
+        "O que a proposta de Abraão a Ló revela sobre sua confiança?",
+        "Em que situação poderíamos ceder para preservar a paz?"
+      ],
+      "action": "Identifiquem uma decisão em que possam demonstrar consideração e confiança em Jeová.",
+      "videoUrl": null,
+      "weekOf": "2026-12-01",
+      "sequence": 11,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": null,
+      "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-10-12T11:20:51.240Z",
+  "previousUpdatedAt": "2026-10-12T22:36:46.930Z",
   "errors": []
 }
