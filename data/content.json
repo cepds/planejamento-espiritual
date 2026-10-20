@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-20T00:42:24.548Z",
+  "updatedAt": "2026-10-20T08:53:17.179Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-10-19",
-    "verse": "Quando oferecer um banquete, convide os pobres, os aleijados, os mancos, os cegos; e você será feliz, porque eles não têm nada com que recompensá-lo. Pois você será recompensado na ressurreição dos justos.",
-    "reference": "Lucas capítulo 14 versículos 13,14.",
-    "content": "Um homem que é “hospitaleiro” faz coisas boas por outros, inclusive por aqueles que não fazem parte do seu círculo de amigos. (Primeira Pedro 4:9) Uma obra de referência descreve um homem hospitaleiro da seguinte maneira: “A porta da sua casa — e do seu coração — deve estar aberta para estranhos.” Então, pergunte-se: ‘Será que eu sou conhecido por ser alguém que mostra bondade aos que visitam minha congregação?’ (Hebreus capítulo 13 versículos 2,16) Um homem hospitaleiro compartilha o que tem com outros. Ele faz isso, por exemplo, com os que são mais pobres e não podem oferecer nada em troca, com os oradores que visitam sua congregação e com os superintendentes de circuito. — Gênesis 18:2-8; Provérbios 3:27; Atos 16:15; Romanos 12:13. w24.11 21 parágrafo 6",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/10/19"
+    "date": "2026-10-20",
+    "verse": "As virgens que estavam prontas entraram com ele para a festa de casamento.",
+    "reference": "Mateus 25:10.",
+    "content": "Na parábola das virgens, Jesus falou sobre dez virgens que saíram ao encontro de um noivo. (Mateus 25:1-4) Todas elas queriam acompanhar o noivo até a festa de casamento. Jesus disse que cinco delas eram “prudentes” e as outras cinco eram “tolas”. As virgens prudentes estavam preparadas para esperar pelo noivo o tempo que fosse preciso, mesmo que ele só chegasse bem tarde. Por isso, elas trouxeram óleo para as suas lâmpadas continuarem acesas na escuridão. Elas até trouxeram óleo extra, caso o noivo se atrasasse. Então, elas estavam preparadas para que as suas lâmpadas não se apagassem. (Mateus 25:6-10) Quando o noivo chegou, as virgens prudentes foram com ele para a festa de casamento. Da mesma maneira, os cristãos ungidos que estiverem prontos por continuarem alertas e fiéis até a chegada de Cristo serão julgados como merecedores de se juntar ao Noivo, Jesus, no seu Reino nos céus. — Apocalipse 7:1-3. w24.09 21 parágrafo 6",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/10/20"
   },
   "meeting": {
     "weekOf": "2026-10-19",
@@ -54,48 +54,27 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/d03461/1/ir/w_T_202608_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Exemplo de firmeza • José",
-    "title": "José: manter a lealdade sob pressão",
-    "prompt": "Estudem como José protegeu sua amizade com Deus diante de uma tentação persistente.",
-    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/wp20141101/jose-biblia/",
-    "sourceTitle": "José — “Como poderia eu cometer esta grande maldade?”",
-    "reading": "Gênesis 39:7-12",
-    "doThis": "Definir limites claros e se afastar de situações que favoreçam uma conduta errada.",
-    "avoidThis": "Justificar uma concessão porque ninguém está vendo ou porque a pressão se repete.",
+    "topic": "Exemplo de alerta • Mulher de Ló",
+    "title": "Não deixar as coisas materiais dirigir a vida",
+    "prompt": "Usem o alerta de Jesus para avaliar prioridades, sem presumir motivos que a Bíblia não explica.",
+    "articleUrl": "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/agosto-2018-mwb/programa-reuniao-ago6-12/lembre-se-da-mulher-lo-perguntas/",
+    "sourceTitle": "Lembre-se da Mulher de Ló",
+    "reading": "Gênesis 19:17, 26; Lucas 17:31, 32; Mateus 6:24, 33",
+    "doThis": "Examinar se o desejo de conforto ou de possuir mais está ocupando o lugar das atividades espirituais.",
+    "avoidThis": "Permitir que a busca por bens determine todas as escolhas.",
     "questions": [
-      "O que motivou José a dizer não?",
-      "Que limite prático pode proteger nossa lealdade hoje?"
+      "Qual é o alerta de Jesus para nós?",
+      "Há algo na nossa rotina que mostra prioridades fora de equilíbrio?"
     ],
-    "action": "Escolham um limite para conversas, entretenimento ou relacionamentos e coloquem em prática.",
+    "action": "Revejam um compromisso ou objetivo material e ajustem o que estiver prejudicando a rotina espiritual.",
     "videoUrl": null,
-    "weekOf": "2026-10-13",
-    "sequence": 4,
+    "weekOf": "2026-10-20",
+    "sequence": 5,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2014807/univ/art/2014807_univ_lsr_lg.jpg",
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/202018284/univ/art/202018284_univ_lsr_lg.jpg",
     "videoImageUrl": null
   },
   "familyUpcoming": [
-    {
-      "topic": "Exemplo de firmeza • José",
-      "title": "José: manter a lealdade sob pressão",
-      "prompt": "Estudem como José protegeu sua amizade com Deus diante de uma tentação persistente.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/wp20141101/jose-biblia/",
-      "sourceTitle": "José — “Como poderia eu cometer esta grande maldade?”",
-      "reading": "Gênesis 39:7-12",
-      "doThis": "Definir limites claros e se afastar de situações que favoreçam uma conduta errada.",
-      "avoidThis": "Justificar uma concessão porque ninguém está vendo ou porque a pressão se repete.",
-      "questions": [
-        "O que motivou José a dizer não?",
-        "Que limite prático pode proteger nossa lealdade hoje?"
-      ],
-      "action": "Escolham um limite para conversas, entretenimento ou relacionamentos e coloquem em prática.",
-      "videoUrl": null,
-      "weekOf": "2026-10-13",
-      "sequence": 4,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2014807/univ/art/2014807_univ_lsr_lg.jpg",
-      "videoImageUrl": null
-    },
     {
       "topic": "Exemplo de alerta • Mulher de Ló",
       "title": "Não deixar as coisas materiais dirigir a vida",
@@ -242,8 +221,29 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": null,
       "videoImageUrl": null
+    },
+    {
+      "topic": "Exemplo de firmeza • José",
+      "title": "José: manter a lealdade sob pressão",
+      "prompt": "Estudem como José protegeu sua amizade com Deus diante de uma tentação persistente.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/wp20141101/jose-biblia/",
+      "sourceTitle": "José — “Como poderia eu cometer esta grande maldade?”",
+      "reading": "Gênesis 39:7-12",
+      "doThis": "Definir limites claros e se afastar de situações que favoreçam uma conduta errada.",
+      "avoidThis": "Justificar uma concessão porque ninguém está vendo ou porque a pressão se repete.",
+      "questions": [
+        "O que motivou José a dizer não?",
+        "Que limite prático pode proteger nossa lealdade hoje?"
+      ],
+      "action": "Escolham um limite para conversas, entretenimento ou relacionamentos e coloquem em prática.",
+      "videoUrl": null,
+      "weekOf": "2026-12-08",
+      "sequence": 12,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2014807/univ/art/2014807_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-10-19T16:38:41.899Z",
+  "previousUpdatedAt": "2026-10-20T00:42:24.548Z",
   "errors": []
 }
