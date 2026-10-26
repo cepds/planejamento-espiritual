@@ -332,6 +332,7 @@ function selectMeeting(value) {
 document.querySelectorAll('[data-meeting]').forEach((button) => button.addEventListener('click', () => selectMeeting(button.dataset.meeting)));
 let loadingContent = false;
 let lastContentDate;
+let lastContentCheck = 0;
 async function loadOfficialContent() {
   if (loadingContent) return;
   loadingContent = true;
@@ -352,7 +353,15 @@ async function loadOfficialContent() {
     document.querySelector('#daily-source').href = content.daily.url || 'https://wol.jw.org/pt/';
     const updated = new Date(content.updatedAt);
     const updateLabel = Number.isNaN(updated.getTime()) ? '' : ` Atualizado em ${new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' }).format(updated)}.`;
-    status.textContent = (dailyIsCurrent ? 'Conteúdo carregado.' : 'O texto disponível ainda não é o de hoje.') + updateLabel + (!navigator.onLine ? ' Sem conexão: exibindo a cópia salva.' : '');
+    const errors = Array.isArray(content.errors) ? content.errors : [];
+    const staleSections = [
+      content.meeting?.weekOf !== expectedMidweekWeek() ? 'reunião' : null,
+      content.watchtower?.weekOf !== currentMondayWeek() ? 'A Sentinela' : null
+    ].filter(Boolean);
+    status.textContent = (dailyIsCurrent ? 'Conteúdo carregado.' : 'O texto disponível ainda não é o de hoje.') + updateLabel
+      + (staleSections.length ? ` Seções desatualizadas: ${staleSections.join(', ')}.` : '')
+      + (errors.length ? ` Atualização parcial: ${errors.join('; ')}.` : '')
+      + (!navigator.onLine ? ' Sem conexão: exibindo a cópia salva.' : '');
     refreshToday();
     if (content.daily?.verse && content.daily?.reference) {
       document.querySelector('#panel-daily-verse').textContent = `“${content.daily.verse}”`;
@@ -470,7 +479,7 @@ async function loadOfficialContent() {
     document.querySelector('#weekend-focus').hidden = !showWeekend;
     selectMeeting(selectedMeeting || (showWeekend ? 'weekend' : 'midweek'));
     document.querySelectorAll('[data-official]').forEach((element) => { element.hidden = false; });
-    lastContentDate = saoPauloDate();
+    lastContentDate = content.daily.date;
     window.officialContent = content;
     window.dispatchEvent(new CustomEvent('official-content-ready', { detail: content }));
   } catch (error) {
@@ -478,6 +487,7 @@ async function loadOfficialContent() {
     if (lastContentDate) status.textContent += ' A tela mantém o último conteúdo carregado.';
     console.warn('Conteúdo oficial não pôde ser atualizado.', error);
   } finally {
+    lastContentCheck = Date.now();
     loadingContent = false;
     retry.disabled = false;
   }
@@ -485,9 +495,23 @@ async function loadOfficialContent() {
 
 document.querySelector('#retry-content').addEventListener('click', loadOfficialContent);
 window.addEventListener('online', loadOfficialContent);
-document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && lastContentDate !== saoPauloDate()) loadOfficialContent();
-});
+function currentMondayWeek() {
+  const date = new Date(saoPauloDate() + 'T00:00:00Z');
+  date.setUTCDate(date.getUTCDate() - (date.getUTCDay() + 6) % 7);
+  return date.toISOString().slice(0, 10);
+}
+function expectedMidweekWeek() {
+  const date = new Date(saoPauloDate() + 'T00:00:00Z');
+  const weekday = date.getUTCDay();
+  date.setUTCDate(date.getUTCDate() - (weekday + 6) % 7 + (weekday === 0 || weekday >= 5 ? 7 : 0));
+  return date.toISOString().slice(0, 10);
+}
+function refreshContentIfNeeded() {
+  if (!document.hidden && (lastContentDate !== saoPauloDate() || Date.now() - lastContentCheck >= 15 * 60 * 1000)) loadOfficialContent();
+}
+window.addEventListener('focus', refreshContentIfNeeded);
+document.addEventListener('visibilitychange', refreshContentIfNeeded);
+setInterval(refreshContentIfNeeded, 15 * 60 * 1000);
 loadOfficialContent();
 
 if ('serviceWorker' in navigator) {
