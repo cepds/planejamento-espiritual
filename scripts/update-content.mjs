@@ -322,7 +322,10 @@ function issueCode(date, offset = 0) {
 }
 
 function studyRange(title) {
-  const match = decodeHtml(title).toLowerCase().match(/^(\d{1,2})(?: de ([a-zç]+))? a (\d{1,2}) de ([a-zç]+) de (\d{4})/i);
+  const normalized = decodeHtml(title).toLowerCase()
+    .replace(/&(?:ndash|mdash);|&#(?:8211|8212|x2013|x2014);/gi, '–')
+    .replace(/\\s+/g, ' ').trim();
+  const match = normalized.match(/^(\\d{1,2})(?:\\s*\\.?\\s*[º°])?(?:\\s+de\\s+([a-zç]+))?\\s*(?:a|[-–—])\\s*(\\d{1,2})(?:\\s*\\.?\\s*[º°])?\\s+de\\s+([a-zç]+)\\s+de\\s+(\\d{4})\\b/i);
   if (!match) return null;
   const [, startDay, explicitStartMonth, endDay, endMonthName, endYearText] = match;
   const endMonth = months.indexOf(endMonthName);
@@ -330,10 +333,10 @@ function studyRange(title) {
   if (startMonth < 0 || endMonth < 0) return null;
   const endYear = Number(endYearText);
   const startYear = startMonth > endMonth ? endYear - 1 : endYear;
-  return {
-    start: new Date(Date.UTC(startYear, startMonth, Number(startDay))),
-    end: new Date(Date.UTC(endYear, endMonth, Number(endDay)))
-  };
+  const start = new Date(Date.UTC(startYear, startMonth, Number(startDay)));
+  const end = new Date(Date.UTC(endYear, endMonth, Number(endDay)));
+  if (start.getUTCDate() !== Number(startDay) || end.getUTCDate() !== Number(endDay) || start > end) return null;
+  return { start, end };
 }
 
 function rangeIncludes(title, date) {
@@ -541,4 +544,4 @@ await writeFile(contentFile, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
 console.log(`Conteúdo validado: texto ${daily.date}; apostila ${meeting.weekOf}; Sentinela ${watchtower.weekOf}.`);
 }
 
-export { familyCatalog, familyWorshipFor, familyUpcomingFor, dailyHeadingPattern, dateInSaoPaulo, midweekTargetDate, mondayOf, tuesdayOf };
+export { studyRange, rangeIncludes, familyCatalog, familyWorshipFor, familyUpcomingFor, dailyHeadingPattern, dateInSaoPaulo, midweekTargetDate, mondayOf, tuesdayOf };
