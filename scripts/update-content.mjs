@@ -513,6 +513,27 @@ async function getWatchtowerStudy(date) {
   };
 }
 
+function resolveContentUpdates(previous, outcomes, expected) {
+  const errors = [];
+  function useLatest(index, label, valid, fallback) {
+    const outcome = outcomes[index];
+    if (outcome?.status === 'fulfilled' && valid(outcome.value)) return outcome.value;
+    const reason = outcome?.status === 'rejected' ? outcome.reason?.message || String(outcome.reason) : 'dados inválidos ou semana divergente';
+    if (!valid(fallback, false)) throw new Error(label + ': falha na atualização, sem conteúdo anterior válido. ' + reason);
+    errors.push(label + ' não atualizado: ' + reason);
+    return fallback;
+  }
+  const daily = useLatest(0, 'Texto diário', (v, requireCurrent = true) => Boolean(v?.date && v?.verse && v?.reference && v?.content &&
+    (!requireCurrent || v.date === expected.daily)), previous.daily);
+  const bundle = useLatest(1, 'Reunião do meio de semana', (v, requireCurrent = true) => Boolean(v?.meeting?.reading && v?.midweekStudy?.content &&
+    v.meeting.weekOf && v.midweekStudy.weekOf && (!requireCurrent ||
+      (v.meeting.weekOf === expected.midweek && v.midweekStudy.weekOf === expected.midweek))),
+    { meeting: previous.meeting, midweekStudy: previous.midweekStudy });
+  const watchtower = useLatest(2, 'A Sentinela', (v, requireCurrent = true) => Boolean(v?.title && v?.theme && v?.objective && v?.content && v?.weekOf &&
+    (!requireCurrent || v.weekOf === expected.watchtower)), previous.watchtower);
+  return { daily, ...bundle, watchtower, errors };
+}
+
 if (process.env.SKIP_UPDATE_MAIN !== '1') {
 const requestedDate = process.env.CONTENT_DATE;
 const now = requestedDate ? new Date(`${requestedDate}T00:00:00Z`) : dateInSaoPaulo();
@@ -520,16 +541,14 @@ if (Number.isNaN(now.getTime())) throw new Error(`Data de validação inválida:
 const previous = JSON.parse(await readFile(contentFile, 'utf8'));
 const meetingTarget = midweekTargetDate(now);
 const watchtowerTarget = mondayOf(now);
-const [daily, meetingBundle, watchtower] = await Promise.all([
+const outcomes = await Promise.allSettled([
   getDaily(now), getMeeting(meetingTarget), getWatchtowerStudy(watchtowerTarget)
 ]);
-const { meeting, midweekStudy } = meetingBundle;
-const expectedDaily = now.toISOString().slice(0, 10);
-const expectedMeeting = meetingTarget.toISOString().slice(0, 10);
-const expectedWatchtower = watchtowerTarget.toISOString().slice(0, 10);
-if (daily.date !== expectedDaily) throw new Error(`Texto diário desatualizado: esperado ${expectedDaily}, recebido ${daily.date}.`);
-if (meeting.weekOf !== expectedMeeting || midweekStudy.weekOf !== expectedMeeting) throw new Error(`Apostila desatualizada: esperada semana ${expectedMeeting}.`);
-if (watchtower.weekOf !== expectedWatchtower) throw new Error(`A Sentinela desatualizada: esperada semana ${expectedWatchtower}.`);
+const { daily, meeting, midweekStudy, watchtower, errors } = resolveContentUpdates(previous, outcomes, {
+  daily: now.toISOString().slice(0, 10),
+  midweek: meetingTarget.toISOString().slice(0, 10),
+  watchtower: watchtowerTarget.toISOString().slice(0, 10)
+});
 const covers = { workbook: midweekStudy.coverUrl || meeting.coverUrl, watchtower: watchtower.coverUrl };
 const familyUpcoming = await Promise.all(familyUpcomingFor(now).map(addFamilyVisuals));
 const familyWorship = familyUpcoming[0];
@@ -537,11 +556,12 @@ const content = {
   updatedAt: new Date().toISOString(), timezone: 'America/Sao_Paulo',
   updateRules: { daily: 'todos os dias', midweek: 'toda sexta-feira para a próxima semana', watchtower: 'toda segunda-feira', familyWorship: 'toda terça-feira' },
   daily, meeting, midweekStudy, watchtower, covers, familyWorship, familyUpcoming,
-  previousUpdatedAt: previous.updatedAt || null, errors: []
+  previousUpdatedAt: previous.updatedAt || null, errors
 };
 await mkdir(new URL('../data/', import.meta.url), { recursive: true });
 await writeFile(contentFile, `${JSON.stringify(content, null, 2)}\n`, 'utf8');
-console.log(`Conteúdo validado: texto ${daily.date}; apostila ${meeting.weekOf}; Sentinela ${watchtower.weekOf}.`);
+console.log(`Conteúdo salvo: texto ${daily.date}; apostila ${meeting.weekOf}; Sentinela ${watchtower.weekOf}.`);
+if (errors.length) console.warn('Atualização parcial: ' + errors.join('; '));
 }
 
-export { studyRange, rangeIncludes, familyCatalog, familyWorshipFor, familyUpcomingFor, dailyHeadingPattern, dateInSaoPaulo, midweekTargetDate, mondayOf, tuesdayOf };
+export { resolveContentUpdates, studyRange, rangeIncludes, familyCatalog, familyWorshipFor, familyUpcomingFor, dailyHeadingPattern, dateInSaoPaulo, midweekTargetDate, mondayOf, tuesdayOf };
