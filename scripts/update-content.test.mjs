@@ -86,3 +86,29 @@ test('A Sentinela reconhece virada de ano e rejeita datas impossíveis', () => {
   assert.equal(studyRange('31 a 34 de outubro de 2026'), null);
   assert.equal(studyRange('título sem intervalo'), null);
 });
+
+test('falha isolada conserva a última Sentinela validada sem bloquear outros conteúdos', async () => {
+  const { resolveContentUpdates } = await import('./update-content.mjs');
+  const previous = {
+    daily: {date:'2026-10-25', verse:'A', reference:'B', content:'C'},
+    meeting: {weekOf:'2026-10-19', reading:'A'},
+    midweekStudy: {weekOf:'2026-10-19', content:'A'},
+    watchtower: {weekOf:'2026-10-19', title:'A', theme:'B', objective:'C', content:'D'}
+  };
+  const result=resolveContentUpdates(previous, [
+    {status:'fulfilled',value:{...previous.daily,date:'2026-10-26'}},
+    {status:'fulfilled',value:{meeting:{...previous.meeting,weekOf:'2026-10-26'},midweekStudy:{...previous.midweekStudy,weekOf:'2026-10-26'}}},
+    {status:'rejected',reason:new Error('API indisponível')}
+  ], {daily:'2026-10-26',midweek:'2026-10-26',watchtower:'2026-10-26'});
+  assert.equal(result.daily.date,'2026-10-26');
+  assert.equal(result.watchtower.weekOf,'2026-10-19');
+  assert.equal(result.errors.length,1);
+});
+test('não fabrica conteúdo quando não existe cópia anterior válida', async () => {
+  const { resolveContentUpdates } = await import('./update-content.mjs');
+  assert.throws(()=>resolveContentUpdates({},[
+    {status:'rejected',reason:new Error('sem rede')},
+    {status:'rejected',reason:new Error('sem rede')},
+    {status:'rejected',reason:new Error('sem rede')}
+  ], {daily:'2026-10-26',midweek:'2026-10-26',watchtower:'2026-10-26'}), /sem conteúdo anterior válido/);
+});
