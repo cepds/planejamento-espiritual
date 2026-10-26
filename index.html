@@ -13,7 +13,7 @@
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="panel.css?v=20261001-4">
-  <link rel="stylesheet" href="workspace.css?v=20261003-4">
+  <link rel="stylesheet" href="workspace.css?v=20261026-1">
 </head>
 <body>
   <div class="app-shell">
@@ -140,6 +140,11 @@
       </section>
       </div>
           <p id="personal-save-status" class="save-status" role="status">Marcações e anotações ficam neste navegador.</p>
+          <div class="backup-tools" aria-label="Backup dos dados pessoais">
+            <button id="backup-export" class="button button-secondary" type="button">Exportar backup</button>
+            <button id="backup-import" class="button button-secondary" type="button">Restaurar backup</button>
+            <input id="backup-file" type="file" accept="application/json,.json" hidden aria-label="Selecionar backup em JSON">
+          </div>
     </main>
   </div>
   <dialog id="event-dialog" aria-labelledby="event-dialog-title">
@@ -153,8 +158,9 @@
     </form>
   </dialog>
   <noscript>Ative o JavaScript no navegador para acessar o painel.</noscript>
-    <script src="app.js?v=20261001-4"></script>
+    <script src="app.js?v=20261026-1"></script>
     <script src="study-state.js?v=20261001-4"></script>
-    <script src="workspace.js?v=20261001-4"></script>
+    <script src="backup.js?v=20261026-1"></script>
+    <script src="workspace.js?v=20261026-1"></script>
 </body>
 </html>
