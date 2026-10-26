@@ -21,8 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
       - run: npm run check
@@ -34,7 +34,26 @@ jobs:
           git add data/content.json
           git diff --cached --quiet || git commit -m "Atualiza texto diário e reunião"
           git push
+      # A conta de serviço é preferida; token antigo continua como contingência.
+      - name: Preparar credenciais do Firebase
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -n "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$RUNNER_TEMP/firebase-service-account.json"
+            chmod 600 "$RUNNER_TEMP/firebase-service-account.json"
+            echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-service-account.json" >> "$GITHUB_ENV"
+          fi
       - name: Publicar no Firebase
-        run: npx firebase-tools deploy --only hosting --project planejamento-espiritual --token "$FIREBASE_TOKEN"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          if [ -n "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]; then
+            npx --yes firebase-tools@15.34.1 deploy --only hosting --project planejamento-espiritual --non-interactive
+          elif [ -n "$FIREBASE_TOKEN" ]; then
+            echo "::warning::Token legado em uso. Configure FIREBASE_SERVICE_ACCOUNT para migrar."
+            npx --yes firebase-tools@15.34.1 deploy --only hosting --project planejamento-espiritual --token "$FIREBASE_TOKEN" --non-interactive
+          else
+            echo "::error::Configure FIREBASE_SERVICE_ACCOUNT ou FIREBASE_TOKEN."
+            exit 1
+          fi
