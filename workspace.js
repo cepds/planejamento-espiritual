@@ -1,5 +1,6 @@
 (() => {
   const state = window.StudyState;
+  const backup = window.PersonalBackup;
   let content = window.officialContent || null;
   let meeting = 'midweek';
   let viewedWeek = null;
@@ -165,6 +166,41 @@
   window.addEventListener('meeting-selected', (event) => { meeting = event.detail; viewedWeek = null; renderPreparation(); });
   window.addEventListener('events-changed', renderToday);
   window.addEventListener('official-content-ready', (event) => { content = event.detail; renderToday(); renderPreparation(); });
+  $('#backup-export').addEventListener('click', () => {
+    try {
+      const documentData = backup.exportData(localStorage);
+      const blob = new Blob([JSON.stringify(documentData, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'planejamento-espiritual-backup-' + saoPauloDate() + '.json';
+      document.body.append(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      $('#personal-save-status').textContent = 'Arquivo de backup gerado. Guarde-o em local seguro.';
+    } catch (error) {
+      $('#personal-save-status').textContent = 'Não foi possível gerar o backup.';
+      console.warn('Backup indisponível.', error);
+    }
+  });
+  const backupFile = $('#backup-file');
+  $('#backup-import').addEventListener('click', () => backupFile.click());
+  backupFile.addEventListener('change', async () => {
+    const file = backupFile.files?.[0];
+    backupFile.value = '';
+    if (!file) return;
+    try {
+      if (file.size > 2_000_000) throw new Error('Arquivo acima do limite de 2 MB.');
+      const imported = JSON.parse(await file.text());
+      if (!confirm('Restaurar este backup? Registros com a mesma chave serão substituídos.')) return;
+      const count = backup.importData(localStorage, imported);
+      $('#personal-save-status').textContent = count + ' registros restaurados. Atualizando a página.';
+      location.reload();
+    } catch (error) {
+      $('#personal-save-status').textContent = 'Não foi possível restaurar: ' + error.message;
+    }
+  });
   window.addEventListener('storage', (event) => {
     if (event.key?.startsWith(state.prefix) || event.key === 'planejamento-espiritual-20-events') { renderToday(); renderPreparation(); }
   });
