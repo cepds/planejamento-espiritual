@@ -8,7 +8,7 @@ function harness(fetchResult, failWrite = false) {
   const saved = new Response('{"cached":true}');
   const context = { URL, Response, fetch: fetchResult, caches: {
     open: async () => ({ addAll: async () => {}, put: async (key) => { if (failWrite) throw Error('quota'); writes.push(key); }, match: async () => saved }),
-    keys: async () => ['planejamento-espiritual-shell-v2', 'another-app', 'planejamento-espiritual-shell-v7'],
+    keys: async () => ['planejamento-espiritual-shell-v2', 'another-app', 'planejamento-espiritual-shell-v7', 'planejamento-espiritual-shell-v8'],
     delete: async (key) => deleted.push(key)
   }, self: { location: {origin:'https://example.com'}, addEventListener: (type, handler) => handlers[type] = handler, skipWaiting: async () => {}, clients: {claim: async () => {}} }};
   vm.runInNewContext(source, context);
@@ -34,5 +34,19 @@ test('sem rede utiliza a cópia salva', async () => {
 test('limpeza mantém caches de outros aplicativos', async () => {
   const h = harness(async () => new Response('ok'));let done;
   h.handlers.activate({waitUntil: value => done=value}); await done;
-  assert.deepEqual(h.deleted,['planejamento-espiritual-shell-v2']);
+  assert.deepEqual(h.deleted,['planejamento-espiritual-shell-v2','planejamento-espiritual-shell-v7']);
+});
+
+test('primeira instalação prepara o conteúdo offline', async () => {
+  const h = harness(async () => new Response('{"daily":{"date":"2026-10-26"}}',{status:200}));
+  let completed;
+  h.handlers.install({waitUntil: promise => completed=promise});
+  await completed;
+  assert.ok(h.writes.includes('/data/content.json'));
+});
+test('falha na origem não impede instalação offline', async () => {
+  const h = harness(async () => { throw Error('offline'); });
+  let completed;
+  h.handlers.install({waitUntil: promise => completed=promise});
+  await completed;
 });
