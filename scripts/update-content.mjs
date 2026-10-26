@@ -324,8 +324,8 @@ function issueCode(date, offset = 0) {
 function studyRange(title) {
   const normalized = decodeHtml(title).toLowerCase()
     .replace(/&(?:ndash|mdash);|&#(?:8211|8212|x2013|x2014);/gi, '–')
-    .replace(/\\s+/g, ' ').trim();
-  const match = normalized.match(/^(\\d{1,2})(?:\\s*\\.?\\s*[º°])?(?:\\s+de\\s+([a-zç]+))?\\s*(?:a|[-–—])\\s*(\\d{1,2})(?:\\s*\\.?\\s*[º°])?\\s+de\\s+([a-zç]+)\\s+de\\s+(\\d{4})\\b/i);
+    .replace(/\s+/g, ' ').trim();
+  const match = normalized.match(/^(\d{1,2})(?:\s*\.?\s*[º°])?(?:\s+de\s+([a-zç]+))?\s*(?:a|[-–—])\s*(\d{1,2})(?:\s*\.?\s*[º°])?\s+de\s+([a-zç]+)\s+de\s+(\d{4})\b/i);
   if (!match) return null;
   const [, startDay, explicitStartMonth, endDay, endMonthName, endYearText] = match;
   const endMonth = months.indexOf(endMonthName);
