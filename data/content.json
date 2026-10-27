@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-27T00:52:15.810Z",
+  "updatedAt": "2026-10-27T09:21:47.959Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-10-26",
-    "verse": "Estamos andando pela fé, não pela vista.",
-    "reference": "Segunda Coríntios 5:7.",
-    "content": "O apóstolo Paulo sabia que seria morto em breve. Mas ao refletir no modo como tinha levado sua vida, ele se sentiu muito feliz. Ele disse: “Terminei a corrida, vivi de acordo com a fé.” (Segunda Timóteo 4:6-8) Paulo tomou decisões sábias em sua vida como cristão e sabia que tinha alegrado o coração de Jeová. Nós também queremos tomar boas decisões e ter a aprovação de Jeová. Então, o que precisamos fazer? Falando sobre si mesmo e sobre outros cristãos fiéis, Paulo disse: “Estamos andando pela fé, não pela vista.” Na Bíblia, a palavra “andar” às vezes se refere a como uma pessoa decide viver sua vida. Quando alguém anda pela fé, ele toma decisões baseadas no que Jeová pensa. Suas ações mostram que ele tem certeza de que Deus vai recompensá-lo e de que os conselhos de Jeová, que encontramos na Bíblia, sempre são para o nosso bem. — Salmo 119 versículo 66; Hebreus 11:6. w25.03 20 parágrafos 1 a 2",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/10/26"
+    "date": "2026-10-27",
+    "verse": "Sejam transformados, renovando a sua mente.",
+    "reference": "Romanos 12:2.",
+    "content": "Com a ajuda do espírito santo de Jeová, muitas pessoas que eram violentas, agressivas e desonestas fizeram mudanças impressionantes na vida. (Isaías 65:25) Depois de muito esforço, elas conseguiram se livrar de sua personalidade ruim. (Efésios 4:22-24) É verdade que, por causa de nossa imperfeição, nós ainda continuamos cometendo erros. Mas Jeová tem unido “todo tipo de pessoas” que amam a ele e amam uns aos outros e, como resultado, nós temos verdadeira paz e união. (Tito 2:11) Esse é um milagre que apenas o Deus Todo-Poderoso poderia fazer! Nós sabemos que as promessas de Jeová sempre se cumprem. (Isaías capítulo 55 versículos 10,11) Ou seja, o paraíso espiritual já é uma realidade. Jeová já reuniu uma família de adoradores que é sem igual. Entre o povo de Jeová, podemos nos sentir em paz como se estivéssemos bem longe deste mundo violento. (Salmo 72 versículo 7) É por causa disso que nós queremos ajudar o maior número possível de pessoas a também se juntarem à nossa família mundial. Podemos fazer isso nos concentrando na obra de fazer discípulos. — Mateus capítulo 28 versículos 19,20. w24.04 23 parágrafos 13, 15",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/10/27"
   },
   "meeting": {
     "weekOf": "2026-10-26",
@@ -53,48 +53,27 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/d03461/1/ir/w_T_202608_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Exemplo de alerta • Mulher de Ló",
-    "title": "Não deixar as coisas materiais dirigir a vida",
-    "prompt": "Usem o alerta de Jesus para avaliar prioridades, sem presumir motivos que a Bíblia não explica.",
-    "articleUrl": "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/agosto-2018-mwb/programa-reuniao-ago6-12/lembre-se-da-mulher-lo-perguntas/",
-    "sourceTitle": "Lembre-se da Mulher de Ló",
-    "reading": "Gênesis 19:17, 26; Lucas 17:31, 32; Mateus 6:24, 33",
-    "doThis": "Examinar se o desejo de conforto ou de possuir mais está ocupando o lugar das atividades espirituais.",
-    "avoidThis": "Permitir que a busca por bens determine todas as escolhas.",
+    "topic": "Exemplo de perseverança • Pedro",
+    "title": "Pedro: aprender com os erros e continuar",
+    "prompt": "O exemplo de Pedro ajuda a encarar as próprias fraquezas sem desistir de melhorar.",
+    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-setembro-2023/Assim-como-Pedro-n%C3%A3o-desista/",
+    "sourceTitle": "Assim como Pedro, não desista!",
+    "reading": "Lucas 22:31, 32; João 21:15-17",
+    "doThis": "Aceitar ajuda e correção, reconhecer falhas e continuar se esforçando.",
+    "avoidThis": "Concluir que um erro torna impossível voltar a agir com fé.",
     "questions": [
-      "Qual é o alerta de Jesus para nós?",
-      "Há algo na nossa rotina que mostra prioridades fora de equilíbrio?"
+      "Como Jesus mostrou que não havia desistido de Pedro?",
+      "Que ajuda precisamos aceitar para continuar melhorando?"
     ],
-    "action": "Revejam um compromisso ou objetivo material e ajustem o que estiver prejudicando a rotina espiritual.",
+    "action": "Definam um passo pequeno e concreto para trabalhar uma dificuldade nesta semana.",
     "videoUrl": null,
-    "weekOf": "2026-10-20",
-    "sequence": 5,
+    "weekOf": "2026-10-27",
+    "sequence": 6,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/202018284/univ/art/202018284_univ_lsr_lg.jpg",
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2023565/univ/art/2023565_univ_lsr_lg.jpg",
     "videoImageUrl": null
   },
   "familyUpcoming": [
-    {
-      "topic": "Exemplo de alerta • Mulher de Ló",
-      "title": "Não deixar as coisas materiais dirigir a vida",
-      "prompt": "Usem o alerta de Jesus para avaliar prioridades, sem presumir motivos que a Bíblia não explica.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/agosto-2018-mwb/programa-reuniao-ago6-12/lembre-se-da-mulher-lo-perguntas/",
-      "sourceTitle": "Lembre-se da Mulher de Ló",
-      "reading": "Gênesis 19:17, 26; Lucas 17:31, 32; Mateus 6:24, 33",
-      "doThis": "Examinar se o desejo de conforto ou de possuir mais está ocupando o lugar das atividades espirituais.",
-      "avoidThis": "Permitir que a busca por bens determine todas as escolhas.",
-      "questions": [
-        "Qual é o alerta de Jesus para nós?",
-        "Há algo na nossa rotina que mostra prioridades fora de equilíbrio?"
-      ],
-      "action": "Revejam um compromisso ou objetivo material e ajustem o que estiver prejudicando a rotina espiritual.",
-      "videoUrl": null,
-      "weekOf": "2026-10-20",
-      "sequence": 5,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/202018284/univ/art/202018284_univ_lsr_lg.jpg",
-      "videoImageUrl": null
-    },
     {
       "topic": "Exemplo de perseverança • Pedro",
       "title": "Pedro: aprender com os erros e continuar",
@@ -241,8 +220,29 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2014807/univ/art/2014807_univ_lsr_lg.jpg",
       "videoImageUrl": null
+    },
+    {
+      "topic": "Exemplo de alerta • Mulher de Ló",
+      "title": "Não deixar as coisas materiais dirigir a vida",
+      "prompt": "Usem o alerta de Jesus para avaliar prioridades, sem presumir motivos que a Bíblia não explica.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/agosto-2018-mwb/programa-reuniao-ago6-12/lembre-se-da-mulher-lo-perguntas/",
+      "sourceTitle": "Lembre-se da Mulher de Ló",
+      "reading": "Gênesis 19:17, 26; Lucas 17:31, 32; Mateus 6:24, 33",
+      "doThis": "Examinar se o desejo de conforto ou de possuir mais está ocupando o lugar das atividades espirituais.",
+      "avoidThis": "Permitir que a busca por bens determine todas as escolhas.",
+      "questions": [
+        "Qual é o alerta de Jesus para nós?",
+        "Há algo na nossa rotina que mostra prioridades fora de equilíbrio?"
+      ],
+      "action": "Revejam um compromisso ou objetivo material e ajustem o que estiver prejudicando a rotina espiritual.",
+      "videoUrl": null,
+      "weekOf": "2026-12-15",
+      "sequence": 13,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/202018284/univ/art/202018284_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-10-26T18:57:39.585Z",
+  "previousUpdatedAt": "2026-10-27T00:52:15.810Z",
   "errors": []
 }
