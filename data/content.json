@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-02T23:13:31.550Z",
+  "updatedAt": "2026-11-03T11:23:08.418Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -8,11 +8,11 @@
     "familyWorship": "toda terça-feira"
   },
   "daily": {
-    "date": "2026-11-02",
-    "verse": "Se falta sabedoria a algum de vocês, que ele persista em pedi-la a Deus— pois ele dá a todos generosamente, sem censurar.",
-    "reference": "Tiago 1:5.",
-    "content": "Como o texto de hoje mostra, Jeová não guarda a sabedoria só para ele. De modo generoso, ele a divide com outros. Também, quando Jeová dá sabedoria, ele faz isso “sem censurar”, ou “recriminar”. Jeová não quer que nos sintamos mal por pedir a orientação dele; ele até nos incentiva a pedir sabedoria. (Provérbios 2:1-6) E nós? Será que podemos imitar a Jeová e compartilhar com outros aquilo que já sabemos? (Salmo 32 versículo 8) O povo de Jeová tem muitas oportunidades para compartilhar aquilo que aprende. Por exemplo, treinamos os novos publicadores na pregação. Os anciãos, com paciência, ajudam os servos ministeriais e os irmãos batizados a aprender como cuidar das suas designações na congregação. E aqueles que têm experiência na construção e manutenção ajudam a treinar os que têm menos experiência para trabalhar em construções que serão usadas no serviço a Jeová. w24.09 28 a 29 parágrafos 11 a 12",
-    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/11/2"
+    "date": "2026-11-03",
+    "verse": "Vocês vieram a ser muito amados por nós.",
+    "reference": "Primeira Tessalonicenses 2:8.",
+    "content": "Você quer ser ancião? Então deve “ser irrepreensível”. Isso significa que você tem uma boa reputação na congregação e que ninguém pode acusar você de conduta errada. (Primeira Timóteo 3:2) Além disso, você deve ter “um bom testemunho de pessoas de fora”. Algumas pessoas podem até criticar você por ser cristão, mas ninguém deve ter motivo para duvidar que você é honesto e uma boa pessoa. (Daniel capítulo 6 versículos 4,5) Pergunte-se: ‘Será que eu tenho uma boa reputação tanto dentro quanto fora da congregação?’ Se você “amar o que é bom”, você vai procurar coisas boas nas pessoas e elogiar os irmãos pelas boas qualidades que têm. (Tito 1:8) Você também vai ficar feliz em fazer o bem a outros, indo até além do que se espera de você. Por que essa qualidade é tão importante para os anciãos? Porque eles usam muito do seu tempo precioso para pastorear a congregação e cuidar das suas designações. (Primeira Pedro 5:1-3) Ainda assim, a alegria que eles sentem por servir outros é muito maior do que qualquer sacrifício que fazem. — Atos 20:35. w24.11 20 a 21 parágrafos 3 a 5",
+    "url": "https://wol.jw.org/pt/wol/h/r5/lp-t/2026/11/3"
   },
   "meeting": {
     "weekOf": "2026-11-02",
@@ -53,48 +53,27 @@
     "watchtower": "https://cfp2.jw-cdn.org/a/e5fa282/1/ir/w_T_202609_lg.jpg"
   },
   "familyWorship": {
-    "topic": "Exemplo de perseverança • Pedro",
-    "title": "Pedro: aprender com os erros e continuar",
-    "prompt": "O exemplo de Pedro ajuda a encarar as próprias fraquezas sem desistir de melhorar.",
-    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-setembro-2023/Assim-como-Pedro-n%C3%A3o-desista/",
-    "sourceTitle": "Assim como Pedro, não desista!",
-    "reading": "Lucas 22:31, 32; João 21:15-17",
-    "doThis": "Aceitar ajuda e correção, reconhecer falhas e continuar se esforçando.",
-    "avoidThis": "Concluir que um erro torna impossível voltar a agir com fé.",
+    "topic": "Exemplo de bom senso • Abigail",
+    "title": "Abigail: acalmar conflitos com sensatez",
+    "prompt": "Comparem a atitude conciliadora de Abigail com a grosseria de Nabal e a reação impulsiva de Davi.",
+    "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/a-sentinela-estudo-junho-2017/abigail-uma-mulher-sensata/",
+    "sourceTitle": "Uma mulher sensata",
+    "reading": "1 Samuel 25:14-19, 23-35",
+    "doThis": "Agir com respeito, reconhecer a ajuda recebida e procurar acalmar situações tensas.",
+    "avoidThis": "Responder com grosseria ou tomar decisões enquanto se está dominado pela raiva.",
     "questions": [
-      "Como Jesus mostrou que não havia desistido de Pedro?",
-      "Que ajuda precisamos aceitar para continuar melhorando?"
+      "Como Abigail ajudou Davi a reconsiderar sua reação?",
+      "Que resposta poderia diminuir a tensão em uma conversa nossa?"
     ],
-    "action": "Definam um passo pequeno e concreto para trabalhar uma dificuldade nesta semana.",
+    "action": "Combinem uma maneira respeitosa de fazer uma pausa antes de uma discussão crescer.",
     "videoUrl": null,
-    "weekOf": "2026-10-27",
-    "sequence": 6,
+    "weekOf": "2026-11-03",
+    "sequence": 7,
     "scheduleThrough": "2027-08-31",
-    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2023565/univ/art/2023565_univ_lsr_lg.jpg",
+    "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2017446/univ/art/2017446_univ_lsr_lg.jpg",
     "videoImageUrl": null
   },
   "familyUpcoming": [
-    {
-      "topic": "Exemplo de perseverança • Pedro",
-      "title": "Pedro: aprender com os erros e continuar",
-      "prompt": "O exemplo de Pedro ajuda a encarar as próprias fraquezas sem desistir de melhorar.",
-      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-setembro-2023/Assim-como-Pedro-n%C3%A3o-desista/",
-      "sourceTitle": "Assim como Pedro, não desista!",
-      "reading": "Lucas 22:31, 32; João 21:15-17",
-      "doThis": "Aceitar ajuda e correção, reconhecer falhas e continuar se esforçando.",
-      "avoidThis": "Concluir que um erro torna impossível voltar a agir com fé.",
-      "questions": [
-        "Como Jesus mostrou que não havia desistido de Pedro?",
-        "Que ajuda precisamos aceitar para continuar melhorando?"
-      ],
-      "action": "Definam um passo pequeno e concreto para trabalhar uma dificuldade nesta semana.",
-      "videoUrl": null,
-      "weekOf": "2026-10-27",
-      "sequence": 6,
-      "scheduleThrough": "2027-08-31",
-      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2023565/univ/art/2023565_univ_lsr_lg.jpg",
-      "videoImageUrl": null
-    },
     {
       "topic": "Exemplo de bom senso • Abigail",
       "title": "Abigail: acalmar conflitos com sensatez",
@@ -241,8 +220,29 @@
       "scheduleThrough": "2027-08-31",
       "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/202018284/univ/art/202018284_univ_lsr_lg.jpg",
       "videoImageUrl": null
+    },
+    {
+      "topic": "Exemplo de perseverança • Pedro",
+      "title": "Pedro: aprender com os erros e continuar",
+      "prompt": "O exemplo de Pedro ajuda a encarar as próprias fraquezas sem desistir de melhorar.",
+      "articleUrl": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-setembro-2023/Assim-como-Pedro-n%C3%A3o-desista/",
+      "sourceTitle": "Assim como Pedro, não desista!",
+      "reading": "Lucas 22:31, 32; João 21:15-17",
+      "doThis": "Aceitar ajuda e correção, reconhecer falhas e continuar se esforçando.",
+      "avoidThis": "Concluir que um erro torna impossível voltar a agir com fé.",
+      "questions": [
+        "Como Jesus mostrou que não havia desistido de Pedro?",
+        "Que ajuda precisamos aceitar para continuar melhorando?"
+      ],
+      "action": "Definam um passo pequeno e concreto para trabalhar uma dificuldade nesta semana.",
+      "videoUrl": null,
+      "weekOf": "2026-12-22",
+      "sequence": 14,
+      "scheduleThrough": "2027-08-31",
+      "publicationImageUrl": "https://cms-imgp.jw-cdn.org/img/p/2023565/univ/art/2023565_univ_lsr_lg.jpg",
+      "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-11-02T11:42:24.042Z",
+  "previousUpdatedAt": "2026-11-02T23:13:31.550Z",
   "errors": []
 }
