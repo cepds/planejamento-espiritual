@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=5">
+  <link rel="stylesheet" href="reader.css?v=6">
 </head>
 <body>
 <div class="app">
@@ -86,13 +86,20 @@
       <div class="quick-links"><button type="button" data-scroll-to="midweek">Meio de semana</button><button type="button" data-scroll-to="weekend">Fim de semana</button></div>
       <article class="reading" id="midweek">
         <div class="reading-heading"><span class="kicker">Reunião de meio de semana</span><h2 id="midweek-title">Carregando…</h2><p id="midweek-date"></p></div>
-        <div class="reading-cover study-illustration"><img id="midweek-cover" hidden alt="Ilustração do tema da reunião"></div>
+        <section class="study-gallery" id="midweek-gallery" aria-label="Todas as imagens da reunião de meio de semana" hidden>
+          <div class="study-gallery-heading"><h3>Imagens da reunião</h3><span id="midweek-image-count" class="small"></span></div>
+          <div class="study-gallery-grid" id="midweek-images"></div>
+        </section>
         <div id="midweek-content" class="prose"></div>
         <div class="source-line"><a class="inline-link" id="midweek-original" hidden target="_blank" rel="noopener noreferrer">Abrir programação oficial ↗</a></div>
       </article>
       <article class="reading" id="weekend">
         <div class="reading-heading"><span class="kicker">Estudo de A Sentinela</span><h2 id="watchtower-title">Carregando…</h2><p id="watchtower-date"></p></div>
-        <div class="reading-cover"><img id="watchtower-cover" hidden alt="Capa de A Sentinela"><div><p id="watchtower-theme"></p><p class="small" id="watchtower-objective" hidden></p></div></div>
+        <div class="reading-cover"><div><p id="watchtower-theme"></p><p class="small" id="watchtower-objective" hidden></p></div></div>
+        <section class="study-gallery" id="watchtower-gallery" aria-label="Todas as imagens do estudo de A Sentinela" hidden>
+          <div class="study-gallery-heading"><h3>Imagens do estudo</h3><span id="watchtower-image-count" class="small"></span></div>
+          <div class="study-gallery-grid" id="watchtower-images"></div>
+        </section>
         <div id="watchtower-content" class="prose"></div>
         <div class="source-line"><a class="inline-link" id="watchtower-original" hidden target="_blank" rel="noopener noreferrer">Abrir estudo oficial ↗</a></div>
       </article>
@@ -241,10 +248,24 @@
     </div>
   </form>
 </dialog>
+<dialog id="study-image-dialog" class="study-image-dialog" aria-label="Visualização ampliada da imagem do estudo">
+  <div class="study-image-viewer">
+    <div class="study-image-toolbar">
+      <span id="study-image-title">Imagem do estudo</span>
+      <button type="button" id="study-image-close" class="study-image-close" aria-label="Fechar visualização">✕</button>
+    </div>
+    <img id="study-image-full" class="study-image-full" alt="">
+    <nav class="study-image-nav" aria-label="Navegar pelas imagens">
+      <button type="button" id="study-image-prev" aria-label="Imagem anterior">← Anterior</button>
+      <span id="study-image-position" aria-live="polite"></span>
+      <button type="button" id="study-image-next" aria-label="Próxima imagem">Próxima →</button>
+    </nav>
+  </div>
+</dialog>
 <script src="/__/firebase/8.10.1/firebase-app.js" defer></script>
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
-<script src="reader.js?v=4" defer></script>
+<script src="reader.js?v=5" defer></script>
 <script src="public-events.js?v=2" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
