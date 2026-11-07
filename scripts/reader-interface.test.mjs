@@ -141,7 +141,7 @@ test('meio de semana e fim de semana aparecem em abas separadas', () => {
   assert.match(html, /href="#meetings-midweek"/);
   assert.match(html, /href="#meetings-weekend"/);
   assert.match(reader, /function selectMeeting\(view\)/);
-  assert.match(reader, /panel\.hidden = panel !== selection/);
+  assert.match(reader, /document\.getElementById\(panel\)\.hidden = panel !== selection/);
   assert.match(reader, /tab\.setAttribute\('aria-selected'/);
   assert.match(reader, /requested === 'meetings-weekend'/);
   assert.match(reader, /document\.querySelectorAll\('\[data-meeting-tab\]'\)/);
