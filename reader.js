@@ -80,6 +80,15 @@
     } else element.removeAttribute('src');
   }
 
+  function studyImage(study) {
+    // Use the article illustration; never replace it with the magazine cover.
+    return study?.heroImageUrl || (Array.isArray(study?.images) ? study.images[0] : null) || null;
+  }
+
+  function studyTitle(title) {
+    return String(title || '').replace(/^\d{1,2}\s+(?:a|[-–—])\s+\d{1,2}\s+de\s+[a-zÀ-ÿ]+\s+de\s+\d{4}\s+/i, '').trim();
+  }
+
   function appendParagraphs(selector, content) {
     const container = document.querySelector(selector);
     if (!container) return;
@@ -113,11 +122,11 @@
     setText('#today-midweek-title', meeting.treasure || midweek.title || meeting.reading || 'Programação da reunião indisponível.');
     setText('#today-midweek-reading', meeting.reading || midweek.title || '');
     setText('#today-midweek-date', (midweek.weekOf || meeting.weekOf) ? 'Semana de ' + asDate(midweek.weekOf || meeting.weekOf) : '');
-    setCover('#today-midweek-cover', midweek.coverUrl || meeting.coverUrl || content.covers?.workbook, 'Capa da apostila de meio de semana');
+    setCover('#today-midweek-cover', studyImage(midweek), 'Ilustração do tema da reunião de meio de semana');
 
-    setText('#today-watchtower-title', watchtower.title || 'Estudo de A Sentinela');
+    setText('#today-watchtower-title', studyTitle(watchtower.title) || 'Estudo de A Sentinela');
     setText('#today-watchtower-date', watchtower.weekOf ? 'Semana de ' + asDate(watchtower.weekOf) : '');
-    setCover('#today-watchtower-cover', watchtower.coverUrl || content.covers?.watchtower, 'Capa de A Sentinela');
+    setCover('#today-watchtower-cover', studyImage(watchtower), 'Ilustração do estudo de A Sentinela');
 
     setText('#today-family-title', family.title || 'Adoração em família');
     setText('#today-family-date', family.weekOf ? 'Semana de ' + asDate(family.weekOf) : '');
@@ -131,16 +140,16 @@
 
     setText('#midweek-title', midweek.title || meeting.reading || 'Reunião de meio de semana');
     setText('#midweek-date', asDate(midweek.weekOf || meeting.weekOf));
-    setCover('#midweek-cover', midweek.coverUrl || meeting.coverUrl, 'Capa da apostila da reunião');
+    setCover('#midweek-cover', studyImage(midweek), 'Ilustração do tema da reunião de meio de semana');
     appendParagraphs('#midweek-content', midweek.content);
     setSource('#midweek-original', midweek.url);
 
-    setText('#watchtower-title', watchtower.title || 'Estudo de A Sentinela');
+    setText('#watchtower-title', studyTitle(watchtower.title) || 'Estudo de A Sentinela');
     setText('#watchtower-date', 'Semana de ' + (asDate(watchtower.weekOf) || 'data indisponível'));
     setText('#watchtower-theme', watchtower.theme);
     setText('#watchtower-objective', watchtower.objective ? 'Objetivo: ' + watchtower.objective : '');
     setVisible('#watchtower-objective', !!watchtower.objective);
-    setCover('#watchtower-cover', watchtower.coverUrl || content.covers?.watchtower, 'Capa de A Sentinela');
+    setCover('#watchtower-cover', studyImage(watchtower), 'Ilustração do estudo de A Sentinela');
     appendParagraphs('#watchtower-content', watchtower.content);
     setSource('#watchtower-original', watchtower.url);
 
@@ -199,4 +208,128 @@
   addEventListener('hashchange', navigate);
   navigate();
   load();
+
+  // Eventos pessoais são o único recurso editável; preserva eventos já salvos na versão anterior.
+  const eventKey = 'planejamento-espiritual-20-events';
+  const eventDialog = document.querySelector('#event-dialog');
+  const eventForm = document.querySelector('#event-form');
+  const eventTypes = new Set(['Congresso', 'Assembleia', 'Visita', 'Outro']);
+
+  function todayLocalDate() {
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(new Date()).filter(item => item.type !== 'literal').map(item => [item.type, item.value]));
+    return `${parts.year}-${parts.month}-${parts.day}`;
+  }
+
+  function isValidDate(value) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(value || ''))) return false;
+    const date = new Date(value + 'T00:00:00Z');
+    return !Number.isNaN(date.valueOf()) && date.toISOString().slice(0, 10) === value;
+  }
+
+  function readEvents() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(eventKey) || '[]');
+      return Array.isArray(saved) ? saved.filter(event =>
+        event && typeof event.title === 'string' && isValidDate(event.date)) : [];
+    } catch { return []; }
+  }
+
+  function saveEvents(events) {
+    try {
+      localStorage.setItem(eventKey, JSON.stringify(events));
+      renderEvents();
+      return true;
+    } catch {
+      alert('Não foi possível salvar os eventos neste navegador.');
+      return false;
+    }
+  }
+
+  function daysToEvent(value) {
+    return Math.round((Date.parse(value + 'T00:00:00Z') - Date.parse(todayLocalDate() + 'T00:00:00Z')) / 86400000);
+  }
+
+  function eventDescription(event) {
+    const kind = eventTypes.has(event.type) ? event.type : (eventTypes.has(event.title) ? event.title : 'Evento');
+    const detail = event.title === kind ? '' : event.title;
+    return { kind, detail: detail || kind };
+  }
+
+  function renderEvents() {
+    const currentEvents = readEvents();
+    const ordered = currentEvents.map((event, index) => ({ event, index }))
+      .sort((a, b) => a.event.date.localeCompare(b.event.date));
+    const next = ordered.find(item => daysToEvent(item.event.date) >= 0);
+    const empty = document.querySelector('#event-empty');
+    const current = document.querySelector('#event-next');
+    empty.hidden = Boolean(next);
+    current.hidden = !next;
+    if (next) {
+      const details = eventDescription(next.event);
+      setText('#event-next-type', details.kind);
+      setText('#event-next-title', details.detail);
+      const remaining = daysToEvent(next.event.date);
+      const remainingText = remaining === 0 ? 'Hoje' : remaining === 1 ? 'Amanhã' : `Em ${remaining} dias`;
+      setText('#event-next-date', `${asDate(next.event.date)} · ${remainingText}`);
+      setText('#event-next-location', next.event.location || '');
+      setVisible('#event-next-location', Boolean(next.event.location));
+    }
+    const wrapper = document.querySelector('#event-all');
+    const list = document.querySelector('#event-list');
+    wrapper.hidden = ordered.length === 0;
+    list.replaceChildren();
+    for (const { event, index } of ordered) {
+      const details = eventDescription(event);
+      const row = document.createElement('li');
+      const info = document.createElement('span');
+      const label = document.createElement('strong');
+      label.textContent = details.detail;
+      const date = document.createElement('small');
+      date.textContent = asDate(event.date) + (daysToEvent(event.date) < 0 ? ' · encerrado' : '');
+      info.append(label, date);
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.textContent = 'Remover';
+      remove.setAttribute('aria-label', 'Remover ' + details.detail + ' de ' + asDate(event.date));
+      remove.addEventListener('click', () => {
+        if (!confirm('Remover este evento da agenda?')) return;
+        const saved = readEvents();
+        saved.splice(index, 1);
+        saveEvents(saved);
+      });
+      row.append(info, remove);
+      list.append(row);
+    }
+  }
+
+  document.querySelector('#event-open').addEventListener('click', () => {
+    eventForm.reset();
+    document.querySelector('#event-form-date').min = todayLocalDate();
+    eventDialog.showModal();
+  });
+  document.querySelector('#event-cancel').addEventListener('click', () => eventDialog.close());
+  eventForm.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!eventForm.reportValidity()) return;
+    const type = document.querySelector('#event-form-type').value;
+    const title = document.querySelector('#event-form-title').value.trim() || type;
+    const date = document.querySelector('#event-form-date').value;
+    const location = document.querySelector('#event-form-location').value.trim();
+    if (!eventTypes.has(type) || !isValidDate(date) || date < todayLocalDate()) {
+      alert('Selecione um tipo e uma data válida a partir de hoje.');
+      return;
+    }
+    const saved = readEvents();
+    if (saved.some(item => item.title === title && item.date === date)) {
+      alert('Este evento já está cadastrado para a mesma data.');
+      return;
+    }
+    if (saveEvents([...saved, { type, title, date, location, special: true }])) eventDialog.close();
+  });
+  addEventListener('storage', event => {
+    if (event.key === eventKey) renderEvents();
+  });
+  renderEvents();
 })();
