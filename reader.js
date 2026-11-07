@@ -183,6 +183,187 @@
     previousImageTrigger = null;
   });
 
+  function studyRangeText(title, fallback) {
+    const value = String(title || '');
+    const range = value.match(/^(\d{1,2})\s+(?:a|[–—-])\s+(\d{1,2})\s+de\s+([a-zà-ÿ]+)\s+de\s+(\d{4})/i);
+    return range ? range[1] + '–' + range[2] + ' de ' + range[3] + ' de ' + range[4]
+      : fallback;
+  }
+
+  function midweekRangeText(study, fallback) {
+    const first = studyParagraphs(study?.content)[0] || '';
+    const match = first.match(/^(\d{1,2})\s+a\s+(\d{1,2})\s+de\s+([a-zà-ÿ]+)/i);
+    const year = String(study?.weekOf || '').slice(0, 4);
+    return match ? match[1] + '–' + match[2] + ' de ' + match[3] +
+      (year ? ' de ' + year : '') : fallback;
+  }
+
+  function studyEl(tag, className, text) {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (text !== undefined) element.textContent = text;
+    return element;
+  }
+
+  function studyParagraphs(value) {
+    return String(value || '').split(/\n\s*\n/).map(text => text.trim()).filter(Boolean);
+  }
+
+  function studyIllustration(images, index, name, description, caption = '') {
+    if (!images[index]) return null;
+    const figure = studyEl('figure', 'study-inline-figure');
+    const button = studyEl('button', 'study-inline-image');
+    button.type = 'button';
+    button.setAttribute('aria-label', 'Ampliar imagem ' + (index + 1) + ' de ' + images.length + ' de ' + name);
+    const img = studyEl('img');
+    img.src = images[index];
+    img.alt = description || 'Ilustração ' + (index + 1) + ' do estudo';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    button.append(img);
+    button.addEventListener('click', () => openImageViewer(images, index, name, button));
+    figure.append(button);
+    if (caption) figure.append(studyEl('figcaption', '', caption));
+    return figure;
+  }
+
+  function renderWatchtowerReading(study) {
+    const container = document.querySelector('#watchtower-content');
+    container.replaceChildren();
+    const paragraphs = studyParagraphs(study.content);
+    const images = imageList(study);
+    const articleName = 'Estudo de A Sentinela';
+    if (images.length) {
+      const hero = studyIllustration(images, 0, articleName, 'Ilustração de abertura do estudo');
+      hero.classList.add('study-intro-figure');
+      container.append(hero);
+    }
+    if (!paragraphs.length) {
+      container.append(studyEl('p', 'study-empty', 'Texto indisponível. Consulte a publicação original.'));
+      return;
+    }
+    let imageIndex = images.length ? 1 : 0;
+    let review = null;
+    let reviewList = null;
+    for (let index = 0; index < paragraphs.length; index++) {
+      const text = paragraphs[index];
+      const question = text.match(/^Pergunta\s+(\d+(?:\s*(?:a|e|[-–])\s*\d+)?)\.\s*(.+)$/i);
+      const numbered = text.match(/^(\d{1,2})\s+([\s\S]+)$/);
+      if (/^\[Quadro\]\s*Como responderia\?/i.test(text)) {
+        review = studyEl('section', 'study-review');
+        review.append(studyEl('h3', '', 'Como responderia?'));
+        reviewList = studyEl('ul', 'study-review-list');
+        review.append(reviewList);
+        container.append(review);
+      } else if (review && /^[\uE000-\uF8FF•]\s*/u.test(text)) {
+        const item = text.replace(/^[\uE000-\uF8FF•]\s*/u, '').replace(/\s*\[Fim do quadro\.\]\s*/gi, '').trim();
+        if (item) reviewList.append(studyEl('li', '', item));
+      } else if (question) {
+        const card = studyEl('div', 'study-question');
+        card.append(studyEl('span', 'study-question-number', question[1].replace(/\s+a\s+/i, '–')));
+        card.append(studyEl('p', 'study-question-text', question[2]));
+        container.append(card);
+      } else if (/^\[Leitura do texto de\]/i.test(text)) {
+        const scripture = studyEl('blockquote', 'study-scripture');
+        const cleaned = text.replace(/^\[Leitura do texto de\]\s*/i, '');
+        const separator = cleaned.indexOf(':');
+        if (separator > 0) {
+          scripture.append(studyEl('strong', '', cleaned.slice(0, separator)));
+          scripture.append(studyEl('p', '', cleaned.slice(separator + 1).trim()));
+        } else scripture.append(studyEl('p', '', cleaned));
+        container.append(scripture);
+      } else if (/^\[Imagem:\]/i.test(text)) {
+        const description = text.replace(/^\[Imagem:\]\s*/i, '').trim();
+        const hasCaption = /^Legenda:/i.test(paragraphs[index + 1] || '');
+        const caption = hasCaption ? paragraphs[index + 1].replace(/^Legenda:\s*/i, '').trim() : '';
+        const figure = studyIllustration(images, imageIndex, articleName, description, caption);
+        if (figure) {
+          container.append(figure);
+          imageIndex += 1;
+          if (hasCaption) index += 1;
+        } else {
+          // Preserve original captions if an image is not available in the source.
+          container.append(studyEl('p', 'study-image-description', description));
+        }
+      } else if (/^Legenda:/i.test(text)) {
+        container.append(studyEl('p', 'study-image-caption', text.replace(/^Legenda:\s*/i, '')));
+      } else if (/^\[Nota\]/i.test(text)) {
+        container.append(studyEl('aside', 'study-footnote',
+          text.replace(/^\[Nota\]\s*/i, '').replace(/\s*\[Fim da nota\.\]\s*/gi, '').trim()));
+      } else if (/^Destaque:\s*/i.test(text)) {
+        container.append(studyEl('blockquote', 'study-emphasis', text.replace(/^Destaque:\s*/i, '')));
+      } else if (/^Cântico\s+\d+/i.test(text)) {
+        container.append(studyEl('p', 'study-song', text));
+      } else if (numbered) {
+        const paragraph = studyEl('p', 'study-numbered-paragraph');
+        paragraph.append(studyEl('span', 'study-paragraph-index', numbered[1]));
+        paragraph.append(document.createTextNode(numbered[2]));
+        container.append(paragraph);
+      } else if (text.length < 120 && !/[.;:]$/.test(text) && !/^[\[\d]/.test(text)) {
+        container.append(studyEl('h3', 'study-section-title', text));
+      } else {
+        container.append(studyEl('p', 'study-body-paragraph', text));
+      }
+    }
+  }
+
+  function renderMidweekReading(study) {
+    const container = document.querySelector('#midweek-content');
+    container.replaceChildren();
+    const paragraphs = studyParagraphs(study.content);
+    const images = imageList(study);
+    if (!paragraphs.length) {
+      container.append(studyEl('p', 'study-empty', 'Programa indisponível. Consulte a apostila oficial.'));
+      return;
+    }
+    let currentSection = container;
+    let currentItem = null;
+    let mainIllustrationPlaced = false;
+    for (const text of paragraphs) {
+      const sectionNames = {
+        'Tesouros da Palavra de Deus': 'treasures',
+        'Faça seu melhor no ministério': 'ministry',
+        'Nossa vida cristã': 'life'
+      };
+      const item = text.match(/^(\d+)\.\s+(.+?)\s+\((\d+)\s+min\)$/i);
+      if (sectionNames[text]) {
+        const section = studyEl('section', 'study-program-section study-program-section--' + sectionNames[text]);
+        const heading = studyEl('h3', 'study-program-section-title', text);
+        section.append(heading);
+        const body = studyEl('div', 'study-program-section-body');
+        section.append(body);
+        container.append(section);
+        currentSection = body;
+        currentItem = null;
+      } else if (item) {
+        const block = studyEl('article', 'study-program-item');
+        const heading = studyEl('header', 'study-program-item-heading');
+        heading.append(studyEl('span', 'study-program-number', item[1]));
+        const title = studyEl('h4', '', item[2]);
+        heading.append(title);
+        heading.append(studyEl('span', 'study-program-duration', item[3] + ' min'));
+        block.append(heading);
+        const body = studyEl('div', 'study-program-item-body');
+        block.append(body);
+        currentSection.append(block);
+        currentItem = body;
+        if (!mainIllustrationPlaced && images.length) {
+          const figure = studyIllustration(images, 0, 'Reunião de meio de semana', 'Ilustração da programação semanal');
+          if (figure) body.append(figure);
+          mainIllustrationPlaced = true;
+        }
+      } else if (/^Cântico\s+\d+/i.test(text) || /^Comentários\s+(?:iniciais|finais)/i.test(text)) {
+        container.append(studyEl('p', 'study-program-interlude', text));
+        currentItem = null;
+      } else if (/^\d{1,2}\s+a\s+\d{1,2}\s+de\s+/i.test(text)) {
+        // Already shown in the date band above.
+      } else {
+        const target = currentItem || currentSection;
+        target.append(studyEl('p', text.includes('?') ? 'study-program-question' : 'study-program-paragraph', text));
+      }
+    }
+  }
+
   function appendParagraphs(selector, content) {
     const container = document.querySelector(selector);
     if (!container) return;
@@ -233,18 +414,18 @@
     setSource('#daily-original', daily.url);
 
     setText('#midweek-title', midweek.title || meeting.reading || 'Reunião de meio de semana');
-    setText('#midweek-date', asDate(midweek.weekOf || meeting.weekOf));
+    setText('#midweek-date', midweekRangeText(midweek, asDate(midweek.weekOf || meeting.weekOf)));
+    renderMidweekReading(midweek);
     renderStudyGallery('midweek', midweek, 'Reunião de meio de semana');
-    appendParagraphs('#midweek-content', midweek.content);
     setSource('#midweek-original', midweek.url);
 
     setText('#watchtower-title', studyTitle(watchtower.title) || 'Estudo de A Sentinela');
-    setText('#watchtower-date', 'Semana de ' + (asDate(watchtower.weekOf) || 'data indisponível'));
+    setText('#watchtower-date', studyRangeText(watchtower.title, 'Semana de ' + (asDate(watchtower.weekOf) || 'data indisponível')));
     setText('#watchtower-theme', watchtower.theme);
-    setText('#watchtower-objective', watchtower.objective ? 'Objetivo: ' + watchtower.objective : '');
-    setVisible('#watchtower-objective', !!watchtower.objective);
+    setText('#watchtower-objective', watchtower.objective || '');
+    setVisible('#watchtower-goal', !!watchtower.objective);
+    renderWatchtowerReading(watchtower);
     renderStudyGallery('watchtower', watchtower, 'Estudo de A Sentinela');
-    appendParagraphs('#watchtower-content', watchtower.content);
     setSource('#watchtower-original', watchtower.url);
 
     setText('#family-topic', family.topic || 'Tema da semana');

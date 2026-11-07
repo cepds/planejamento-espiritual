@@ -3,9 +3,9 @@ import test from 'node:test';
 import { readFile } from 'node:fs/promises';
 
 const read = relative => readFile(new URL('../' + relative, import.meta.url), 'utf8');
-const [html, reader, updater, worker, events, rules, firebaseConfig] = await Promise.all([
+const [html, reader, updater, worker, events, rules, firebaseConfig, css] = await Promise.all([
   read('index.html'), read('reader.js'), read('scripts/update-content.mjs'), read('sw.js'),
-  read('public-events.js'), read('firestore.rules'), read('firebase.json')
+  read('public-events.js'), read('firestore.rules'), read('firebase.json'), read('reader.css')
 ]);
 
 test('navegação contém cinco ícones SVG e páginas com IDs únicos', () => {
@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=5', 'reader.css?v=6', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=6', 'reader.css?v=7', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -87,4 +87,47 @@ test('galerias oferecem todas as ilustrações válidas e navegação ampliada',
   assert.match(updater, /const articleIndex = Number\(selected\.file\.track\) - 1/);
   assert.match(updater, /publicationContentImages\(selected\.media, articleIndex\)/);
   assert.match(updater, /images, heroImageUrl: image/);
+});
+
+test('Sentinela preserva perguntas e texto completo com apresentação de leitura', () => {
+  for (const part of ['study-reading--watchtower', 'study-date-band',
+    'study-scripture-theme', 'watchtower-goal', 'watchtower-content']) {
+    assert.ok(html.includes(part), part);
+  }
+  assert.match(reader, /function renderWatchtowerReading/);
+  assert.match(reader, /renderWatchtowerReading\(watchtower\)/);
+  assert.match(reader, /Pergunta\\s\+/);
+  assert.match(reader, /study-question-number/);
+  assert.match(reader, /study-numbered-paragraph/);
+  assert.match(reader, /study-scripture/);
+  assert.match(reader, /study-review-list/);
+  assert.match(reader, /studyIllustration\(images, imageIndex/);
+  assert.match(reader, /studyRangeText\(watchtower.title/);
+  assert.doesNotMatch(html.slice(html.indexOf('id="weekend"'), html.indexOf('data-reader-page="daily"')), /<textarea|contenteditable/);
+});
+
+test('reunião de meio de semana mantém programação com seções e duração', () => {
+  assert.match(html, /study-reading--midweek/);
+  assert.match(html, /id="midweek-content" class="study-document study-document--midweek"/);
+  assert.match(reader, /function renderMidweekReading/);
+  assert.match(reader, /renderMidweekReading\(midweek\)/);
+  assert.match(reader, /Tesouros da Palavra de Deus/);
+  assert.match(reader, /Faça seu melhor no ministério/);
+  assert.match(reader, /Nossa vida cristã/);
+  assert.match(reader, /study-program-item-heading/);
+  assert.match(reader, /study-program-duration/);
+  assert.match(reader, /study-program-question/);
+  assert.match(css, /\.study-program-section/);
+  assert.match(css, /\.study-program-duration/);
+});
+
+test('formatação não modifica os dados das leituras nem a agenda de eventos', () => {
+  const meetings = html.slice(html.indexOf('data-reader-page="meetings"'), html.indexOf('data-reader-page="daily"'));
+  assert.match(meetings, /midweek-gallery/);
+  assert.match(meetings, /watchtower-gallery/);
+  assert.match(meetings, /midweek-original/);
+  assert.match(meetings, /watchtower-original/);
+  assert.match(css, /\.study-image-viewer/);
+  assert.match(html, /event-widget/);
+  assert.match(reader, /textContent = text/);
 });
