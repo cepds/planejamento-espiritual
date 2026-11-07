@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=6', 'reader.css?v=7', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=7', 'reader.css?v=8', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -130,4 +130,21 @@ test('formatação não modifica os dados das leituras nem a agenda de eventos',
   assert.match(css, /\.study-image-viewer/);
   assert.match(html, /event-widget/);
   assert.match(reader, /textContent = text/);
+});
+
+test('meio de semana e fim de semana aparecem em abas separadas', () => {
+  assert.match(html, /role="tablist" aria-label="Selecione a reunião"/);
+  assert.match(html, /id="meeting-tab-midweek" role="tab" aria-controls="midweek" aria-selected="true"/);
+  assert.match(html, /id="meeting-tab-weekend" role="tab" aria-controls="weekend" aria-selected="false"/);
+  assert.match(html, /id="weekend" role="tabpanel" tabindex="0" aria-labelledby="meeting-tab-weekend" hidden/);
+  assert.match(html, /id="midweek" role="tabpanel" tabindex="0" aria-labelledby="meeting-tab-midweek"/);
+  assert.match(html, /href="#meetings-midweek"/);
+  assert.match(html, /href="#meetings-weekend"/);
+  assert.match(reader, /function selectMeeting\(view\)/);
+  assert.match(reader, /panel\.hidden = panel !== selection/);
+  assert.match(reader, /tab\.setAttribute\('aria-selected'/);
+  assert.match(reader, /requested === 'meetings-weekend'/);
+  assert.match(reader, /document\.querySelectorAll\('\[data-meeting-tab\]'\)/);
+  assert.doesNotMatch(reader, /pendingMeetingScroll/);
+  assert.doesNotMatch(reader, /data-scroll-to/);
 });
