@@ -434,6 +434,51 @@
     return block;
   }
 
+  // Comentários exclusivos de cada capítulo e pergunta. Não usam o Firestore público.
+  function congregationCommentKey(study, chapter, questionIndex) {
+    const book = study.congregationStudy?.bookCode || 'livro';
+    const week = /^\d{4}-\d{2}-\d{2}$/.test(String(study.weekOf || '')) ? study.weekOf : 'sem-semana';
+    return 'planejamento-espiritual-congregacao-comentarios-v1:' +
+      week + ':' + book + ':' + chapter.number + ':' + questionIndex;
+  }
+
+  function createCongregationComment(study, chapter, questionIndex) {
+    const wrapper = studyEl('div', 'study-comment-box congregation-comment-box');
+    const id = 'congregation-comment-' + chapter.number + '-' + questionIndex;
+    const label = studyEl('label', 'study-comment-label', 'Meu comentário');
+    label.htmlFor = id;
+    const field = studyEl('textarea', 'study-comment-input congregation-comment-input');
+    field.id = id;
+    field.rows = 2;
+    field.spellcheck = true;
+    field.placeholder = 'Escreva sua resposta ou comentário…';
+    field.setAttribute('autocapitalize', 'sentences');
+    const status = studyEl('p', 'congregation-comment-status');
+    status.id = id + '-status';
+    field.setAttribute('aria-describedby', status.id);
+    const key = congregationCommentKey(study, chapter, questionIndex);
+    try {
+      field.value = localStorage.getItem(key) || '';
+      status.textContent = 'Comentário pessoal salvo neste navegador.';
+    } catch (error) {
+      console.warn('Não foi possível ler o comentário do estudo bíblico:', error);
+      status.textContent = 'Não foi possível ler o comentário salvo.';
+    }
+    field.addEventListener('input', () => {
+      resizeWatchtowerComment(field);
+      try {
+        if (field.value.trim()) localStorage.setItem(key, field.value);
+        else localStorage.removeItem(key);
+        status.textContent = 'Salvo neste navegador.';
+      } catch (error) {
+        console.warn('Falha ao salvar comentário de congregação:', error);
+        status.textContent = 'Não foi possível salvar. Copie seu comentário antes de sair.';
+      }
+    });
+    wrapper.append(label, field, status);
+    return wrapper;
+  }
+
   // Um único painel recolhível comporta um ou mais capítulos da publicação indicada.
   function createCongregationReading(study, referenceText) {
     const data = study.congregationStudy;
@@ -463,6 +508,7 @@
       panel.append(studyEl('p', 'congregation-chapter-count',
         count === 1 ? '1 capítulo nesta reunião' : count + ' capítulos nesta reunião'));
       for (const chapter of chapters) {
+        let questionIndex = 0;
         const section = studyEl('section', 'congregation-chapter');
         section.append(studyEl('span', 'congregation-chapter-label', 'Capítulo ' + chapter.number));
         section.append(studyEl('h5', 'congregation-chapter-title', chapter.title || ('Capítulo ' + chapter.number)));
@@ -473,7 +519,10 @@
             if (block.kind === 'heading') {
               section.append(studyEl('h6', 'congregation-content-heading', block.text));
             } else if (block.kind === 'question') {
+              questionIndex += 1;
               section.append(studyEl('p', 'congregation-content-question', block.text));
+              // Cada pergunta tem seu próprio comentário imediatamente abaixo.
+              section.append(createCongregationComment(study, chapter, questionIndex));
             } else {
               section.append(studyEl('p', 'congregation-content-paragraph', block.text));
             }
@@ -494,11 +543,14 @@
       }
     }
     accordion.append(panel);
+    accordion.addEventListener('toggle', () => {
+      if (accordion.open) requestAnimationFrame(resizeVisibleMidweekComments);
+    });
     return accordion;
   }
 
   function resizeVisibleMidweekComments() {
-    document.querySelectorAll('#midweek-content .study-jewels-comment textarea')
+    document.querySelectorAll('#midweek-content .study-comment-input')
       .forEach(resizeWatchtowerComment);
   }
 
