@@ -3,164 +3,162 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#103d2c">
+  <meta name="theme-color" content="#174934">
+  <meta name="description" content="Leitura de textos diários, reuniões, adoração em família e orientações de preparação para emergências.">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Planejamento Espiritual">
-  <title>Planejamento Espiritual 2.0</title>
+  <title>Planejamento Espiritual · Leitura</title>
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" type="image/png" href="icons/favicon-3d.png">
+  <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="panel.css?v=20261001-4">
-  <link rel="stylesheet" href="workspace.css?v=20261026-1">
+  <link rel="stylesheet" href="reader.css?v=1">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar" aria-label="Navega&ccedil;&atilde;o principal">
-      <a class="brand" href="#panel" data-page-link="panel"><svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Z"/><path d="M12 6v14"/></svg><span>Planejamento<br><em>Espiritual</em></span></a>
-      <nav>
-        <button class="nav-item is-active" type="button" data-page="panel"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/></svg>Hoje</button>
-        <button class="nav-item" type="button" data-page="meetings"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="15" height="18" rx="2"/><path d="M3 7h4m-4 5h4m-4 5h4m4-10h5m-5 5h5m-5 5h3"/></svg>Reuni&otilde;es</button>
-        <button class="nav-item" type="button" data-page="daily"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Z"/><path d="M12 6v14"/></svg>Texto di&aacute;rio</button>
-        <button class="nav-item" type="button" data-page="family"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg>Adora&ccedil;&atilde;o em fam&iacute;lia</button>
-      </nav>
-    </aside>
+<div class="app">
+  <aside class="sidebar" aria-label="Navegação principal">
+    <a class="brand" href="#today"><span class="brand-mark" aria-hidden="true">✧</span><span class="brand-name">Planejamento<em>Espiritual</em></span></a>
+    <p class="nav-caption">Biblioteca de leitura</p>
+    <nav class="nav" aria-label="Seções">
+      <a href="#today" data-reader-link="today" aria-current="page"><span class="nav-symbol" aria-hidden="true">⌂</span>Hoje</a>
+      <a href="#meetings" data-reader-link="meetings"><span class="nav-symbol" aria-hidden="true">▤</span>Reuniões</a>
+      <a href="#daily" data-reader-link="daily"><span class="nav-symbol" aria-hidden="true">☷</span>Texto diário</a>
+      <a href="#family" data-reader-link="family"><span class="nav-symbol" aria-hidden="true">♡</span>Adoração em família</a>
+      <a href="#emergencies" data-reader-link="emergencies"><span class="nav-symbol" aria-hidden="true">✦</span>Emergências</a>
+    </nav>
+    <p class="sidebar-foot">Informações de leitura e orientações com referências a publicações oficiais do JW.org.</p>
+  </aside>
+  <main class="main" id="main">
+    <header class="topbar">
+      <div><p class="eyebrow">Central de leitura</p><h1 id="page-title">Hoje</h1></div>
+      <a class="source-pill" href="https://www.jw.org/pt/" target="_blank" rel="noopener noreferrer">JW.org ↗</a>
+    </header>
+    <p id="content-status" class="status" role="status">Carregando as leituras da semana…</p>
 
-    <main class="content">
-      <header class="topbar">
-        <div><p class="eyeline">PLANEJAMENTO PESSOAL</p><h1 id="page-title">Hoje</h1></div>
-        <button id="add-event" class="button button-primary" type="button">+ Adicionar evento</button>
-      </header>
+    <section class="page" data-reader-page="today" aria-label="Leitura de hoje">
+      <div class="intro"><span class="kicker">Uma leitura de cada vez</span><h2>Encontre um momento para ler e refletir.</h2><p>Texto diário e publicações da semana, em um só lugar, sem anotações ou etapas para concluir.</p></div>
+      <article class="reading">
+        <div class="reading-heading"><span class="kicker">Texto do dia</span><h2 id="today-date">Leitura de hoje</h2></div>
+        <div id="today-verse" class="verse">Carregando…</div>
+        <p id="today-reference" class="reference"></p>
+        <div id="today-content" class="prose"></div>
+        <div class="source-line"><a class="inline-link" id="today-original" hidden target="_blank" rel="noopener noreferrer">Ler a publicação original no JW.org ↗</a></div>
+      </article>
+      <article class="reading">
+        <div class="reading-heading"><span class="kicker">Nesta semana</span><h2>Outras leituras</h2><p>Consulte as informações das reuniões e o tema da adoração em família.</p></div>
+        <p><strong>Reunião de meio de semana:</strong> <span id="today-week">Carregando…</span></p>
+        <p><strong>A Sentinela:</strong> <span id="today-watchtower">Carregando…</span></p>
+        <div class="quick-links"><a href="#meetings">Ler reuniões ↗</a><a href="#family">Ver adoração em família ↗</a><a href="#emergencies">Preparação para emergências ↗</a></div>
+      </article>
+    </section>
 
-      <div class="utility-row"><div id="reading-toolbar" role="group" aria-label="Preferências de leitura">
-        <details class="appearance-menu"><summary>Ajustar leitura</summary><div class="appearance-options"><label class="theme-choice" for="reading-theme">Aparência <select id="reading-theme"><option value="system">Automática</option><option value="light">Clara</option><option value="dark">Escura</option></select></label>
-        <div class="font-controls" role="group" aria-label="Tamanho do texto"><button id="font-smaller" type="button" aria-label="Diminuir texto">A−</button><output id="reading-size" aria-live="polite">100%</output><button id="font-larger" type="button" aria-label="Aumentar texto">A+</button></div>
-        </div></details>
-        <button id="reading-focus" type="button" class="button button-secondary" aria-pressed="false">Modo de leitura</button>
-      </div>
-      <div class="content-status-bar"><p id="content-status" role="status">Carregando conteúdo…</p><button id="retry-content" class="button button-secondary" type="button">Atualizar</button></div></div>
-      <div id="official-content">
-      <section id="panel" class="page is-active" aria-labelledby="page-title">
-        <div class="welcome"><div><p>Um passo de cada vez</p></div><span id="today" class="today"></span></div>
-        <section class="today-overview" aria-label="Seu planejamento de hoje">
-          <article class="today-reading">
-            <div class="reading-emblem"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Z"/><path d="M12 6v14"/></svg></div><p id="today-reading-label" class="section-label">TEXTO DE HOJE</p>
-            <h2>Um momento para fortalecer a fé</h2>
-            <div class="today-text-surface"><p id="today-verse">Carregando a leitura…</p><p id="today-reference"></p></div>
-            <div class="today-actions"><button id="today-open-daily" class="button button-primary" type="button">Abrir leitura</button><button class="button button-secondary" type="button" data-daily-done disabled>Marcar leitura como concluída</button></div>
-          </article>
-          <aside class="today-next"><div class="agenda-emblem"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-13 4h2m4 0h2m-8 3h2"/></svg></div><p class="section-label">NA SUA AGENDA</p><h3 id="today-next-title">Nenhum evento cadastrado</h3><p id="today-next-date"></p><button id="today-add-event" class="button button-secondary" type="button">Adicionar evento</button></aside>
-        </section>
-        <details class="weekly-overview" open><summary>Visão geral da semana e agenda</summary>
-        <div class="dashboard-grid">
-          <article class="card events-card">
-            <div class="card-heading"><div class="agenda-title"><img id="workbook-cover" class="workbook-cover" alt="Capa da apostila da reuni&atilde;o" hidden><div><p class="section-label">AGENDA</p><h3>Pr&oacute;ximos eventos</h3></div></div><button id="clear-events" class="text-button" type="button" hidden>Limpar</button></div>
-            <div id="events" class="events-list" aria-live="polite"></div>
-          </article>
+    <section class="page" data-reader-page="meetings" aria-label="Informações das reuniões" hidden>
+      <div class="intro"><span class="kicker">Programação semanal</span><h2>Reuniões</h2><p>Conteúdo de referência para leitura, sem marcações de preparação ou porcentagens de conclusão.</p></div>
+      <div class="quick-links"><button type="button" data-scroll-to="midweek">Meio de semana</button><button type="button" data-scroll-to="weekend">Fim de semana</button></div>
+      <article class="reading" id="midweek">
+        <div class="reading-heading"><span class="kicker">Reunião de meio de semana</span><h2 id="midweek-title">Carregando…</h2><p id="midweek-date"></p></div>
+        <div class="reading-cover"><img id="midweek-cover" hidden alt="Capa da apostila da reunião"><div class="small">Programa da reunião, temas e leituras conforme o conteúdo disponível.</div></div>
+        <div id="midweek-content" class="prose"></div>
+        <div class="source-line"><a class="inline-link" id="midweek-original" hidden target="_blank" rel="noopener noreferrer">Abrir programação oficial ↗</a></div>
+      </article>
+      <article class="reading" id="weekend">
+        <div class="reading-heading"><span class="kicker">Estudo de A Sentinela</span><h2 id="watchtower-title">Carregando…</h2><p id="watchtower-date"></p></div>
+        <div class="reading-cover"><img id="watchtower-cover" hidden alt="Capa de A Sentinela"><div><p id="watchtower-theme"></p><p class="small" id="watchtower-objective" hidden></p></div></div>
+        <div id="watchtower-content" class="prose"></div>
+        <div class="source-line"><a class="inline-link" id="watchtower-original" hidden target="_blank" rel="noopener noreferrer">Abrir estudo oficial ↗</a></div>
+      </article>
+    </section>
 
-          <article class="card daily-card" data-official hidden>
-            <p class="section-label">TEXTO DI&Aacute;RIO</p>
-            <div class="daily-reading">
-              <p class="reading-label">Leitura do dia</p>
-              <p id="panel-daily-verse" class="reading-verse">&ldquo;A tua palavra &eacute; l&acirc;mpada para o meu p&eacute; e luz para o meu caminho.&rdquo;</p>
-              <p id="panel-daily-reference" class="reading-reference">Salmo 119:105</p>
-              <button id="daily-link" class="button button-reading" type="button" data-page="daily">Ler o texto de hoje</button>
-            </div>
-          </article>
+    <section class="page" data-reader-page="daily" aria-label="Texto diário completo" hidden>
+      <div class="intro"><span class="kicker">Examinando as Escrituras Diariamente</span><h2>Texto diário</h2><p>Leitura do dia com referência à publicação original.</p></div>
+      <article class="reading">
+        <div class="reading-heading"><span class="kicker">Leitura</span><h2 id="daily-date">Carregando…</h2></div>
+        <p class="verse" id="daily-verse"></p><p class="reference" id="daily-reference"></p>
+        <div id="daily-content" class="prose"></div>
+        <div class="source-line"><a class="inline-link" id="daily-original" hidden target="_blank" rel="noopener noreferrer">Ler texto diário no JW.org ↗</a></div>
+      </article>
+    </section>
 
-          <article class="card watchtower-card" data-official hidden>
-            <div class="panel-card-inner">
-              <div id="midweek-focus" class="watchtower-layout" hidden><img id="midweek-cover" class="watchtower-cover" alt="Capa da apostila da reuni&atilde;o" hidden><div><p class="section-label">REUNI&Atilde;O DE MEIO DE SEMANA</p><h3 id="midweek-reading">Jeremias 22&ndash;23</h3><p id="midweek-treasure" class="scripture">Tesouros da Palavra de Deus</p><ul id="midweek-points" class="focus-points"></ul><button class="button button-secondary panel-meeting-link" type="button" data-page="meetings">Ver reuni&atilde;o da semana</button></div></div>
-              <div id="weekend-focus" class="watchtower-layout"><img id="watchtower-cover" class="watchtower-cover" alt="Capa de A Sentinela" hidden><div><p class="section-label">A SENTINELA &mdash; FIM DE SEMANA</p><h3 id="panel-watchtower-title">Respeite as decis&otilde;es de outros</h3><p id="panel-watchtower-theme" class="scripture">&ldquo;N&atilde;o fa&ccedil;am julgamentos sobre opini&otilde;es divergentes.&rdquo; <strong>&mdash; ROM. 14:1.</strong></p><p class="objective"><strong>Objetivo:</strong> <span id="panel-watchtower-objective">Ver como respeitar a decis&atilde;o de outros irm&atilde;os mesmo quando n&atilde;o concordamos.</span></p><button class="button button-secondary panel-meeting-link" type="button" data-page="meetings">Ver reuni&atilde;o da semana</button></div></div>
-            </div>
-          </article>
-
-          <article class="card family-card" data-official hidden>
-            <div class="panel-card-inner">
-              <p class="section-label">ADORA&Ccedil;&Atilde;O EM FAM&Iacute;LIA</p>
-              <p id="panel-family-topic" class="family-topic">Tema da semana</p>
-              <img id="panel-family-cover" class="panel-family-cover" alt="Capa da publica&ccedil;&atilde;o da semana" hidden>
-              <h3 id="panel-family-title">Fortale&ccedil;a a sua fam&iacute;lia</h3>
-              <p id="panel-family-prompt" class="family-prompt">Um plano de estudo e conversa para a pr&oacute;xima adora&ccedil;&atilde;o em fam&iacute;lia.</p>
-              <button class="button button-secondary" type="button" data-page="family">Ver estudo da semana</button>
-            </div>
-          </article>
+    <section class="page" data-reader-page="family" aria-label="Adoração em família" hidden>
+      <div class="intro"><span class="kicker">Leitura em família</span><h2>Adoração em família</h2><p>Tema da semana, textos bíblicos e referências para consultar juntos.</p></div>
+      <article class="reading">
+        <div class="reading-heading"><span class="kicker" id="family-topic">Tema da semana</span><h2 id="family-title">Carregando…</h2><p id="family-date"></p></div>
+        <div class="reading-cover"><img id="family-cover" hidden alt="Imagem da publicação da semana"><div><p id="family-prompt"></p><p><strong>Leitura bíblica:</strong> <span id="family-reading"></span></p></div></div>
+        <div class="prose">
+          <h3>O que aprender</h3><p id="family-do"></p>
+          <h3>O que evitar</h3><p id="family-avoid"></p>
+          <section id="family-questions-wrap" hidden><h3>Perguntas para conversar</h3><ul class="simple-list" id="family-questions"></ul></section>
+          <h3>Aplicação prática</h3><p id="family-action"></p>
         </div>
-        </details>
-        
-        <div class="section-heading"><h2>Sua semana</h2><span>Prepare, reflita e coloque em prática</span></div>
-        <section class="today-paths" aria-label="Continuar sua preparação">
-          <button type="button" data-open-prep="midweek" class="today-path"><span class="path-icon"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="15" height="18" rx="2"/><path d="M3 7h4m-4 5h4m-4 5h4m4-10h5m-5 5h5m-5 5h3"/></svg></span><span class="section-label">MEIO DE SEMANA</span><strong>Preparar a reunião</strong><span id="today-midweek-progress"></span><span class="path-meter" aria-hidden="true"><span id="today-midweek-bar"></span></span><span aria-hidden="true">→</span></button>
-          <button type="button" data-open-prep="weekend" class="today-path"><span class="path-icon"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Z"/><path d="M12 6v14"/></svg></span><span class="section-label">A SENTINELA</span><strong>Preparar o estudo</strong><span id="today-weekend-progress"></span><span class="path-meter" aria-hidden="true"><span id="today-weekend-bar"></span></span><span aria-hidden="true">→</span></button>
-          <button id="today-family" type="button" class="today-path"><span class="path-icon"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/></svg></span><span class="section-label">ADORAÇÃO EM FAMÍLIA</span><strong id="today-family-title">Estudo da semana</strong><span>Abrir roteiro</span><span aria-hidden="true">→</span></button>
-        </section>
-        
-      </section>
+        <div class="source-line"><p class="small" id="family-source-title"></p><a class="inline-link" id="family-original" hidden target="_blank" rel="noopener noreferrer">Ler publicação no JW.org ↗</a></div>
+      </article>
+    </section>
 
-      <section id="meetings" class="page" aria-labelledby="page-title">
-        <div class="page-intro meeting-switch" role="group" aria-label="Escolher reunião"><button type="button" class="button button-secondary" data-meeting="midweek" aria-pressed="false">Meio de semana</button><button type="button" class="button button-secondary" data-meeting="weekend" aria-pressed="false">Fim de semana</button></div>
-        
-        <div class="meetings-grid" data-official hidden>
-            <article id="meeting-midweek-card" class="card meeting-card"><div class="meeting-cover-heading"><img id="meeting-workbook-cover" class="meeting-cover" alt="Capa da apostila da reuni&atilde;o" hidden><div><p class="section-label">MEIO DE SEMANA</p><h3 id="meeting-reading">Jeremias 22&ndash;23</h3></div></div><section class="treasure-study"><p class="section-label">TESOUROS DA PALAVRA DE DEUS</p><h4 id="meeting-treasure">A import&acirc;ncia de ter bons pastores</h4><span class="study-duration">10 min</span><ul id="meeting-points" class="study-points"><li>Os pastores em Jud&aacute; n&atilde;o cuidaram do povo de Deus.</li><li>Pelas coisas que falavam e pelo seu mau exemplo, os falsos profetas incentivavam o povo a fazer o que era errado.</li><li>Hoje, os anci&atilde;os pastoreiam as ovelhas com zelo e se esfor&ccedilam para ser bons exemplos.</li></ul></section><div id="meeting-midweek-images" class="watchtower-images"></div><p id="meeting-midweek-content" class="watchtower-full-content"></p><a id="meeting-midweek-link" class="button button-secondary meeting-source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></article>
-          <article id="meeting-weekend-card" class="card meeting-card"><div class="meeting-cover-heading"><img id="meeting-watchtower-cover" class="meeting-cover" alt="Capa de A Sentinela" hidden><div><p class="section-label">FIM DE SEMANA</p><h3 id="meeting-watchtower-title">Respeite as decis&otilde;es de outros</h3></div></div><blockquote id="meeting-watchtower-theme">&ldquo;N&atilde;o fa&ccedil;am julgamentos sobre opini&otilde;es divergentes.&rdquo;<cite>&mdash; ROM. 14:1.</cite></blockquote><div class="meeting-divider"></div><p><strong>OBJETIVO</strong></p><p id="meeting-watchtower-objective">Ver como respeitar a decis&atilde;o de outros irm&atilde;os mesmo quando n&atilde;o concordamos.</p><div id="meeting-watchtower-images" class="watchtower-images"></div><p id="meeting-watchtower-content" class="watchtower-full-content"></p><a id="meeting-watchtower-link" class="button button-secondary meeting-source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></article>
+    <section class="page" data-reader-page="emergencies" aria-label="Preparação para emergências" hidden>
+      <div class="intro"><span class="kicker">Guia de leitura e referência</span><h2>Preparação para emergências</h2><p>Informações organizadas a partir de publicações oficiais do JW.org para consultar antes, durante e depois de desastres e outras situações de risco.</p></div>
+      <div class="quick-links" aria-label="Ir para assunto"><button type="button" data-scroll-to="planning">Planejamento</button><button type="button" data-scroll-to="bag">Bolsa de emergência</button><button type="button" data-scroll-to="action">Como agir</button><button type="button" data-scroll-to="sources">Fontes oficiais</button></div>
+
+      <article class="reading" id="planning">
+        <div class="reading-heading"><span class="kicker">01 · Antes de acontecer</span><h2>Organize um plano de emergência</h2><p>Conhecer os riscos e combinar antecipadamente o que fazer facilita a reação em momentos críticos.</p></div>
+        <ul class="simple-list">
+          <li><strong>Identifique os riscos locais:</strong> procure informações sobre enchentes, incêndios, tempestades e outros perigos da sua região.</li>
+          <li><strong>Defina como sair:</strong> conheça rotas de evacuação, saídas de emergência e pontos de encontro com familiares.</li>
+          <li><strong>Mantenha contatos acessíveis:</strong> familiares, amigos e anciãos da congregação, inclusive em papel caso o celular deixe de funcionar.</li>
+          <li><strong>Prepare a casa:</strong> reserve água, alimentos não perecíveis, remédios necessários e outros suprimentos compatíveis com sua realidade.</li>
+          <li><strong>Revise periodicamente:</strong> confira validade dos alimentos e medicamentos, baterias, documentos e necessidades de cada pessoa.</li>
+        </ul>
+        <div class="note"><strong>Princípio bíblico:</strong> Provérbios 22:3 destaca a importância de reconhecer o perigo e tomar precauções.</div>
+      </article>
+
+      <article class="reading" id="bag">
+        <div class="reading-heading"><span class="kicker">02 · Itens essenciais</span><h2>Bolsa de emergência</h2><p>Organize os itens conforme as necessidades da família. A relação abaixo resume sugestões publicadas na revista <em>Despertai!</em> de 2017.</p></div>
+        <div class="topic-grid">
+          <section><h3>Água e alimentação</h3><ul><li>Água potável e alimentos não perecíveis.</li><li>Abridor de latas e talheres simples.</li><li>Itens específicos para crianças ou outras necessidades alimentares.</li></ul></section>
+          <section><h3>Segurança e comunicação</h3><ul><li>Lanterna e pilhas extras.</li><li>Rádio a pilha.</li><li>Apito para pedir ajuda.</li><li>Mapa local e lista de contatos de emergência.</li></ul></section>
+          <section><h3>Saúde e higiene</h3><ul><li>Kit de primeiros socorros.</li><li>Medicamentos de uso necessário e receitas.</li><li>Sabonete, escova de dentes, toalha e papel higiênico.</li><li>Máscaras contra poeira e itens de proteção adequados.</li></ul></section>
+          <section><h3>Documentos e itens pessoais</h3><ul><li>Cópias protegidas de documentos importantes.</li><li>Dinheiro, cópias de chaves e cartões necessários.</li><li>Roupas, calçados resistentes e cobertor.</li><li>Bíblia e itens necessários a idosos, crianças ou pessoas com deficiência.</li></ul></section>
         </div>
-      <section id="meeting-preparation" class="preparation-panel" hidden aria-labelledby="prep-title">
-          <div class="prep-heading"><div><p class="section-label">PREPARAÇÃO PESSOAL</p><h2 id="prep-title">Meu preparo</h2></div><label for="prep-week">Consultar semana<select id="prep-week"></select></label></div>
-          <p id="prep-archive-note" hidden>Você está consultando anotações de outra semana. O conteúdo da reunião acima é o atual.</p>
-          <div class="prep-meter"><span id="prep-progress" role="status"></span><progress id="prep-progress-bar" max="1" value="0" aria-label="Etapas preparadas"></progress></div>
-          <div class="prep-columns"><div><h3>O que já preparei</h3><div id="prep-checklist"></div></div><div class="prep-writing"><label for="prep-notes">Comentário e ideias que quero lembrar</label><textarea id="prep-notes" rows="6" maxlength="12000" placeholder="Escreva com suas palavras…"></textarea><label for="prep-scriptures">Textos bíblicos que quero usar</label><textarea id="prep-scriptures" rows="3" maxlength="4000" placeholder="Referências e pontos que quero destacar…"></textarea><p class="save-status">Salvamento automático neste navegador, separado por semana.</p></div></div>
-          <button id="prep-show-content" type="button" class="button button-secondary">Voltar ao conteúdo da reunião ↑</button>
-        </section>
-      </section>
+        <div class="note"><strong>Reserva doméstica:</strong> a <em>Despertai!</em> n.º 5 de 2017 cita como referência geral pelo menos 10 litros de água por pessoa e alimentos para três dias. A quantidade e os itens devem ser adequados à situação local e às necessidades de cada pessoa.</div>
+        <div class="source-line"><a class="inline-link" href="https://www.jw.org/pt/biblioteca/revistas/despertai-n5-outubro-2017/tragedias-o-que-fazer-quando-vida-esta-em-jogo/" target="_blank" rel="noopener noreferrer">Consultar lista e orientações originais ↗</a></div>
+      </article>
 
-      <section id="daily" class="page simple-page"><div class="card" data-official hidden><p class="reading-label">Leitura do dia</p><p id="daily-page-verse" class="reading-verse">&ldquo;A tua palavra &eacute; l&acirc;mpada para o meu p&eacute; e luz para o meu caminho.&rdquo;</p><p id="daily-page-reference" class="reading-reference">Salmo 119:105</p><div class="daily-divider"></div><p id="daily-page-content" class="daily-full-text">Carregando o texto completo...</p><div class="daily-completion"><button type="button" class="button button-secondary" data-daily-done disabled>Marcar leitura como concluída</button></div><a id="daily-source" class="button button-secondary source-link" href="https://wol.jw.org/pt/" target="_blank" rel="noopener">Ler na fonte oficial</a></div></section>
-      <section id="family" class="page simple-page">
-        <article class="card family-study-card" data-official hidden>
-          <p class="section-label">ADORA&Ccedil;&Atilde;O EM FAM&Iacute;LIA</p>
-          <p id="family-topic" class="family-topic">Tema da semana</p>
-          <h2 id="family-title">Fortale&ccedil;a a sua fam&iacute;lia</h2>
-          <p id="family-prompt" class="family-prompt">Escolham uma ideia para colocar em pr&aacute;tica durante a semana.</p>
-          <div id="family-guide" aria-label="Roteiro de conversa"></div>
-          <p id="family-source-title" class="family-source-title"></p>
-          <div class="family-actions">
-            <a id="family-article" class="button button-secondary" href="https://www.jw.org/pt/" target="_blank" rel="noopener">Abrir no JW.org</a>
-            <a id="family-video" class="button button-video" href="#" target="_blank" rel="noopener" hidden>Assistir ao v&iacute;deo</a>
-          </div>
-          <div class="family-media">
-            <a id="family-publication-media" class="family-media-link" href="https://www.jw.org/pt/" target="_blank" rel="noopener" hidden><img id="family-publication-image" alt="Capa da publica&ccedil;&atilde;o da semana"><span>Ver publica&ccedil;&atilde;o na fonte</span></a>
-            <a id="family-video-media" class="family-media-link" href="#" target="_blank" rel="noopener" hidden><img id="family-video-image" alt="Capa do v&iacute;deo da semana"><span>Assistir ao v&iacute;deo na fonte</span></a>
-          </div>
-        </article>
-        <article class="card family-upcoming-card" data-official hidden>
-          <p class="section-label">PR&Oacute;XIMOS TEMAS</p>
-          <div id="family-upcoming" class="family-upcoming"></div>
-          <p class="family-schedule-note">O tema muda às terças-feiras. Toque em um dos próximos temas para abrir o roteiro e estudar antes, se desejar.</p>
-        </article>
-      </section>
-      </div>
-          <p id="personal-save-status" class="save-status" role="status">Marcações e anotações ficam neste navegador.</p>
-          <div class="backup-tools" aria-label="Backup dos dados pessoais">
-            <button id="backup-export" class="button button-secondary" type="button">Exportar backup</button>
-            <button id="backup-import" class="button button-secondary" type="button">Restaurar backup</button>
-            <input id="backup-file" type="file" accept="application/json,.json" hidden aria-label="Selecionar backup em JSON">
-          </div>
-    </main>
-  </div>
-  <dialog id="event-dialog" aria-labelledby="event-dialog-title">
-    <form id="event-form">
-      <p class="section-label">SUA AGENDA</p><h2 id="event-dialog-title">Adicionar evento</h2>
-      <label for="event-type">Tipo de evento</label>
-      <select id="event-type" required><option value="Congresso">Congresso</option><option value="Assembleia">Assembleia</option><option value="Visita">Visita</option></select>
-      <label for="event-date">Data</label><input id="event-date" type="date" required>
-      <p class="event-storage-note">Seus eventos ficam salvos neste navegador. Eventos nos próximos 30 dias recebem destaque.</p>
-      <div class="dialog-actions"><button id="cancel-event" class="button button-secondary" type="button">Cancelar</button><button class="button button-primary" type="submit">Salvar evento</button></div>
-    </form>
-  </dialog>
-  <noscript>Ative o JavaScript no navegador para acessar o painel.</noscript>
-    <script src="app.js?v=20261026-1"></script>
-    <script src="study-state.js?v=20261001-4"></script>
-    <script src="backup.js?v=20261026-1"></script>
-    <script src="workspace.js?v=20261026-1"></script>
+      <article class="reading" id="action">
+        <div class="reading-heading"><span class="kicker">03 · Durante e depois</span><h2>Como agir em uma emergência</h2><p>As ações dependem do tipo de perigo e das instruções das autoridades locais.</p></div>
+        <ul class="simple-list">
+          <li><strong>Atenda aos alertas oficiais:</strong> se as autoridades orientarem evacuar ou permanecer em abrigo, siga as instruções aplicáveis.</li>
+          <li><strong>Se houver enchente:</strong> não caminhe nem dirija em ruas alagadas.</li>
+          <li><strong>Se precisar sair:</strong> priorize a vida e use as rotas e locais seguros indicados.</li>
+          <li><strong>Comunique-se:</strong> quando for seguro, informe sua situação a familiares e aos anciãos da congregação.</li>
+          <li><strong>Depois do desastre:</strong> evite estruturas danificadas, fios expostos e outros perigos; aceite apoio e procure ajuda quando necessário.</li>
+        </ul>
+      </article>
+
+      <article class="reading">
+        <div class="reading-heading"><span class="kicker">04 · Apoio e fé</span><h2>Preparação espiritual e ajuda mútua</h2></div>
+        <p>As publicações incentivam a manter uma rotina de estudo bíblico e oração, fortalecer a comunicação com a congregação e apoiar pessoas afetadas por desastres. A preparação espiritual acompanha, e não substitui, as precauções práticas e as orientações das autoridades.</p>
+        <p class="muted">Se houver orientações específicas do corpo de anciãos, da filial ou dos serviços de emergência locais, consulte essas orientações diretamente.</p>
+      </article>
+
+      <article class="reading" id="sources">
+        <div class="reading-heading"><span class="kicker">Fontes verificadas</span><h2>Continue lendo no JW.org</h2><p>Esta página reúne resumos e referências. Os textos completos ficam nos sites oficiais.</p></div>
+        <ul class="sources">
+          <li><a href="https://www.jw.org/pt/biblioteca/revistas/despertai-n5-outubro-2017/tragedias-o-que-fazer-quando-vida-esta-em-jogo/" target="_blank" rel="noopener noreferrer">Tragédias — O que fazer quando sua vida está em jogo</a><div class="small">Despertai! n.º 5, 2017 · plano familiar, itens do kit e condutas de segurança.</div></li>
+          <li><a href="https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/maio-junho-2025-mwb/Programa%C3%A7%C3%A3o-da-Reuni%C3%A3o-Vida-e-Minist%C3%A9rio-para-19-25-de-maio-de-2025/" target="_blank" rel="noopener noreferrer">Esteja preparado para um desastre</a><div class="small">Apostila da Reunião, 2025 · preparação espiritual e suprimentos domésticos.</div></li>
+          <li><a href="https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/maio-2020-mwb/Programa-da-semana-de-4-10-de-maio-de-2020-na-Apostila-da-Reuni%C3%A3o-Vida-e-Minist%C3%A9rio/Ser%C3%A1-que-voc%C3%AA-est%C3%A1-preparado/" target="_blank" rel="noopener noreferrer">Será que você está preparado?</a><div class="small">Apostila da Reunião, 2020 · comunicação com os anciãos e kit de emergência.</div></li>
+          <li><a href="https://www.jw.org/pt/ensinos-biblicos/perguntas/desastres-naturais-biblia/" target="_blank" rel="noopener noreferrer">O que a Bíblia diz sobre desastres naturais?</a><div class="small">Princípios bíblicos para enfrentar emergências e prestar ajuda.</div></li>
+        </ul>
+      </article>
+      <p class="small">Conteúdo informativo independente, não oficial. Em emergências reais, siga os alertas e instruções das autoridades responsáveis.</p>
+    </section>
+
+    <p class="status" id="content-updated" aria-live="polite"></p>
+    <footer class="footer">Planejamento Espiritual · Leitura de publicações e referências. As fontes originais estão disponíveis no <a href="https://www.jw.org/pt/" target="_blank" rel="noopener noreferrer">JW.org</a>.</footer>
+  </main>
+</div>
+<script src="reader.js?v=1" defer></script>
+<script>
+ if ('serviceWorker' in navigator) {
+   addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
+ }
+</script>
 </body>
 </html>
