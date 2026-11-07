@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=1">
+  <link rel="stylesheet" href="reader.css?v=2">
 </head>
 <body>
 <div class="app">
@@ -34,21 +34,55 @@
     </header>
     <p id="content-status" class="status" role="status">Carregando as leituras da semana…</p>
 
-    <section class="page" data-reader-page="today" aria-label="Leitura de hoje">
-      <div class="intro"><span class="kicker">Uma leitura de cada vez</span><h2>Encontre um momento para ler e refletir.</h2><p>Texto diário e publicações da semana, em um só lugar, sem anotações ou etapas para concluir.</p></div>
-      <article class="reading">
-        <div class="reading-heading"><span class="kicker">Texto do dia</span><h2 id="today-date">Leitura de hoje</h2></div>
-        <div id="today-verse" class="verse">Carregando…</div>
-        <p id="today-reference" class="reference"></p>
-        <div id="today-content" class="prose"></div>
-        <div class="source-line"><a class="inline-link" id="today-original" hidden target="_blank" rel="noopener noreferrer">Ler a publicação original no JW.org ↗</a></div>
-      </article>
-      <article class="reading">
-        <div class="reading-heading"><span class="kicker">Nesta semana</span><h2>Outras leituras</h2><p>Consulte as informações das reuniões e o tema da adoração em família.</p></div>
-        <p><strong>Reunião de meio de semana:</strong> <span id="today-week">Carregando…</span></p>
-        <p><strong>A Sentinela:</strong> <span id="today-watchtower">Carregando…</span></p>
-        <div class="quick-links"><a href="#meetings">Ler reuniões ↗</a><a href="#family">Ver adoração em família ↗</a><a href="#emergencies">Preparação para emergências ↗</a></div>
-      </article>
+    <section class="page" data-reader-page="today" aria-label="Destaques de leitura">
+      <div class="intro today-intro">
+        <span class="kicker">Publicações em destaque</span>
+        <h2>Seu panorama espiritual da semana</h2>
+        <p>Consulte os assuntos das próximas leituras e abra cada publicação quando desejar.</p>
+      </div>
+
+      <div class="today-card-grid" aria-label="Acessar as publicações">
+        <a class="today-feature-card today-feature-card--daily" href="#daily" aria-label="Abrir texto diário">
+          <div class="today-feature-copy">
+            <span class="today-feature-eyebrow">Texto diário <span id="today-date"></span></span>
+            <h3 id="today-verse">Carregando o texto do dia…</h3>
+            <p class="today-feature-reference" id="today-reference"></p>
+            <span class="today-feature-action">Ler texto completo <span aria-hidden="true">→</span></span>
+          </div>
+          <span class="today-feature-decoration" aria-hidden="true">✧</span>
+        </a>
+
+        <a class="today-feature-card today-feature-card--publication" href="#meetings" data-target-reading="midweek" aria-label="Abrir apostila da reunião de meio de semana">
+          <div class="today-feature-media"><img id="today-midweek-cover" alt="Capa da apostila da reunião de meio de semana" hidden></div>
+          <div class="today-feature-copy">
+            <span class="today-feature-eyebrow">Próxima reunião · Meio de semana</span>
+            <h3 id="today-midweek-title">Carregando o assunto…</h3>
+            <p id="today-midweek-reading" class="today-feature-subtitle"></p>
+            <p id="today-midweek-date" class="today-feature-meta"></p>
+            <span class="today-feature-action">Ver apostila <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+
+        <a class="today-feature-card today-feature-card--publication" href="#meetings" data-target-reading="weekend" aria-label="Abrir estudo de A Sentinela">
+          <div class="today-feature-media"><img id="today-watchtower-cover" alt="Capa de A Sentinela" hidden></div>
+          <div class="today-feature-copy">
+            <span class="today-feature-eyebrow">A Sentinela · Estudo da semana</span>
+            <h3 id="today-watchtower-title">Carregando o estudo…</h3>
+            <p id="today-watchtower-date" class="today-feature-meta"></p>
+            <span class="today-feature-action">Ver estudo <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+
+        <a class="today-feature-card today-feature-card--publication" href="#family" aria-label="Abrir tema da adoração em família">
+          <div class="today-feature-media"><img id="today-family-cover" alt="Imagem da publicação da adoração em família" hidden></div>
+          <div class="today-feature-copy">
+            <span class="today-feature-eyebrow">Adoração em família</span>
+            <h3 id="today-family-title">Carregando o tema…</h3>
+            <p id="today-family-date" class="today-feature-meta"></p>
+            <span class="today-feature-action">Ver tema <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      </div>
     </section>
 
     <section class="page" data-reader-page="meetings" aria-label="Informações das reuniões" hidden>
@@ -68,13 +102,16 @@
       </article>
     </section>
 
-    <section class="page" data-reader-page="daily" aria-label="Texto diário completo" hidden>
-      <div class="intro"><span class="kicker">Examinando as Escrituras Diariamente</span><h2>Texto diário</h2><p>Leitura do dia com referência à publicação original.</p></div>
-      <article class="reading">
-        <div class="reading-heading"><span class="kicker">Leitura</span><h2 id="daily-date">Carregando…</h2></div>
-        <p class="verse" id="daily-verse"></p><p class="reference" id="daily-reference"></p>
+    <section class="page" data-reader-page="daily" aria-label="Texto diário" hidden>
+      <div class="intro"><span class="kicker">Examinando as Escrituras Diariamente</span><h2>Texto diário</h2></div>
+      <article class="reading daily-single-reading">
+        <div class="reading-heading">
+          <span class="kicker" id="daily-date">Carregando…</span>
+          <h2 class="verse" id="daily-verse">Texto do dia</h2>
+          <p class="reference" id="daily-reference"></p>
+        </div>
         <div id="daily-content" class="prose"></div>
-        <div class="source-line"><a class="inline-link" id="daily-original" hidden target="_blank" rel="noopener noreferrer">Ler texto diário no JW.org ↗</a></div>
+        <div class="source-line"><a class="inline-link" id="daily-original" hidden target="_blank" rel="noopener noreferrer">Ler na publicação original ↗</a></div>
       </article>
     </section>
 
@@ -154,7 +191,7 @@
     <footer class="footer">Planejamento Espiritual · Leitura de publicações e referências. As fontes originais estão disponíveis no <a href="https://www.jw.org/pt/" target="_blank" rel="noopener noreferrer">JW.org</a>.</footer>
   </main>
 </div>
-<script src="reader.js?v=1" defer></script>
+<script src="reader.js?v=2" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
    addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });

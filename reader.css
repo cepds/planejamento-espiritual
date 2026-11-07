@@ -78,3 +78,54 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
  .sidebar{background:linear-gradient(160deg,#174934,#0b3526)}.verse{color:#c2eacc}.reference,.reading-heading .kicker{color:#a8dbb8}.eyebrow{color:#9dcbad}.inline-link{color:#daf8de;border-color:#476b50}.quick-links a{color:#c7eed1}.topic-grid h3{color:#b1e2c0}.note{color:#e4f0e4}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.page{animation:none}.nav a{transition:none}}
+
+
+/* Página Hoje: cards de acesso rápido, sem textos longos de estudo */
+.today-intro{margin-bottom:26px}
+.today-intro h2{font-size:clamp(1.75rem,3.4vw,2.7rem);max-width:700px}
+.today-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch}
+.today-feature-card{min-width:0;min-height:210px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden;padding:23px;background:var(--surface);border:1px solid var(--line);border-radius:20px;color:var(--ink);text-decoration:none;box-shadow:var(--shadow);transition:border-color .2s ease,transform .2s ease,box-shadow .2s ease}
+.today-feature-card:hover{transform:translateY(-3px);border-color:#8cbaa0;box-shadow:0 14px 36px #143b241b}
+.today-feature-card:focus-visible{outline-offset:4px}
+.today-feature-copy{min-width:0;flex:1;position:relative;z-index:1}
+.today-feature-eyebrow{display:block;color:#367858;font-size:.71rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;line-height:1.5}
+.today-feature-eyebrow #today-date{display:block;color:var(--muted);font-size:.73rem;font-weight:500;letter-spacing:normal;text-transform:none;margin-top:4px}
+.today-feature-card h3{font:700 clamp(1.1rem,1.8vw,1.46rem)/1.35 Georgia,serif;letter-spacing:-.018em;overflow-wrap:anywhere;margin:12px 0 9px;color:var(--ink)}
+.today-feature-subtitle{font-size:.85rem;color:var(--muted);font-weight:600;margin:0 0 4px}
+.today-feature-meta{font-size:.79rem;color:var(--muted);margin:5px 0 0}
+.today-feature-reference{font-size:.9rem;color:#4e755b;margin:5px 0}
+.today-feature-action{display:block;color:#246343;font-size:.81rem;font-weight:800;margin-top:16px}
+.today-feature-action span{display:inline-block;transition:transform .18s ease}
+.today-feature-card:hover .today-feature-action span{transform:translateX(4px)}
+.today-feature-media{flex:0 0 96px;width:96px;min-height:130px;display:flex;align-items:center;justify-content:center;align-self:center;border-radius:12px;background:linear-gradient(145deg,#eef3e9,#dfe9dc);overflow:hidden}
+.today-feature-media img{width:100%;height:135px;object-fit:cover;border-radius:10px}
+.today-feature-media:has(img[hidden])::after{content:"✧";font:700 44px Georgia,serif;color:#7ba18a}
+.today-feature-card--daily{background:linear-gradient(130deg,#f8faf5 0%,#e9f3e9 100%)}
+.today-feature-card--daily h3{font-size:clamp(1.35rem,2vw,1.75rem);max-width:450px}
+.today-feature-decoration{position:absolute;right:22px;top:15px;font:400 125px Georgia,serif;line-height:1;color:#c5ddc9;opacity:.45;pointer-events:none}
+.daily-single-reading .reading-heading h2.verse{font:600 clamp(1.5rem,3vw,2.3rem)/1.42 Georgia,serif;color:var(--green);margin:12px 0 10px}
+.daily-single-reading .reference{margin:0}
+.daily-single-reading .reading-heading{margin-bottom:25px}
+@media(max-width:750px){
+ .today-card-grid{grid-template-columns:1fr;gap:13px}
+ .today-feature-card{min-height:165px;padding:20px}
+ .today-feature-media{flex-basis:94px;width:94px;min-height:120px}
+ .today-feature-media img{height:120px}
+ .today-feature-card--daily{min-height:150px}
+}
+@media(max-width:390px){
+ .today-feature-card{padding:17px;gap:12px}
+ .today-feature-media{flex-basis:76px;width:76px;min-height:106px}
+ .today-feature-media img{height:110px}
+ .today-feature-card h3{font-size:1.04rem}
+}
+@media(prefers-color-scheme:dark){
+ .today-feature-card--daily{background:linear-gradient(130deg,#1b3022,#1c3e2a)}
+ .today-feature-eyebrow,.today-feature-action{color:#a3d8b8}
+ .today-feature-reference{color:#bfd5c3}
+ .today-feature-media{background:linear-gradient(145deg,#23402c,#335a3d)}
+ .today-feature-media:has(img[hidden])::after{color:#8bb59a}
+ .today-feature-decoration{color:#578769}
+ .daily-single-reading .reading-heading h2.verse{color:#d1efd7}
+}
+@media(prefers-reduced-motion:reduce){.today-feature-card,.today-feature-action span{transition:none}.today-feature-card:hover{transform:none}}
