@@ -206,3 +206,48 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
 .event-import:disabled{opacity:.55;cursor:not-allowed}
 .event-dialog .event-storage{line-height:1.5}
 @media(max-width:600px){.event-list-actions{gap:3px}.event-list-actions button{font-size:.67rem;padding:4px 5px}}
+
+/* Agenda compacta no celular: exibe apenas o próximo evento até ser aberta. */
+.event-mobile-toggle{display:none}
+@media(max-width:600px){
+  .event-widget{
+    right:10px;
+    bottom:max(10px,env(safe-area-inset-bottom));
+    width:min(275px,calc(100vw - 20px));
+    max-width:calc(100vw - 20px);
+    padding:0;
+    border-radius:15px;
+    overflow:hidden;
+    box-shadow:0 8px 26px rgba(0,0,0,.22);
+  }
+  .event-mobile-toggle{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    width:100%;
+    min-height:48px;
+    padding:10px 13px;
+    border:0;
+    background:var(--surface);
+    color:var(--ink);
+    text-align:left;
+    cursor:pointer;
+    font:700 .79rem/1.25 "Segoe UI",Arial,sans-serif;
+  }
+  .event-mobile-toggle svg{flex:0 0 19px;color:var(--green)}
+  .event-mobile-summary{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .event-mobile-chevron{flex:0 0 auto;font-size:1rem;color:var(--muted);transition:transform .2s ease}
+  .event-widget-content{display:none}
+  .event-widget.is-expanded{
+    width:min(370px,calc(100vw - 20px));
+    max-height:min(72dvh,600px);
+    overflow-y:auto;
+    overscroll-behavior:contain;
+  }
+  .event-widget.is-expanded .event-widget-content{display:block;padding:0 14px 14px}
+  .event-widget.is-expanded .event-mobile-chevron{transform:rotate(180deg)}
+  .event-widget.is-expanded .event-widget-header{padding-top:12px}
+  .event-widget.is-expanded .event-all{margin-top:10px}
+  .main{padding-bottom:88px}
+}
+@media(prefers-reduced-motion:reduce){.event-mobile-chevron{transition:none}}
