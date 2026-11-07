@@ -54,7 +54,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
 .source-line{border-top:1px solid var(--line);margin-top:28px;padding-top:20px}
 .small{font-size:.84rem;color:var(--muted)}
 .quick-links{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0 26px}
-.quick-links a{color:var(--green);text-decoration:none;border:1px solid var(--line);background:var(--surface);border-radius:30px;padding:7px 12px;font-weight:600;font-size:.84rem}
+.quick-links a,.quick-links button{cursor:pointer;font:inherit;color:var(--green);text-decoration:none;border:1px solid var(--line);background:var(--surface);border-radius:30px;padding:7px 12px;font-weight:600;font-size:.84rem}
 .topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 30px}
 .topic-grid section{border-top:1px solid var(--line);padding:20px 0}
 .topic-grid h3{margin:0 0 8px;color:var(--green);font-size:1.03rem}
