@@ -10,6 +10,9 @@
   const add = document.getElementById('event-open');
   const importButton = document.getElementById('event-import');
   const status = document.getElementById('event-sync-status');
+  const widget = document.querySelector('.event-widget');
+  const mobileToggle = document.getElementById('event-mobile-toggle');
+  const mobileSummary = document.getElementById('event-mobile-summary');
   const currentDate = () => {
     const parts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', {
       timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit'
@@ -39,6 +42,26 @@
     return Math.round((Date.parse(value + 'T00:00:00Z') -
       Date.parse(currentDate() + 'T00:00:00Z')) / 86400000);
   }
+
+  function setMobileExpanded(expanded) {
+    widget.classList.toggle('is-expanded', expanded);
+    mobileToggle.setAttribute('aria-expanded', String(expanded));
+    mobileToggle.setAttribute('aria-label', expanded
+      ? 'Fechar agenda de eventos' : 'Abrir ' + mobileSummary.textContent);
+  }
+
+  mobileToggle.addEventListener('click', () => {
+    setMobileExpanded(!widget.classList.contains('is-expanded'));
+  });
+  document.addEventListener('pointerdown', event => {
+    if (widget.classList.contains('is-expanded') && !widget.contains(event.target) && !dialog.open) {
+      setMobileExpanded(false);
+    }
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !dialog.open) setMobileExpanded(false);
+  });
+  window.addEventListener('hashchange', () => setMobileExpanded(false));
 
   function message(text, error = false) {
     status.textContent = text;
@@ -83,6 +106,12 @@
     const next = ordered.find(item => until(item.date) >= 0);
     document.getElementById('event-empty').hidden = Boolean(next);
     document.getElementById('event-next').hidden = !next;
+    const shortDate = next ? next.date.slice(8, 10) + '/' + next.date.slice(5, 7) : '';
+    mobileSummary.textContent = !connected ? 'Agenda · indisponível'
+      : next ? 'Agenda · ' + titleOf(next) + ' · ' + shortDate : 'Agenda · sem eventos';
+    if (!widget.classList.contains('is-expanded')) {
+      mobileToggle.setAttribute('aria-label', 'Abrir ' + mobileSummary.textContent);
+    }
     if (next) {
       document.getElementById('event-next-type').textContent = next.type;
       document.getElementById('event-next-title').textContent = titleOf(next);
