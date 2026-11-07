@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=4">
+  <link rel="stylesheet" href="reader.css?v=5">
 </head>
 <body>
 <div class="app">
@@ -187,6 +187,14 @@
     <footer class="footer">Planejamento Espiritual · Leitura de publicações e referências. As fontes originais estão disponíveis no <a href="https://www.jw.org/pt/" target="_blank" rel="noopener noreferrer">JW.org</a>.</footer>
   </main>
   <aside class="event-widget" aria-label="Agenda de eventos especiais">
+    <button type="button" id="event-mobile-toggle" class="event-mobile-toggle" aria-expanded="false" aria-controls="event-widget-content" aria-label="Abrir agenda de eventos">
+      <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/>
+      </svg>
+      <span id="event-mobile-summary" class="event-mobile-summary">Agenda · carregando…</span>
+      <span class="event-mobile-chevron" aria-hidden="true">⌃</span>
+    </button>
+    <div id="event-widget-content" class="event-widget-content">
     <div class="event-widget-header">
       <div>
         <span class="event-widget-eyebrow">Agenda</span>
@@ -209,6 +217,7 @@
     </details>
     <button id="event-import" class="event-import" type="button" hidden disabled>Publicar eventos antigos</button>
     <p id="event-sync-status" class="event-sync-status" role="status">Conectando agenda compartilhada…</p>
+    </div>
   </aside>
 </div>
 
@@ -239,7 +248,7 @@
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
 <script src="reader.js?v=4" defer></script>
-<script src="public-events.js?v=1" defer></script>
+<script src="public-events.js?v=2" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
    addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
