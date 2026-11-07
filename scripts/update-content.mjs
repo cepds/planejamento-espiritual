@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { inflateRawSync } from 'node:zlib';
+import { loadCongregationStudy } from './congregation-study.mjs';
 
 const contentFile = new URL('../data/content.json', import.meta.url);
 const months = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
@@ -466,6 +467,16 @@ async function getMeeting(date) {
   const treasure = text.match(/1\.\s+(.+?)\s*\(10 min\)/i)?.[1] || 'Tesouros da Palavra de Deus';
   const points = extractStudyPoints(rtf, treasure);
   const content = workbookProgramOnly(completeText, title);
+  const sections = content.split(/\n\s*\n/);
+  const studyIndex = sections.findIndex((line) => /^\d+\.\s*Estudo bíblico de congregação\b/i.test(line));
+  const studyReference = studyIndex >= 0 ? sections[studyIndex + 1] : null;
+  const congregationStudy = studyReference
+    ? await loadCongregationStudy(studyReference, wolMeetingUrl(monday))
+    : null;
+  if (congregationStudy) console.log('Estudo de congregação:',
+    congregationStudy.reference,
+    '| capítulos:', congregationStudy.chapters.map(({ number, content: blocks }) =>
+      number + '(' + blocks.length + ' blocos)').join(', '));
   const image = current.trackImage?.url || null;
   const contentImages = await publicationContentImages(media, current.track);
   const meeting = {
@@ -476,7 +487,8 @@ async function getMeeting(date) {
     weekOf: meeting.weekOf, title: reading.toUpperCase(), content,
     images: contentImages.length ? contentImages : (image ? [image] : []),
     heroImageUrl: contentImages[0] || image || null,
-    coverUrl: meeting.coverUrl, url: wolMeetingUrl(monday)
+    coverUrl: meeting.coverUrl, url: wolMeetingUrl(monday),
+    congregationStudy
   };
   return { meeting, midweekStudy };
 }
