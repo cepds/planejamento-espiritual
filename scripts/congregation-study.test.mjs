@@ -79,3 +79,27 @@ test('reconhece perguntas do livro mesmo quando são parágrafos e têm referên
   assert.ok(questions.every(item => item.text.includes('?')));
   assert.equal(study.content.find(item => item.text.startsWith('Um texto com')).kind, 'paragraph');
 });
+
+test('inclui pergunta da seção Para considerar e remove Sua resposta da fonte oficial', () => {
+  const html = '<p>wcg cap. 16</p><div class="bodyTxt">' +
+    '<h1>“Certamente irei com você”</h1>' +
+    '<p>Parágrafo da narrativa da história.</p>' +
+    '<h3>Para considerar:</h3>' +
+    '<p>De que maneiras Baraque e Débora mostraram coragem? Sua resposta</p>' +
+    '<h2>Analise mais a fundo</h2>' +
+    '<li>1. Como era a vida em Israel? (w15 1/8 13) Sua resposta</li>' +
+    '<li>3. Em que sentido? (Juí. 5:7) A Sua resposta</li>' +
+    '<h2>Medite no que aprendeu</h2>' +
+    '<li>Por que precisou de coragem? B Sua resposta Imagem B</li>' +
+    '<h2>Aprenda mais</h2><p>Texto adicional da publicação.</p>' +
+    '</div>';
+  const chapter = extractWolChapter(html, 'wcg', 16,
+    'https://wol.jw.org/pt/wol/d/r5/lp-t/1102025916');
+  assert.ok(chapter);
+  const questions = chapter.content.filter(item => item.kind === 'question');
+  assert.equal(questions.length, 4);
+  assert.equal(questions[0].text, 'De que maneiras Baraque e Débora mostraram coragem?');
+  assert.equal(questions[1].text, '1. Como era a vida em Israel? (w15 1/8 13)');
+  assert.equal(questions[2].text, '3. Em que sentido? (Juí. 5:7)');
+  assert.equal(questions[3].text, 'Por que precisou de coragem?');
+});
