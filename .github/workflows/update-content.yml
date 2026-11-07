@@ -44,15 +44,40 @@ jobs:
             chmod 600 "$RUNNER_TEMP/firebase-service-account.json"
             echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-service-account.json" >> "$GITHUB_ENV"
           fi
+      - name: Garantir banco Firestore para eventos públicos
+        if: github.event_name != 'schedule'
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        run: |
+          firebase_cli() {
+            if [ -n "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]; then
+              npx --yes firebase-tools@15.34.1 "$@" --project planejamento-espiritual --non-interactive
+            elif [ -n "$FIREBASE_TOKEN" ]; then
+              npx --yes firebase-tools@15.34.1 "$@" --project planejamento-espiritual --token "$FIREBASE_TOKEN" --non-interactive
+            else
+              echo "::error::Credenciais Firebase indisponíveis."
+              return 1
+            fi
+          }
+          if firebase_cli firestore:databases:get "(default)" > /dev/null 2>&1; then
+            echo "Firestore padrão já configurado."
+          else
+            echo "Tentando criar banco Firestore padrão na região de São Paulo."
+            firebase_cli firestore:databases:create "(default)" --location=southamerica-east1
+          fi
       - name: Publicar no Firebase
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
+          DEPLOY_TARGETS=hosting
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            DEPLOY_TARGETS=hosting,firestore:rules
+          fi
           if [ -n "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]; then
-            npx --yes firebase-tools@15.34.1 deploy --only hosting --project planejamento-espiritual --non-interactive
+            npx --yes firebase-tools@15.34.1 deploy --only "$DEPLOY_TARGETS" --project planejamento-espiritual --non-interactive
           elif [ -n "$FIREBASE_TOKEN" ]; then
             echo "::warning::Token legado em uso. Configure FIREBASE_SERVICE_ACCOUNT para migrar."
-            npx --yes firebase-tools@15.34.1 deploy --only hosting --project planejamento-espiritual --token "$FIREBASE_TOKEN" --non-interactive
+            npx --yes firebase-tools@15.34.1 deploy --only "$DEPLOY_TARGETS" --project planejamento-espiritual --token "$FIREBASE_TOKEN" --non-interactive
           else
             echo "::error::Configure FIREBASE_SERVICE_ACCOUNT ou FIREBASE_TOKEN."
             exit 1
