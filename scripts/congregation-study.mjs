@@ -27,7 +27,7 @@ function parseCongregationReference(raw) {
   if (continued) {
     const second = Number(continued[1]);
     if (second && second !== first) {
-      if (/^\s*(?:-|–|—|a)\b?/i.test(tail.trim()) && second > first) {
+      if (/^\s*(?:-|–|—|a)(?=\s*\d)/i.test(tail.trim()) && second > first) {
         // A range like "16–17" includes every chapter in the range.
         for (let n = first + 1; n <= second && chapters.length < 5; n++) chapters.push(n);
       } else chapters.push(second);
