@@ -8,7 +8,7 @@ function harness(fetchResult, failWrite = false) {
   const saved = new Response('{"cached":true}');
   const context = { URL, Response, fetch: fetchResult, caches: {
     open: async () => ({ addAll: async () => {}, put: async (key) => { if (failWrite) throw Error('quota'); writes.push(key); }, match: async () => saved }),
-    keys: async () => ['planejamento-espiritual-shell-v2', 'another-app', 'planejamento-espiritual-shell-v7', 'planejamento-espiritual-shell-v8', 'planejamento-espiritual-shell-v9-leitura', 'planejamento-espiritual-shell-v10-cards', 'planejamento-espiritual-shell-v11-estudos-eventos'],
+    keys: async () => ['planejamento-espiritual-shell-v2', 'another-app', 'planejamento-espiritual-shell-v7', 'planejamento-espiritual-shell-v8', 'planejamento-espiritual-shell-v9-leitura', 'planejamento-espiritual-shell-v10-cards', 'planejamento-espiritual-shell-v11-estudos-eventos', 'planejamento-espiritual-shell-v12-eventos-compartilhados'],
     delete: async (key) => deleted.push(key)
   }, self: { location: {origin:'https://example.com'}, addEventListener: (type, handler) => handlers[type] = handler, skipWaiting: async () => {}, clients: {claim: async () => {}} }};
   vm.runInNewContext(source, context);
@@ -34,7 +34,7 @@ test('sem rede utiliza a cópia salva', async () => {
 test('limpeza mantém caches de outros aplicativos', async () => {
   const h = harness(async () => new Response('ok'));let done;
   h.handlers.activate({waitUntil: value => done=value}); await done;
-  assert.deepEqual(h.deleted,['planejamento-espiritual-shell-v2','planejamento-espiritual-shell-v7','planejamento-espiritual-shell-v8','planejamento-espiritual-shell-v9-leitura','planejamento-espiritual-shell-v10-cards']);
+  assert.deepEqual(h.deleted,['planejamento-espiritual-shell-v2','planejamento-espiritual-shell-v7','planejamento-espiritual-shell-v8','planejamento-espiritual-shell-v9-leitura','planejamento-espiritual-shell-v10-cards','planejamento-espiritual-shell-v11-estudos-eventos']);
 });
 
 test('primeira instalação prepara o conteúdo offline', async () => {
