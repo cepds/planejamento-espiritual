@@ -11,35 +11,31 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=2">
+  <link rel="stylesheet" href="reader.css?v=3">
 </head>
 <body>
 <div class="app">
   <aside class="sidebar" aria-label="Navegação principal">
     <a class="brand" href="#today"><span class="brand-mark" aria-hidden="true">✧</span><span class="brand-name">Planejamento<em>Espiritual</em></span></a>
-    <p class="nav-caption">Biblioteca de leitura</p>
+    
     <nav class="nav" aria-label="Seções">
-      <a href="#today" data-reader-link="today" aria-current="page"><span class="nav-symbol" aria-hidden="true">⌂</span>Hoje</a>
-      <a href="#meetings" data-reader-link="meetings"><span class="nav-symbol" aria-hidden="true">▤</span>Reuniões</a>
-      <a href="#daily" data-reader-link="daily"><span class="nav-symbol" aria-hidden="true">☷</span>Texto diário</a>
-      <a href="#family" data-reader-link="family"><span class="nav-symbol" aria-hidden="true">♡</span>Adoração em família</a>
-      <a href="#emergencies" data-reader-link="emergencies"><span class="nav-symbol" aria-hidden="true">✦</span>Emergências</a>
+      <a href="#today" data-reader-link="today" aria-current="page"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10Z"/><path d="M9 21v-7h6v7"/></svg></span>Hoje</a>
+      <a href="#meetings" data-reader-link="meetings"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-13 4h3m3 0h3m-9 4h3"/></svg></span>Reuniões</a>
+      <a href="#daily" data-reader-link="daily"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Zm0 0v14"/></svg></span>Texto diário</a>
+      <a href="#family" data-reader-link="family"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3V10Z"/><path d="M8 20v-5h8v5m-6-11c1-2 4-2 5 0 1 2-2.5 4-2.5 4S9 11 10 9Z"/></svg></span>Adoração em família</a>
+      <a href="#emergencies" data-reader-link="emergencies"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M12 7v6m0 4h.01"/></svg></span>Emergências</a>
     </nav>
-    <p class="sidebar-foot">Informações de leitura e orientações com referências a publicações oficiais do JW.org.</p>
+    
   </aside>
   <main class="main" id="main">
     <header class="topbar">
-      <div><p class="eyebrow">Central de leitura</p><h1 id="page-title">Hoje</h1></div>
+      <div><h1 id="page-title">Hoje</h1></div>
       <a class="source-pill" href="https://www.jw.org/pt/" target="_blank" rel="noopener noreferrer">JW.org ↗</a>
     </header>
     <p id="content-status" class="status" role="status">Carregando as leituras da semana…</p>
 
     <section class="page" data-reader-page="today" aria-label="Destaques de leitura">
-      <div class="intro today-intro">
-        <span class="kicker">Publicações em destaque</span>
-        <h2>Seu panorama espiritual da semana</h2>
-        <p>Consulte os assuntos das próximas leituras e abra cada publicação quando desejar.</p>
-      </div>
+
 
       <div class="today-card-grid" aria-label="Acessar as publicações">
         <a class="today-feature-card today-feature-card--daily" href="#daily" aria-label="Abrir texto diário">
@@ -47,29 +43,29 @@
             <span class="today-feature-eyebrow">Texto diário <span id="today-date"></span></span>
             <h3 id="today-verse">Carregando o texto do dia…</h3>
             <p class="today-feature-reference" id="today-reference"></p>
-            <span class="today-feature-action">Ler texto completo <span aria-hidden="true">→</span></span>
+            
           </div>
           <span class="today-feature-decoration" aria-hidden="true">✧</span>
         </a>
 
         <a class="today-feature-card today-feature-card--publication" href="#meetings" data-target-reading="midweek" aria-label="Abrir apostila da reunião de meio de semana">
-          <div class="today-feature-media"><img id="today-midweek-cover" alt="Capa da apostila da reunião de meio de semana" hidden></div>
+          <div class="today-feature-media"><img id="today-midweek-cover" alt="Ilustração do tema da reunião de meio de semana" hidden></div>
           <div class="today-feature-copy">
             <span class="today-feature-eyebrow">Próxima reunião · Meio de semana</span>
             <h3 id="today-midweek-title">Carregando o assunto…</h3>
             <p id="today-midweek-reading" class="today-feature-subtitle"></p>
             <p id="today-midweek-date" class="today-feature-meta"></p>
-            <span class="today-feature-action">Ver apostila <span aria-hidden="true">→</span></span>
+            
           </div>
         </a>
 
         <a class="today-feature-card today-feature-card--publication" href="#meetings" data-target-reading="weekend" aria-label="Abrir estudo de A Sentinela">
-          <div class="today-feature-media"><img id="today-watchtower-cover" alt="Capa de A Sentinela" hidden></div>
+          <div class="today-feature-media"><img id="today-watchtower-cover" alt="Ilustração inicial do estudo de A Sentinela" hidden></div>
           <div class="today-feature-copy">
             <span class="today-feature-eyebrow">A Sentinela · Estudo da semana</span>
             <h3 id="today-watchtower-title">Carregando o estudo…</h3>
             <p id="today-watchtower-date" class="today-feature-meta"></p>
-            <span class="today-feature-action">Ver estudo <span aria-hidden="true">→</span></span>
+            
           </div>
         </a>
 
@@ -79,18 +75,18 @@
             <span class="today-feature-eyebrow">Adoração em família</span>
             <h3 id="today-family-title">Carregando o tema…</h3>
             <p id="today-family-date" class="today-feature-meta"></p>
-            <span class="today-feature-action">Ver tema <span aria-hidden="true">→</span></span>
+            
           </div>
         </a>
       </div>
     </section>
 
     <section class="page" data-reader-page="meetings" aria-label="Informações das reuniões" hidden>
-      <div class="intro"><span class="kicker">Programação semanal</span><h2>Reuniões</h2><p>Conteúdo de referência para leitura, sem marcações de preparação ou porcentagens de conclusão.</p></div>
+      
       <div class="quick-links"><button type="button" data-scroll-to="midweek">Meio de semana</button><button type="button" data-scroll-to="weekend">Fim de semana</button></div>
       <article class="reading" id="midweek">
         <div class="reading-heading"><span class="kicker">Reunião de meio de semana</span><h2 id="midweek-title">Carregando…</h2><p id="midweek-date"></p></div>
-        <div class="reading-cover"><img id="midweek-cover" hidden alt="Capa da apostila da reunião"><div class="small">Programa da reunião, temas e leituras conforme o conteúdo disponível.</div></div>
+        <div class="reading-cover study-illustration"><img id="midweek-cover" hidden alt="Ilustração do tema da reunião"></div>
         <div id="midweek-content" class="prose"></div>
         <div class="source-line"><a class="inline-link" id="midweek-original" hidden target="_blank" rel="noopener noreferrer">Abrir programação oficial ↗</a></div>
       </article>
@@ -103,7 +99,7 @@
     </section>
 
     <section class="page" data-reader-page="daily" aria-label="Texto diário" hidden>
-      <div class="intro"><span class="kicker">Examinando as Escrituras Diariamente</span><h2>Texto diário</h2></div>
+      
       <article class="reading daily-single-reading">
         <div class="reading-heading">
           <span class="kicker" id="daily-date">Carregando…</span>
@@ -116,7 +112,7 @@
     </section>
 
     <section class="page" data-reader-page="family" aria-label="Adoração em família" hidden>
-      <div class="intro"><span class="kicker">Leitura em família</span><h2>Adoração em família</h2><p>Tema da semana, textos bíblicos e referências para consultar juntos.</p></div>
+      
       <article class="reading">
         <div class="reading-heading"><span class="kicker" id="family-topic">Tema da semana</span><h2 id="family-title">Carregando…</h2><p id="family-date"></p></div>
         <div class="reading-cover"><img id="family-cover" hidden alt="Imagem da publicação da semana"><div><p id="family-prompt"></p><p><strong>Leitura bíblica:</strong> <span id="family-reading"></span></p></div></div>
@@ -190,8 +186,54 @@
     <p class="status" id="content-updated" aria-live="polite"></p>
     <footer class="footer">Planejamento Espiritual · Leitura de publicações e referências. As fontes originais estão disponíveis no <a href="https://www.jw.org/pt/" target="_blank" rel="noopener noreferrer">JW.org</a>.</footer>
   </main>
+  <aside class="event-widget" aria-label="Agenda de eventos especiais">
+    <div class="event-widget-header">
+      <div>
+        <span class="event-widget-eyebrow">Agenda</span>
+        <h2>Próximo evento</h2>
+      </div>
+      <button type="button" id="event-open" class="event-add" aria-label="Adicionar congresso, assembleia ou visita">+ Evento</button>
+    </div>
+    <div id="event-preview" class="event-preview" aria-live="polite">
+      <p id="event-empty" class="event-empty">Nenhum evento cadastrado.</p>
+      <div id="event-next" hidden>
+        <p id="event-next-type" class="event-kind"></p>
+        <strong id="event-next-title"></strong>
+        <p id="event-next-date"></p>
+        <p id="event-next-location" hidden></p>
+      </div>
+    </div>
+    <details id="event-all" class="event-all" hidden>
+      <summary>Ver eventos cadastrados</summary>
+      <ul id="event-list" class="event-list"></ul>
+    </details>
+  </aside>
 </div>
-<script src="reader.js?v=2" defer></script>
+
+<dialog id="event-dialog" class="event-dialog" aria-labelledby="event-dialog-title">
+  <form id="event-form">
+    <h2 id="event-dialog-title">Adicionar evento</h2>
+    <label for="event-form-type">Tipo de evento</label>
+    <select id="event-form-type" required>
+      <option value="Congresso">Congresso</option>
+      <option value="Assembleia">Assembleia</option>
+      <option value="Visita">Visita</option>
+      <option value="Outro">Outro</option>
+    </select>
+    <label for="event-form-title">Título (opcional)</label>
+    <input id="event-form-title" type="text" maxlength="100" placeholder="Ex.: Assembleia de circuito">
+    <label for="event-form-date">Data</label>
+    <input id="event-form-date" type="date" required>
+    <label for="event-form-location">Local (opcional)</label>
+    <input id="event-form-location" type="text" maxlength="120" placeholder="Local do evento">
+    <p class="event-storage">Os eventos ficam salvos neste navegador.</p>
+    <div class="event-form-actions">
+      <button id="event-cancel" type="button" class="event-cancel">Cancelar</button>
+      <button type="submit" class="event-save">Salvar evento</button>
+    </div>
+  </form>
+</dialog>
+<script src="reader.js?v=3" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
    addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
