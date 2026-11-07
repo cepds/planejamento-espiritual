@@ -488,3 +488,51 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
  .study-comment-label{color:#bbd6bb}
  .study-comment-input{background:#14221b;border-color:#46614e}
 }
+
+
+/* Joias espirituais: apenas um comentário privado, expansível com o texto. */
+.study-jewels-comment{margin-top:21px}
+.study-jewels-save-state{margin:9px 0 0;font-size:.74rem;color:var(--muted);line-height:1.5}
+
+/* Estudo Bíblico de Congregação: capítulos ficam ocultos até abrir. */
+.congregation-accordion{margin:14px 0 9px;border:1px solid var(--line);border-radius:13px;background:var(--surface);overflow:hidden}
+.congregation-toggle{cursor:pointer;display:flex;flex-direction:column;gap:4px;position:relative;padding:16px 42px 16px 17px;list-style:none;background:var(--soft);outline-offset:-3px}
+.congregation-toggle::-webkit-details-marker{display:none}
+.congregation-toggle::after{content:"";position:absolute;right:20px;top:calc(50% - 5px);width:10px;height:10px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transition:transform .18s ease;color:var(--ink)}
+.congregation-accordion[open] .congregation-toggle::after{transform:rotate(225deg);top:calc(50% - 1px)}
+.congregation-toggle:focus-visible{outline:3px solid #b9913d}
+.congregation-toggle-heading{font-size:.95rem;font-weight:800;color:var(--ink);line-height:1.35}
+.congregation-toggle-subtitle{font-size:.79rem;font-weight:650;color:var(--muted);line-height:1.5}
+.congregation-panel{padding:19px 18px 20px}
+.congregation-book-name{font:700 1.1rem/1.35 Georgia,serif;color:var(--ink);margin:0 0 13px}
+.congregation-chapter-count{font-size:.77rem;color:var(--muted);margin:0 0 14px}
+.congregation-chapter{padding:18px 0 10px;border-top:1px solid var(--line)}
+.congregation-chapter:first-of-type{border-top:none;padding-top:6px}
+.congregation-chapter-label{display:inline-block;font-size:.72rem;font-weight:800;color:var(--study-soft-blue);letter-spacing:.07em;text-transform:uppercase}
+.congregation-chapter-title{margin:7px 0 18px;font:700 clamp(1.2rem,2.4vw,1.45rem)/1.3 Georgia,serif;color:var(--ink)}
+.congregation-content-paragraph{font-size:.96rem;line-height:1.84;color:var(--ink);margin:0 0 15px}
+.congregation-content-heading{font-size:1.08rem;font-weight:750;color:var(--study-soft-blue);margin:22px 0 11px}
+.congregation-content-question{font-size:.95rem;font-weight:700;color:var(--ink);margin:17px 0}
+.congregation-source{display:inline-block;color:var(--study-soft-blue);font-size:.83rem;font-weight:750;text-underline-offset:3px;margin:10px 0 7px}
+.congregation-fallback{margin:10px 0 15px;font-size:.86rem;line-height:1.65;color:var(--muted)}
+@media(max-width:600px){
+  .congregation-toggle{padding:15px 38px 15px 13px}
+  .congregation-panel{padding:15px 13px 18px}
+  .congregation-content-paragraph{font-size:.96rem}
+  .study-jewels-comment{margin-top:16px}
+}
+@media(prefers-reduced-motion:reduce){.congregation-toggle::after{transition:none}}
+
+
+/* Um campo privado logo abaixo de cada pergunta de cada capítulo. */
+.congregation-content-question{margin:20px 0 8px}
+.congregation-comment-box{margin:0 0 24px;padding:12px 13px 13px}
+.congregation-comment-box .study-comment-label{font-size:.76rem;margin-bottom:7px}
+.congregation-comment-input{font-size:1rem}
+.congregation-comment-status{margin:7px 0 0;font-size:.73rem;line-height:1.45;color:var(--muted)}
+.congregation-chapter + .congregation-chapter{margin-top:19px;padding-top:27px;border-top:2px solid var(--line)}
+@media(max-width:600px){
+  .congregation-content-question{margin:19px 0 8px}
+  .congregation-comment-box{padding:11px;margin-bottom:21px}
+  .congregation-comment-input{font-size:16px}
+}

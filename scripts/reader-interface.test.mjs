@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=8', 'reader.css?v=9', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=9', 'reader.css?v=10', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -177,4 +177,49 @@ test('comentários ficam separados por artigo e salvos localmente, sem publicaç
   assert.match(reader, /saveWatchtowerComment\(number, field\.value\)/);
   assert.match(html, /id="watchtower-comment-status"/);
   assert.doesNotMatch(events, /watchtower-commentarios/);
+});
+
+test('joias espirituais tem comentario autoexpansivel restrito ao meio de semana', () => {
+  assert.match(reader, /function createJewelComment\(study\)/);
+  assert.match(reader, /function jewelCommentKey\(study\)/);
+  assert.match(reader, /midweek-jewels-comment/);
+  assert.match(reader, /body\.append\(createJewelComment\(study\)\)/);
+  assert.match(reader, /resizeWatchtowerComment\(field\)/);
+  assert.match(reader, /localStorage\.setItem\(jewelCommentKey\(study\), field\.value\)/);
+  assert.match(css, /\.study-jewels-comment/);
+});
+
+test('estudo de congregacao exibe painel recolhido com capitulos separados', () => {
+  assert.match(reader, /function createCongregationReading\(study, referenceText\)/);
+  assert.match(reader, /studyEl\('details', 'congregation-accordion'\)/);
+  assert.match(reader, /studyEl\('summary', 'congregation-toggle'\)/);
+  assert.match(reader, /for \(const chapter of chapters\)/);
+  assert.match(reader, /body\.replaceChildren\(createCongregationReading\(study, source\)\)/);
+  assert.match(reader, /officialUrl\(chapter\.url\)/);
+  assert.match(css, /\.congregation-accordion/);
+  assert.match(css, /\.congregation-chapter/);
+});
+
+test('comentario de Joias não usa a coleção publica de eventos', () => {
+  assert.doesNotMatch(events, /midweek-jewels-comment/);
+  assert.doesNotMatch(events, /congregationStudy/);
+});
+
+test('cada pergunta do estudo de congregação recebe card de comentário logo abaixo', () => {
+  const begin = reader.indexOf('function createCongregationReading(study, referenceText)');
+  const end = reader.indexOf('function resizeVisibleMidweekComments()', begin);
+  const section = reader.slice(begin, end);
+  const question = section.indexOf("section.append(studyEl('p', 'congregation-content-question', block.text))");
+  const comment = section.indexOf('section.append(createCongregationComment(study, chapter, questionIndex))', question);
+  assert.ok(question >= 0 && comment > question);
+  assert.match(reader, /function congregationCommentKey\(study, chapter, questionIndex\)/);
+  assert.match(reader, /function createCongregationComment\(study, chapter, questionIndex\)/);
+  assert.match(reader, /congregation-comment-input/);
+  assert.match(reader, /localStorage\.setItem\(key, field\.value\)/);
+  assert.match(reader, /resizeWatchtowerComment\(field\)/);
+  assert.match(reader, /accordion\.addEventListener\('toggle'/);
+  assert.match(reader, /if \(accordion\.open\) requestAnimationFrame\(resizeVisibleMidweekComments\)/);
+  assert.match(css, /\.congregation-comment-box/);
+  assert.match(css, /\.congregation-comment-status/);
+  assert.doesNotMatch(events, /congregation-comment/);
 });
