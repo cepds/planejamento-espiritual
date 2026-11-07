@@ -21,6 +21,19 @@
   let sharedEvents = [];
   let editingId = null;
   let saving = false;
+  const widget = document.querySelector('.event-widget');
+  const toggle = document.getElementById('event-toggle');
+
+  function setMobileCollapsed(collapsed) {
+    widget.dataset.mobileCollapsed = String(collapsed);
+    toggle.setAttribute('aria-expanded', String(!collapsed));
+    toggle.setAttribute('aria-label', collapsed ? 'Expandir agenda' : 'Recolher agenda');
+    toggle.title = collapsed ? 'Expandir agenda' : 'Recolher agenda';
+  }
+
+  toggle.addEventListener('click', () => {
+    setMobileCollapsed(widget.dataset.mobileCollapsed !== 'true');
+  });
 
   function validDate(value) {
     if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -81,6 +94,13 @@
     const ordered = sharedEvents.filter(item => item.date)
       .sort((a, b) => a.date.localeCompare(b.date) || titleOf(a).localeCompare(titleOf(b)));
     const next = ordered.find(item => until(item.date) >= 0);
+    const mini = document.getElementById('event-mini');
+    if (next) {
+      const [year, month, day] = next.date.split('-');
+      mini.textContent = titleOf(next) + ' · ' + day + '/' + month;
+    } else {
+      mini.textContent = 'Nenhum evento cadastrado';
+    }
     document.getElementById('event-empty').hidden = Boolean(next);
     document.getElementById('event-next').hidden = !next;
     if (next) {
