@@ -21,7 +21,7 @@ test('navegação contém cinco ícones SVG e páginas com IDs únicos', () => {
 test('imagens de estudos vêm de seus artigos e não de capas genéricas', () => {
   assert.match(updater, /heroImageUrl: contentImages\[0\]/);
   assert.match(updater, /heroImageUrl: image/);
-  for (const name of ['today-midweek-cover', 'midweek-cover', 'today-watchtower-cover', 'watchtower-cover']) {
+  for (const name of ['today-midweek-cover', 'midweek-gallery', 'midweek-images', 'today-watchtower-cover', 'watchtower-gallery', 'watchtower-images', 'study-image-dialog']) {
     assert.match(html, new RegExp('id="' + name + '"'));
   }
   assert.match(reader, /studyImage\(midweek\)/);
@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=4', 'reader.css?v=5', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=5', 'reader.css?v=6', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -71,4 +71,19 @@ test('agenda móvel inicia recolhida e permite expansão manual', () => {
   assert.match(html, /aria-expanded="false"/);
   assert.match(events, /setMobileCollapsed/);
   assert.match(events, /mini.textContent/);
+});
+
+test('galerias oferecem todas as ilustrações válidas e navegação ampliada', () => {
+  assert.match(reader, /function renderStudyGallery/);
+  assert.match(reader, /renderStudyGallery\('midweek', midweek/);
+  assert.match(reader, /renderStudyGallery\('watchtower', watchtower/);
+  assert.match(reader, /function imageList/);
+  assert.match(reader, /new Set\(sources\.map\(officialUrl\)/);
+  assert.match(reader, /function openImageViewer/);
+  assert.match(reader, /imageDialog\.showModal\(\)/);
+  assert.match(reader, /ArrowLeft/);
+  assert.match(reader, /ArrowRight/);
+  assert.match(updater, /publicationContentImages\(media, current\.track\)/);
+  assert.match(updater, /publicationContentImages\(selected\.media, selected\.file\.track\)/);
+  assert.match(updater, /images, heroImageUrl: image/);
 });
