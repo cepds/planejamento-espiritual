@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-07T22:20:50.582Z",
+  "updatedAt": "2026-11-07T22:22:38.777Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -96,7 +96,7 @@
               "text": "Para considerar:"
             },
             {
-              "kind": "paragraph",
+              "kind": "question",
               "text": "De que maneiras Baraque e Débora mostraram coragem?"
             },
             {
@@ -105,15 +105,15 @@
             },
             {
               "kind": "question",
-              "text": "1. Como era a vida em Israel na época de Sísera? ( w15 1/8 13 § 6 ) Sua resposta"
+              "text": "1. Como era a vida em Israel na época de Sísera? ( w15 1/8 13 § 6 )"
             },
             {
               "kind": "question",
-              "text": "2. Por que Débora geralmente não é incluída entre os 12 juízes que serviram antes do profeta Samuel? ( w86 1/6 31 §§ 6-8 ) Sua resposta"
+              "text": "2. Por que Débora geralmente não é incluída entre os 12 juízes que serviram antes do profeta Samuel? ( w86 1/6 31 §§ 6-8 )"
             },
             {
               "kind": "question",
-              "text": "3. Em que sentido Débora foi uma “mãe em Israel”? ( Juí. 4:4, 5; 5:7 ; w15 1/8 14 § 1 ) A Sua resposta"
+              "text": "3. Em que sentido Débora foi uma “mãe em Israel”? ( Juí. 4:4, 5; 5:7 ; w15 1/8 14 § 1 )"
             },
             {
               "kind": "paragraph",
@@ -121,7 +121,7 @@
             },
             {
               "kind": "question",
-              "text": "4. O que Débora e Baraque queriam dizer quando cantaram que “as estrelas lutaram” contra Sísera? ( Juí. 5:20 ; w05 15/1 25 § 5 ) Sua resposta"
+              "text": "4. O que Débora e Baraque queriam dizer quando cantaram que “as estrelas lutaram” contra Sísera? ( Juí. 5:20 ; w05 15/1 25 § 5 )"
             },
             {
               "kind": "heading",
@@ -129,15 +129,15 @@
             },
             {
               "kind": "question",
-              "text": "Baraque foi humilde e aceitou a ajuda de uma mulher fiel. Em que situações um irmão pode imitar o exemplo dele? B Sua resposta Imagem B"
+              "text": "Baraque foi humilde e aceitou a ajuda de uma mulher fiel. Em que situações um irmão pode imitar o exemplo dele?"
             },
             {
               "kind": "question",
-              "text": "Por que Débora precisou de coragem para acompanhar Baraque? Que situações exigem esse tipo de coragem? Sua resposta"
+              "text": "Por que Débora precisou de coragem para acompanhar Baraque? Que situações exigem esse tipo de coragem?"
             },
             {
               "kind": "question",
-              "text": "De que outras maneiras você pode imitar a coragem de Baraque e Débora? Sua resposta"
+              "text": "De que outras maneiras você pode imitar a coragem de Baraque e Débora?"
             },
             {
               "kind": "heading",
@@ -145,15 +145,15 @@
             },
             {
               "kind": "question",
-              "text": "O que esse relato me ensina sobre Jeová? Sua resposta"
+              "text": "O que esse relato me ensina sobre Jeová?"
             },
             {
               "kind": "question",
-              "text": "Como esse relato está relacionado com o propósito de Jeová? Sua resposta"
+              "text": "Como esse relato está relacionado com o propósito de Jeová?"
             },
             {
               "kind": "question",
-              "text": "O que eu gostaria de perguntar para Baraque e Débora quando eles forem ressuscitados? Sua resposta"
+              "text": "O que eu gostaria de perguntar para Baraque e Débora quando eles forem ressuscitados?"
             },
             {
               "kind": "heading",
@@ -392,6 +392,6 @@
       "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-11-07T21:56:59.958Z",
+  "previousUpdatedAt": "2026-11-07T22:20:50.582Z",
   "errors": []
 }
