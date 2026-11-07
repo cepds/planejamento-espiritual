@@ -32,8 +32,12 @@ jobs:
           git config user.name "Planejamento Espiritual"
           git config user.email "actions@github.com"
           git add data/content.json
-          git diff --cached --quiet || git commit -m "Atualiza texto diário e reunião"
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m "Atualiza texto diário e reunião"
+            if ! git push; then
+              echo "::warning::Publicação do conteúdo no GitHub não realizada porque outra atualização ocorreu em paralelo. O deploy seguirá; a próxima execução atualizará o conteúdo."
+            fi
+          fi
       # A conta de serviço é preferida; token antigo continua como contingência.
       - name: Preparar credenciais do Firebase
         env:
