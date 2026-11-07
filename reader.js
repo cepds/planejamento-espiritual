@@ -31,8 +31,11 @@
       else link.removeAttribute('aria-current');
     }
     if (page === 'meetings') selectMeeting(requested === 'meetings-weekend' ? 'weekend' : 'midweek');
-    if (page === 'meetings' && !document.querySelector('#weekend').hidden) {
-      requestAnimationFrame(resizeVisibleWatchtowerComments);
+    if (page === 'meetings') {
+      requestAnimationFrame(() => {
+        if (document.querySelector('#weekend').hidden) resizeVisibleMidweekComments();
+        else resizeVisibleWatchtowerComments();
+      });
     }
     document.querySelector('#page-title').textContent = pageTitles[page];
     document.title = pageTitles[page] + ' · Planejamento Espiritual';
@@ -393,6 +396,112 @@
     }
   }
 
+  // Joias espirituais: comentário pessoal guardado somente no navegador.
+  function jewelCommentKey(study) {
+    return 'planejamento-espiritual-joias-v1:' + String(study.weekOf || 'sem-data');
+  }
+
+  function createJewelComment(study) {
+    const block = studyEl('div', 'study-comment-box study-jewels-comment');
+    const label = studyEl('label', 'study-comment-label', 'Meu comentário · Joias espirituais');
+    const field = studyEl('textarea', 'study-comment-input');
+    const status = studyEl('p', 'study-jewels-save-state');
+    field.id = 'midweek-jewels-comment';
+    field.rows = 2;
+    field.placeholder = 'Anote suas joias espirituais…';
+    field.spellcheck = true;
+    field.setAttribute('autocapitalize', 'sentences');
+    label.htmlFor = field.id;
+    try {
+      field.value = localStorage.getItem(jewelCommentKey(study)) || '';
+      status.textContent = 'Comentário pessoal salvo neste navegador.';
+    } catch (error) {
+      console.warn('Comentário de Joias indisponível:', error);
+      status.textContent = 'Não foi possível recuperar o comentário deste navegador.';
+    }
+    field.addEventListener('input', () => {
+      resizeWatchtowerComment(field);
+      try {
+        if (field.value.trim()) localStorage.setItem(jewelCommentKey(study), field.value);
+        else localStorage.removeItem(jewelCommentKey(study));
+        status.textContent = 'Salvo neste navegador.';
+      } catch (error) {
+        console.warn('Falha ao guardar comentário de Joias:', error);
+        status.textContent = 'Não foi possível salvar. Copie o comentário antes de sair.';
+      }
+    });
+    block.append(label, field, status);
+    return block;
+  }
+
+  // Um único painel recolhível comporta um ou mais capítulos da publicação indicada.
+  function createCongregationReading(study, referenceText) {
+    const data = study.congregationStudy;
+    const chapters = Array.isArray(data?.chapters) ? data.chapters : [];
+    const accordion = studyEl('details', 'congregation-accordion');
+    const toggle = studyEl('summary', 'congregation-toggle');
+    const heading = studyEl('span', 'congregation-toggle-heading', 'Abrir estudo bíblico de congregação');
+    const subtitle = studyEl('span', 'congregation-toggle-subtitle',
+      referenceText || data?.reference || 'Consulta da publicação oficial');
+    toggle.append(heading, subtitle);
+    accordion.append(toggle);
+
+    const panel = studyEl('div', 'congregation-panel');
+    if (data?.bookTitle) panel.append(studyEl('p', 'congregation-book-name', data.bookTitle));
+    if (!chapters.length) {
+      panel.append(studyEl('p', 'congregation-fallback', 'A leitura deste estudo está disponível na publicação oficial.'));
+      const original = officialUrl(study.url);
+      if (original) {
+        const link = studyEl('a', 'inline-link', 'Abrir programação no JW.org ↗');
+        link.href = original;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        panel.append(link);
+      }
+    } else {
+      const count = chapters.length;
+      panel.append(studyEl('p', 'congregation-chapter-count',
+        count === 1 ? '1 capítulo nesta reunião' : count + ' capítulos nesta reunião'));
+      for (const chapter of chapters) {
+        const section = studyEl('section', 'congregation-chapter');
+        section.append(studyEl('span', 'congregation-chapter-label', 'Capítulo ' + chapter.number));
+        section.append(studyEl('h5', 'congregation-chapter-title', chapter.title || ('Capítulo ' + chapter.number)));
+        const blocks = Array.isArray(chapter.content) ? chapter.content : [];
+        if (blocks.length) {
+          for (const block of blocks) {
+            if (!block || typeof block.text !== 'string') continue;
+            if (block.kind === 'heading') {
+              section.append(studyEl('h6', 'congregation-content-heading', block.text));
+            } else if (block.kind === 'question') {
+              section.append(studyEl('p', 'congregation-content-question', block.text));
+            } else {
+              section.append(studyEl('p', 'congregation-content-paragraph', block.text));
+            }
+          }
+        } else {
+          section.append(studyEl('p', 'congregation-fallback',
+            'O texto completo não foi carregado nesta atualização. Consulte a publicação original.'));
+        }
+        const source = officialUrl(chapter.url);
+        if (source) {
+          const link = studyEl('a', 'congregation-source', 'Ler capítulo na publicação oficial ↗');
+          link.href = source;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          section.append(link);
+        }
+        panel.append(section);
+      }
+    }
+    accordion.append(panel);
+    return accordion;
+  }
+
+  function resizeVisibleMidweekComments() {
+    document.querySelectorAll('#midweek-content .study-jewels-comment textarea')
+      .forEach(resizeWatchtowerComment);
+  }
+
   function renderMidweekReading(study) {
     const container = document.querySelector('#midweek-content');
     container.replaceChildren();
@@ -448,6 +557,19 @@
         target.append(studyEl('p', text.includes('?') ? 'study-program-question' : 'study-program-paragraph', text));
       }
     }
+    // Adiciona os recursos somente às partes corretas da apostila.
+    for (const item of container.querySelectorAll('.study-program-item')) {
+      const title = item.querySelector('.study-program-item-heading h4')?.textContent || '';
+      const body = item.querySelector('.study-program-item-body');
+      if (!body) continue;
+      if (/^Joias espirituais$/i.test(title)) {
+        body.append(createJewelComment(study));
+      } else if (/^Estudo bíblico de congregação$/i.test(title)) {
+        const source = body.textContent.trim();
+        body.replaceChildren(createCongregationReading(study, source));
+      }
+    }
+    requestAnimationFrame(resizeVisibleMidweekComments);
   }
 
   function appendParagraphs(selector, content) {
@@ -575,7 +697,10 @@
       else location.hash = hash;
     });
   });
-  addEventListener('resize', resizeVisibleWatchtowerComments);
+  addEventListener('resize', () => {
+    resizeVisibleWatchtowerComments();
+    resizeVisibleMidweekComments();
+  });
   addEventListener('hashchange', navigate);
   navigate();
   load();
