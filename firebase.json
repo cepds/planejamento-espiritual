@@ -11,7 +11,8 @@
       "package.json",
       "package-lock.json",
       "CODEX_INSTRUCOES.md",
-      "**/.*"
+      "**/.*",
+      "firestore.rules"
     ],
     "headers": [
       {
@@ -42,5 +43,8 @@
         ]
       }
     ]
+  },
+  "firestore": {
+    "rules": "firestore.rules"
   }
 }
