@@ -117,8 +117,8 @@ test('reunião de meio de semana mantém programação com seções e duração'
   assert.match(reader, /study-program-item-heading/);
   assert.match(reader, /study-program-duration/);
   assert.match(reader, /study-program-question/);
-  assert.match(css, /\\.study-program-section/);
-  assert.match(css, /\\.study-program-duration/);
+  assert.match(css, /\.study-program-section/);
+  assert.match(css, /\.study-program-duration/);
 });
 
 test('formatação não modifica os dados das leituras nem a agenda de eventos', () => {
@@ -127,7 +127,7 @@ test('formatação não modifica os dados das leituras nem a agenda de eventos',
   assert.match(meetings, /watchtower-gallery/);
   assert.match(meetings, /midweek-original/);
   assert.match(meetings, /watchtower-original/);
-  assert.match(css, /\\.study-image-viewer/);
+  assert.match(css, /\.study-image-viewer/);
   assert.match(html, /event-widget/);
   assert.match(reader, /textContent = text/);
 });
