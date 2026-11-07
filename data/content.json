@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-07T14:18:45.402Z",
+  "updatedAt": "2026-11-07T14:36:03.304Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "todos os dias",
@@ -34,6 +34,7 @@
       "https://cms-imgp.jw-cdn.org/img/p/202026402/univ/art/202026402_univ_cnt_1_xl.jpg",
       "https://cms-imgp.jw-cdn.org/img/p/202026402/univ/art/202026402_univ_cnt_2_xl.jpg"
     ],
+    "heroImageUrl": "https://cms-imgp.jw-cdn.org/img/p/202026402/univ/art/202026402_univ_cnt_1_xl.jpg",
     "coverUrl": "https://cfp2.jw-cdn.org/a/f024b4/1/ir/mwb_T_202611_lg.jpg",
     "url": "https://wol.jw.org/pt/wol/meetings/r5/lp-t/2026/46"
   },
@@ -46,6 +47,7 @@
     "images": [
       "https://cfp2.jw-cdn.org/a/dccd32/1/ir/w_univ_202609_01_lg.jpg"
     ],
+    "heroImageUrl": "https://cfp2.jw-cdn.org/a/dccd32/1/ir/w_univ_202609_01_lg.jpg",
     "coverUrl": "https://cfp2.jw-cdn.org/a/e5fa282/1/ir/w_T_202609_lg.jpg",
     "url": "https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-setembro-2026/"
   },
@@ -244,6 +246,6 @@
       "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-11-07T14:09:38.384Z",
+  "previousUpdatedAt": "2026-11-07T14:18:45.402Z",
   "errors": []
 }
