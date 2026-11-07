@@ -8,26 +8,32 @@
     emergencies: 'Emergências'
   };
 
-  let pendingMeetingScroll = null;
   const pages = [...document.querySelectorAll('[data-reader-page]')];
   const navItems = [...document.querySelectorAll('[data-reader-link]')];
 
+  function selectMeeting(view) {
+    const selection = view === 'weekend' ? 'weekend' : 'midweek';
+    for (const panel of ['midweek', 'weekend']) {
+      document.getElementById(panel).hidden = panel !== selection;
+      const tab = document.querySelector('[data-meeting-tab="' + panel + '"]');
+      tab.setAttribute('aria-selected', String(panel === selection));
+      tab.tabIndex = panel === selection ? 0 : -1;
+    }
+  }
+
   function navigate() {
     const requested = location.hash.slice(1);
-    const page = Object.hasOwn(pageTitles, requested) ? requested : 'today';
+    const meetingsRoute = ['meetings', 'meetings-midweek', 'meetings-weekend'].includes(requested);
+    const page = meetingsRoute ? 'meetings' : Object.hasOwn(pageTitles, requested) ? requested : 'today';
     for (const item of pages) item.hidden = item.dataset.readerPage !== page;
     for (const link of navItems) {
       if (link.dataset.readerLink === page) link.setAttribute('aria-current', 'page');
       else link.removeAttribute('aria-current');
     }
+    if (page === 'meetings') selectMeeting(requested === 'meetings-weekend' ? 'weekend' : 'midweek');
     document.querySelector('#page-title').textContent = pageTitles[page];
     document.title = pageTitles[page] + ' · Planejamento Espiritual';
     window.scrollTo({ top: 0, behavior: 'instant' });
-    if (page === 'meetings' && pendingMeetingScroll) {
-      const targetSection = document.getElementById(pendingMeetingScroll);
-      pendingMeetingScroll = null;
-      if (targetSection) requestAnimationFrame(() => targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' }));
-    }
   }
 
   function setText(selector, text) {
@@ -469,15 +475,23 @@
     }
   }
 
-  document.querySelectorAll('[data-target-reading]').forEach(link => {
-    link.addEventListener('click', () => {
-      pendingMeetingScroll = link.dataset.targetReading;
-      if (location.hash === '#meetings') navigate();
+  document.querySelectorAll('[data-meeting-tab]').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const next = '#meetings-' + tab.dataset.meetingTab;
+      if (location.hash === next) selectMeeting(tab.dataset.meetingTab);
+      else location.hash = next;
     });
-  });
-  document.querySelectorAll('[data-scroll-to]').forEach(button => {
-    button.addEventListener('click', () => {
-      document.getElementById(button.dataset.scrollTo)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    tab.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const next = event.key === 'Home' ? 'midweek'
+        : event.key === 'End' ? 'weekend'
+        : tab.dataset.meetingTab === 'midweek' ? 'weekend' : 'midweek';
+      const selected = document.querySelector('[data-meeting-tab="' + next + '"]');
+      selected.focus();
+      const hash = '#meetings-' + next;
+      if (location.hash === hash) selectMeeting(next);
+      else location.hash = hash;
     });
   });
   addEventListener('hashchange', navigate);
