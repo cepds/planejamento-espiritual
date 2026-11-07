@@ -428,15 +428,17 @@ function unzipEntry(buffer, entryName) {
   throw new Error(`Compactacao JWPUB nao suportada: ${entry.compression}.`);
 }
 
-async function workbookContentImages(media, track) {
+async function publicationContentImages(media, track) {
   const jwpubUrl = media.files?.T?.JWPUB?.[0]?.file?.url;
   if (!jwpubUrl) return [];
   const jwpub = Buffer.from(await (await fetchWithTimeout(jwpubUrl)).arrayBuffer());
   const contents = unzipEntry(jwpub, 'contents');
   const documentIds = [...new Set(zipEntries(contents)
     .map(({ name }) => name.match(/^(\d+)_univ_cnt_1\.jpg$/)?.[1])
-    .filter(Boolean))].sort();
-  const documentId = documentIds[track];
+    .filter(Boolean))].sort((a, b) => Number(a) - Number(b));
+  const trackIndex = Number(track);
+  if (!Number.isInteger(trackIndex) || trackIndex < 0) return [];
+  const documentId = documentIds[trackIndex];
   if (!documentId) return [];
   return zipEntries(contents)
     .map(({ name }) => name)
@@ -465,7 +467,7 @@ async function getMeeting(date) {
   const points = extractStudyPoints(rtf, treasure);
   const content = workbookProgramOnly(completeText, title);
   const image = current.trackImage?.url || null;
-  const contentImages = await workbookContentImages(media, current.track);
+  const contentImages = await publicationContentImages(media, current.track);
   const meeting = {
     weekOf: monday.toISOString().slice(0, 10), reading, treasure, points,
     sourceUrl: current.file.url, coverUrl: media.pubImage?.url || image
@@ -505,13 +507,22 @@ async function getWatchtowerStudy(date) {
   const contentStart = body.findIndex((paragraph) => /\[Fim do quadro\.\]/i.test(paragraph));
   const content = body.slice(contentStart >= 0 ? contentStart + 1 : 0).join('\n\n');
   const image = selected.file.trackImage?.url || null;
+  // A Sentinela também inclui ilustrações internas no arquivo oficial JWPUB.
+  // Falhas ao baixar essa mídia não devem retirar o estudo nem o destaque inicial.
+  let studyImages = [];
+  try {
+    studyImages = await publicationContentImages(selected.media, selected.file.track);
+  } catch (error) {
+    console.warn('Ilustrações adicionais de A Sentinela indisponíveis:', error.message);
+  }
+  const images = [...new Set([image, ...studyImages].filter(Boolean))];
   const issueYear = selected.issue.slice(0, 4);
   const issueMonth = months[Number(selected.issue.slice(4, 6)) - 1];
   const url = `https://www.jw.org/pt/biblioteca/revistas/sentinela-estudo-${issueMonth}-${issueYear}/`;
   if (!title || !theme || !objective || !content) throw new Error('Estudo de A Sentinela retornou formato inesperado no arquivo oficial.');
   return {
     weekOf: monday.toISOString().slice(0, 10), title, theme, objective, content,
-    images: image ? [image] : [], heroImageUrl: image,
+    images, heroImageUrl: image || images[0] || null,
     coverUrl: selected.media.pubImage?.url || image, url
   };
 }
