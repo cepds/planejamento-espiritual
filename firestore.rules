@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Somente a coleção pública de eventos fica aberta. Sem login.
+    match /eventosPublicos/{eventId} {
+      allow get, list, create, update, delete: if true;
+    }
+  }
+}

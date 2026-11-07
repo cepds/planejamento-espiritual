@@ -195,3 +195,14 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
  .event-add:hover,.event-save:hover{background:#357952}
  .event-all summary{color:#b1e2c0}
 }
+
+/* Agenda pública compartilhada */
+.event-list-actions{display:flex;align-items:center;gap:5px;flex-wrap:nowrap}
+.event-list-actions button{padding:5px 6px}
+.event-list-actions button:disabled,.event-add:disabled{opacity:.55;cursor:not-allowed}
+.event-sync-status{font-size:.7rem;line-height:1.45;color:var(--muted);padding-top:10px;margin:12px 0 0;border-top:1px solid var(--line)}
+.event-sync-status.error{color:#bf584f;font-weight:650}
+.event-import{background:transparent;color:var(--green);font:700 .73rem/1.3 "Segoe UI",Arial,sans-serif;cursor:pointer;border:1px solid var(--line);border-radius:9px;padding:8px 10px;margin-top:12px;width:100%;white-space:normal}
+.event-import:disabled{opacity:.55;cursor:not-allowed}
+.event-dialog .event-storage{line-height:1.5}
+@media(max-width:600px){.event-list-actions{gap:3px}.event-list-actions button{font-size:.67rem;padding:4px 5px}}

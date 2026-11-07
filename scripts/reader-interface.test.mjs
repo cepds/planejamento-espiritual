@@ -3,8 +3,9 @@ import test from 'node:test';
 import { readFile } from 'node:fs/promises';
 
 const read = relative => readFile(new URL('../' + relative, import.meta.url), 'utf8');
-const [html, reader, updater, worker] = await Promise.all([
-  read('index.html'), read('reader.js'), read('scripts/update-content.mjs'), read('sw.js')
+const [html, reader, updater, worker, events, rules, firebaseConfig] = await Promise.all([
+  read('index.html'), read('reader.js'), read('scripts/update-content.mjs'), read('sw.js'),
+  read('public-events.js'), read('firestore.rules'), read('firebase.json')
 ]);
 
 test('navegação contém cinco ícones SVG e páginas com IDs únicos', () => {
@@ -35,14 +36,30 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
   for (const type of ['Congresso', 'Assembleia', 'Visita', 'Outro']) {
     assert.match(html, new RegExp('<option value="' + type + '"'));
   }
-  assert.match(reader, /planejamento-espiritual-20-events/);
-  assert.match(reader, /localStorage\.setItem/);
-  assert.match(reader, /daysToEvent/);
+  assert.match(events, /planejamento-espiritual-20-events/);
+  assert.match(events, /eventosPublicos/);
+  assert.match(events, /onSnapshot/);
+  assert.match(events, /\.add\(payload\)/);
+  assert.match(events, /\.update\(payload\)/);
+  assert.match(events, /\.delete\(\)/);
+  assert.doesNotMatch(events, /localStorage\.setItem/);
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=3', 'reader.css?v=3']) {
+  for (const file of ['reader.js?v=4', 'reader.css?v=4', 'public-events.js?v=1']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
+});
+
+test('Firestore expõe somente eventos públicos sem necessidade de login', () => {
+  assert.match(html, /\/__\/firebase\/8\.10\.1\/firebase-app\.js/);
+  assert.match(html, /\/__\/firebase\/8\.10\.1\/firebase-firestore\.js/);
+  assert.match(html, /\/__\/firebase\/init\.js/);
+  assert.match(html, /id="event-sync-status"/);
+  assert.match(html, /id="event-import"/);
+  assert.match(rules, /match \/eventosPublicos\/\{eventId\}/);
+  assert.match(rules, /allow get, list, create, update, delete: if true/);
+  assert.doesNotMatch(rules, /match \/\{document=\*\*\}/);
+  assert.equal(JSON.parse(firebaseConfig).firestore.rules, 'firestore.rules');
 });
