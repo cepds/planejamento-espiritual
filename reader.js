@@ -643,6 +643,197 @@
     }
   }
 
+  // Planejamento familiar personalizado, mantido apenas no navegador.
+  // Uma troca permuta as duas datas; não duplica nem perde nenhum estudo.
+  const familyPlanStorageKey = 'planejamento-espiritual-family-agenda-v1';
+  let familySchedule = [];
+  let familyWeeks = new Map();
+  let familyAssignments = Object.create(null);
+  let familyCurrentWeek = '';
+  let familyFallback = null;
+
+  function familyStudyForDate(date) {
+    const sourceWeek = familyAssignments[date] || date;
+    return familyWeeks.get(sourceWeek) || familyWeeks.get(date) || null;
+  }
+
+  function loadFamilyAssignments() {
+    familyAssignments = Object.create(null);
+    try {
+      const saved = JSON.parse(localStorage.getItem(familyPlanStorageKey) || '{}');
+      if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return;
+      const weeks = [...familyWeeks.keys()];
+      const allWeeks = new Set(weeks);
+      const sourceWeeks = weeks.map(date =>
+        allWeeks.has(saved[date]) ? saved[date] : date);
+      // Accept only full permutations; never display duplicate assignments.
+      if (new Set(sourceWeeks).size !== weeks.length) return;
+      for (const date of weeks) {
+        if (saved[date] && saved[date] !== date && allWeeks.has(saved[date])) {
+          familyAssignments[date] = saved[date];
+        }
+      }
+    } catch (error) {
+      console.warn('Não foi possível carregar o calendário pessoal:', error);
+    }
+  }
+
+  function familyPlanStatus(message, isError = false) {
+    const element = document.querySelector('#family-plan-status');
+    element.textContent = message;
+    element.classList.toggle('error', isError);
+  }
+
+  function formatFamilyWeek(week) {
+    return asDate(week) || week;
+  }
+
+  function renderFamilyStudy(study) {
+    if (!study) return;
+    setText('#family-topic', study.topic || study.category || 'Tema da semana');
+    setText('#family-title', study.title || 'Adoração em família');
+    setText('#family-date', 'Semana de ' + formatFamilyWeek(familyCurrentWeek));
+    setText('#family-prompt', study.prompt);
+    setText('#family-reading', study.reading);
+    setVisible('#family-reading-wrap', Boolean(study.reading));
+    setText('#family-do', study.doThis);
+    setText('#family-avoid', study.avoidThis);
+    setText('#family-action', study.action);
+    setCover('#family-cover', study.publicationImageUrl, 'Imagem da publicação do estudo selecionado');
+    const questions = document.querySelector('#family-questions');
+    questions.replaceChildren();
+    for (const question of Array.isArray(study.questions) ? study.questions : []) {
+      const item = document.createElement('li');
+      item.textContent = question;
+      questions.append(item);
+    }
+    setVisible('#family-questions-wrap', questions.children.length > 0);
+    setSource('#family-original', study.articleUrl);
+    setText('#family-source-title', study.sourceTitle || 'Material oficial no JW.org');
+  }
+
+  function renderFamilySchedule() {
+    const category = document.querySelector('#family-category-filter').value;
+    const list = document.querySelector('#family-plan-list');
+    list.replaceChildren();
+    const selected = familySchedule.filter(entry => category === 'Todos' ||
+      familyStudyForDate(entry.weekOf)?.category === category);
+    for (const planned of selected) {
+      const date = planned.weekOf;
+      const item = familyStudyForDate(date) || planned;
+      const row = document.createElement('li');
+      row.className = 'family-plan-item' + (date === familyCurrentWeek ? ' is-current' : '');
+      const info = document.createElement('div');
+      info.className = 'family-plan-item-info';
+      const meta = document.createElement('span');
+      meta.className = 'family-plan-item-date';
+      meta.textContent = (date === familyCurrentWeek ? 'Esta semana · ' : '') + formatFamilyWeek(date);
+      const tag = document.createElement('span');
+      tag.className = 'family-plan-item-category';
+      tag.textContent = item.category || 'Estudo';
+      const title = document.createElement('strong');
+      title.textContent = item.title || 'Estudo';
+      info.append(meta, tag, title);
+      if (familyAssignments[date]) {
+        const edited = document.createElement('small');
+        edited.className = 'family-plan-edited';
+        edited.textContent = 'Data personalizada';
+        info.append(edited);
+      }
+      const actions = document.createElement('div');
+      actions.className = 'family-plan-item-actions';
+      if (date === familyCurrentWeek) {
+        const current = document.createElement('span');
+        current.className = 'family-plan-current-label';
+        current.textContent = 'Estudo de hoje';
+        actions.append(current);
+      } else {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'family-plan-swap';
+        button.textContent = 'Trocar com hoje';
+        button.setAttribute('aria-label', 'Trocar o estudo da semana de ' +
+          formatFamilyWeek(date) + ' com o estudo de hoje');
+        button.addEventListener('click', () => swapFamilyStudy(date));
+        actions.append(button);
+      }
+      const url = officialUrl(item.articleUrl);
+      if (url) {
+        const original = document.createElement('a');
+        original.className = 'family-plan-source';
+        original.href = url;
+        original.target = '_blank';
+        original.rel = 'noopener noreferrer';
+        original.textContent = 'Fonte oficial ↗';
+        actions.append(original);
+      }
+      row.append(info, actions);
+      list.append(row);
+    }
+    document.querySelector('#family-library-count').textContent =
+      familySchedule.length + ' datas';
+    document.querySelector('#family-plan-reset').hidden =
+      Object.keys(familyAssignments).length === 0;
+    if (!selected.length) {
+      const empty = document.createElement('li');
+      empty.className = 'family-plan-empty';
+      empty.textContent = 'Nenhum estudo neste filtro.';
+      list.append(empty);
+    }
+  }
+
+  function swapFamilyStudy(otherDate) {
+    if (otherDate === familyCurrentWeek || !familyWeeks.has(otherDate) ||
+        !familyWeeks.has(familyCurrentWeek)) return;
+    const next = { ...familyAssignments };
+    const todaySource = next[familyCurrentWeek] || familyCurrentWeek;
+    const otherSource = next[otherDate] || otherDate;
+    if (otherSource === familyCurrentWeek) delete next[familyCurrentWeek];
+    else next[familyCurrentWeek] = otherSource;
+    if (todaySource === otherDate) delete next[otherDate];
+    else next[otherDate] = todaySource;
+    try {
+      localStorage.setItem(familyPlanStorageKey, JSON.stringify(next));
+    } catch (error) {
+      console.warn('Não foi possível salvar a troca de datas:', error);
+      familyPlanStatus('Não foi possível salvar a alteração neste navegador.', true);
+      return;
+    }
+    familyAssignments = Object.assign(Object.create(null), next);
+    renderFamilyStudy(familyStudyForDate(familyCurrentWeek));
+    renderFamilySchedule();
+    familyPlanStatus('Estudos trocados e salvos neste navegador.');
+    document.querySelector('#family-title').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function initializeFamilyPlan(content) {
+    familySchedule = Array.isArray(content.familySchedule) && content.familySchedule.length
+      ? content.familySchedule.filter(entry => entry?.weekOf && entry.title)
+      : [content.familyWorship, ...(content.familyUpcoming || [])].filter(entry => entry?.weekOf && entry.title);
+    familyWeeks = new Map(familySchedule.map(entry => [entry.weekOf, entry]));
+    familyCurrentWeek = content.familyWorship?.weekOf || familySchedule[0]?.weekOf || '';
+    familyFallback = content.familyWorship || null;
+    loadFamilyAssignments();
+    renderFamilyStudy(familyStudyForDate(familyCurrentWeek) || familyFallback);
+    renderFamilySchedule();
+    familyPlanStatus('Trocas pessoais: os estudos ficam salvos somente neste navegador.');
+  }
+
+  document.querySelector('#family-category-filter').addEventListener('change', renderFamilySchedule);
+  document.querySelector('#family-plan-reset').addEventListener('click', () => {
+    if (!confirm('Restaurar todas as datas originais da Adoração em família neste navegador?')) return;
+    try {
+      localStorage.removeItem(familyPlanStorageKey);
+    } catch (error) {
+      familyPlanStatus('Não foi possível restaurar o calendário neste navegador.', true);
+      return;
+    }
+    familyAssignments = Object.create(null);
+    renderFamilyStudy(familyStudyForDate(familyCurrentWeek) || familyFallback);
+    renderFamilySchedule();
+    familyPlanStatus('Programação original restaurada neste navegador.');
+  });
+
   function render(content) {
     const daily = content.daily || {};
     const meeting = content.meeting || {};
@@ -689,25 +880,7 @@
     requestAnimationFrame(resizeVisibleWatchtowerComments);
     setSource('#watchtower-original', watchtower.url);
 
-    setText('#family-topic', family.topic || 'Tema da semana');
-    setText('#family-title', family.title || 'Adoração em família');
-    setText('#family-date', asDate(family.weekOf));
-    setText('#family-prompt', family.prompt);
-    setText('#family-reading', family.reading);
-    setText('#family-do', family.doThis);
-    setText('#family-avoid', family.avoidThis);
-    setText('#family-action', family.action);
-    setCover('#family-cover', family.publicationImageUrl, 'Imagem da publicação indicada para esta semana');
-    const questions = document.querySelector('#family-questions');
-    questions.replaceChildren();
-    for (const question of Array.isArray(family.questions) ? family.questions : []) {
-      const item = document.createElement('li');
-      item.textContent = question;
-      questions.append(item);
-    }
-    setVisible('#family-questions-wrap', questions.children.length > 0);
-    setSource('#family-original', family.articleUrl);
-    setText('#family-source-title', family.sourceTitle || 'Abrir publicação oficial');
+    initializeFamilyPlan(content);
 
     setText('#content-updated', content.updatedAt
       ? 'Conteúdo atualizado: ' + new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' }).format(new Date(content.updatedAt))
