@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=4', 'reader.css?v=4', 'public-events.js?v=1']) {
+  for (const file of ['reader.js?v=4', 'reader.css?v=5', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -62,4 +62,13 @@ test('Firestore expõe somente eventos públicos sem necessidade de login', () =
   assert.match(rules, /allow get, list, create, update, delete: if true/);
   assert.doesNotMatch(rules, /match \/\{document=\*\*\}/);
   assert.equal(JSON.parse(firebaseConfig).firestore.rules, 'firestore.rules');
+});
+
+test('agenda móvel inicia recolhida e permite expansão manual', () => {
+  assert.match(html, /class="event-widget" data-mobile-collapsed="true"/);
+  assert.match(html, /id="event-mini"/);
+  assert.match(html, /id="event-toggle"/);
+  assert.match(html, /aria-expanded="false"/);
+  assert.match(events, /setMobileCollapsed/);
+  assert.match(events, /mini.textContent/);
 });
