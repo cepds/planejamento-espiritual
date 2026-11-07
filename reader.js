@@ -8,6 +8,7 @@
     emergencies: 'Emergências'
   };
 
+  let pendingMeetingScroll = null;
   const pages = [...document.querySelectorAll('[data-reader-page]')];
   const navItems = [...document.querySelectorAll('[data-reader-link]')];
 
@@ -22,6 +23,11 @@
     document.querySelector('#page-title').textContent = pageTitles[page];
     document.title = pageTitles[page] + ' · Planejamento Espiritual';
     window.scrollTo({ top: 0, behavior: 'instant' });
+    if (page === 'meetings' && pendingMeetingScroll) {
+      const targetSection = document.getElementById(pendingMeetingScroll);
+      pendingMeetingScroll = null;
+      if (targetSection) requestAnimationFrame(() => targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+    }
   }
 
   function setText(selector, text) {
@@ -179,6 +185,12 @@
     }
   }
 
+  document.querySelectorAll('[data-target-reading]').forEach(link => {
+    link.addEventListener('click', () => {
+      pendingMeetingScroll = link.dataset.targetReading;
+      if (location.hash === '#meetings') navigate();
+    });
+  });
   document.querySelectorAll('[data-scroll-to]').forEach(button => {
     button.addEventListener('click', () => {
       document.getElementById(button.dataset.scrollTo)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
