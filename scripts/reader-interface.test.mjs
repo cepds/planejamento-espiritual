@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=9', 'reader.css?v=10', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=10', 'reader.css?v=11', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -222,4 +222,33 @@ test('cada pergunta do estudo de congregação recebe card de comentário logo a
   assert.match(css, /\.congregation-comment-box/);
   assert.match(css, /\.congregation-comment-status/);
   assert.doesNotMatch(events, /congregation-comment/);
+});
+
+test('adoracao em familia apresenta calendario completo e filtro de cinco categorias', () => {
+  for (const id of ['family-library', 'family-plan-list', 'family-library-count',
+    'family-category-filter', 'family-plan-reset', 'family-plan-status']) {
+    assert.match(html, new RegExp('id="' + id + '"'));
+  }
+  for (const category of ['Perseverança', 'Família', 'Princípios', 'Exemplos do passado', 'Pregação']) {
+    assert.ok(html.includes('<option value="' + category + '">'), category);
+  }
+  assert.match(updater, /familyScheduleFor\(\)/);
+  assert.match(updater, /familySchedule,/);
+  assert.match(reader, /function initializeFamilyPlan\(content\)/);
+  assert.match(reader, /renderFamilySchedule\(\)/);
+  assert.match(reader, /familyStudyForDate\(entry\.weekOf\)/);
+  assert.match(css, /\.family-plan-list/);
+});
+test('troca de hoje com outra data é persistida sem mudar o calendário original', () => {
+  assert.match(reader, /function swapFamilyStudy\(otherDate\)/);
+  assert.match(reader, /const todaySource = next\[familyCurrentWeek\] \|\| familyCurrentWeek/);
+  assert.match(reader, /const otherSource = next\[otherDate\] \|\| otherDate/);
+  assert.match(reader, /next\[familyCurrentWeek\] = otherSource/);
+  assert.match(reader, /next\[otherDate\] = todaySource/);
+  assert.match(reader, /localStorage\.setItem\(familyPlanStorageKey, JSON\.stringify\(next\)\)/);
+  assert.match(reader, /function loadFamilyAssignments\(\)/);
+  assert.match(reader, /new Set\(sourceWeeks\)\.size !== weeks\.length/);
+  assert.match(reader, /localStorage\.removeItem\(familyPlanStorageKey\)/);
+  assert.match(reader, /renderFamilyStudy\(familyStudyForDate\(familyCurrentWeek\)\)/);
+  assert.doesNotMatch(events, /family-agenda-v1/);
 });
