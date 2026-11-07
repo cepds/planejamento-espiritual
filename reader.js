@@ -89,6 +89,100 @@
     return String(title || '').replace(/^\d{1,2}\s+(?:a|[-–—])\s+\d{1,2}\s+de\s+[a-zÀ-ÿ]+\s+de\s+\d{4}\s+/i, '').trim();
   }
 
+  const imageDialog = document.querySelector('#study-image-dialog');
+  const fullImage = document.querySelector('#study-image-full');
+  let activeImages = [];
+  let activeIndex = 0;
+  let previousImageTrigger = null;
+  let activeStudyName = '';
+
+  function imageList(study) {
+    // Only official, distinct images from the study; never use magazine covers.
+    const sources = [
+      ...(Array.isArray(study?.images) ? study.images : []),
+      study?.heroImageUrl
+    ];
+    return [...new Set(sources.map(officialUrl).filter(Boolean))];
+  }
+
+  function updateImageViewer() {
+    if (!activeImages.length) return;
+    fullImage.src = activeImages[activeIndex];
+    fullImage.alt = 'Imagem ' + (activeIndex + 1) + ' de ' + activeImages.length +
+      ' — ' + activeStudyName;
+    document.querySelector('#study-image-title').textContent = activeStudyName;
+    document.querySelector('#study-image-position').textContent =
+      (activeIndex + 1) + ' de ' + activeImages.length;
+    document.querySelector('#study-image-prev').disabled = activeImages.length <= 1;
+    document.querySelector('#study-image-next').disabled = activeImages.length <= 1;
+  }
+
+  function openImageViewer(urls, index, name, trigger) {
+    if (!urls.length) return;
+    activeImages = urls;
+    activeIndex = index;
+    activeStudyName = name;
+    previousImageTrigger = trigger;
+    updateImageViewer();
+    if (!imageDialog.open) imageDialog.showModal();
+    document.querySelector('#study-image-close').focus();
+  }
+
+  function moveImage(step) {
+    if (!activeImages.length) return;
+    activeIndex = (activeIndex + step + activeImages.length) % activeImages.length;
+    updateImageViewer();
+  }
+
+  function renderStudyGallery(group, study, name) {
+    const container = document.querySelector('#' + group + '-images');
+    const section = document.querySelector('#' + group + '-gallery');
+    const urls = imageList(study);
+    container.replaceChildren();
+    section.hidden = urls.length === 0;
+    document.querySelector('#' + group + '-image-count').textContent =
+      urls.length === 1 ? '1 imagem' : urls.length + ' imagens';
+    for (const [index, url] of urls.entries()) {
+      const trigger = document.createElement('button');
+      trigger.type = 'button';
+      trigger.className = 'study-gallery-item';
+      trigger.setAttribute('aria-label', 'Ampliar imagem ' + (index + 1) +
+        ' de ' + urls.length + ' — ' + name);
+      const picture = document.createElement('img');
+      picture.src = url;
+      picture.alt = 'Imagem ' + (index + 1) + ' — ' + name;
+      picture.loading = 'lazy';
+      picture.decoding = 'async';
+      const marker = document.createElement('span');
+      marker.className = 'study-gallery-number';
+      marker.textContent = String(index + 1).padStart(2, '0');
+      trigger.append(picture, marker);
+      trigger.addEventListener('click', () => openImageViewer(urls, index, name, trigger));
+      container.append(trigger);
+    }
+  }
+
+  document.querySelector('#study-image-prev').addEventListener('click', () => moveImage(-1));
+  document.querySelector('#study-image-next').addEventListener('click', () => moveImage(1));
+  document.querySelector('#study-image-close').addEventListener('click', () => imageDialog.close());
+  imageDialog.addEventListener('keydown', event => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      moveImage(-1);
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      moveImage(1);
+    }
+  });
+  imageDialog.addEventListener('click', event => {
+    if (event.target === imageDialog) imageDialog.close();
+  });
+  imageDialog.addEventListener('close', () => {
+    fullImage.removeAttribute('src');
+    previousImageTrigger?.focus();
+    previousImageTrigger = null;
+  });
+
   function appendParagraphs(selector, content) {
     const container = document.querySelector(selector);
     if (!container) return;
@@ -140,7 +234,7 @@
 
     setText('#midweek-title', midweek.title || meeting.reading || 'Reunião de meio de semana');
     setText('#midweek-date', asDate(midweek.weekOf || meeting.weekOf));
-    setCover('#midweek-cover', studyImage(midweek), 'Ilustração do tema da reunião de meio de semana');
+    renderStudyGallery('midweek', midweek, 'Reunião de meio de semana');
     appendParagraphs('#midweek-content', midweek.content);
     setSource('#midweek-original', midweek.url);
 
@@ -149,7 +243,7 @@
     setText('#watchtower-theme', watchtower.theme);
     setText('#watchtower-objective', watchtower.objective ? 'Objetivo: ' + watchtower.objective : '');
     setVisible('#watchtower-objective', !!watchtower.objective);
-    setCover('#watchtower-cover', studyImage(watchtower), 'Ilustração do estudo de A Sentinela');
+    renderStudyGallery('watchtower', watchtower, 'Estudo de A Sentinela');
     appendParagraphs('#watchtower-content', watchtower.content);
     setSource('#watchtower-original', watchtower.url);
 
