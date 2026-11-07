@@ -456,3 +456,35 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
   .meeting-tabs [role="tab"][aria-selected="true"]{background:#285b44;color:#f4fff5}
 }
 @media(prefers-reduced-motion:reduce){.meeting-tabs [role="tab"]{transition:none}}
+
+
+/* Campo privado de comentário por parágrafo em A Sentinela. */
+.study-reading--watchtower .study-comment-status{
+  margin:18px 0 0;color:var(--muted);font-size:.78rem;line-height:1.5
+}
+.study-comment-box{
+  margin:25px 0 13px;padding:14px 16px 15px;
+  background:var(--soft);border:1px solid var(--line);border-radius:13px
+}
+.study-comment-label{
+  display:block;margin-bottom:9px;font-size:.79rem;line-height:1.35;
+  font-weight:800;color:var(--study-soft-blue);letter-spacing:.02em
+}
+.study-comment-input{
+  display:block;width:100%;min-height:76px;height:auto;padding:12px 14px;
+  border:1px solid var(--line);border-radius:10px;background:var(--surface);
+  color:var(--ink);font:400 .98rem/1.6 "Segoe UI",system-ui,sans-serif;
+  resize:none;overflow:hidden;overflow-wrap:anywhere;box-sizing:border-box
+}
+.study-comment-input::placeholder{color:var(--muted);opacity:.82}
+.study-comment-input:focus-visible{outline:2px solid #76b496;outline-offset:2px}
+.study-comment-box+.study-numbered-paragraph{margin-top:0}
+@media(max-width:600px){
+ .study-comment-box{padding:12px;margin:21px 0 12px;border-radius:11px}
+ .study-comment-input{font-size:16px;padding:11px 12px;min-height:76px}
+}
+@media(prefers-color-scheme:dark){
+ .study-comment-box{background:#1e3227;border-color:#3b5344}
+ .study-comment-label{color:#bbd6bb}
+ .study-comment-input{background:#14221b;border-color:#46614e}
+}
