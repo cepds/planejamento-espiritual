@@ -82,11 +82,20 @@ function extractWolChapter(html, bookCode, number, url) {
   const chapters = [];
   const blocks = /<(p|h[1-4]|li)\b[^>]*>([\s\S]*?)<\/\1>/gi;
   let block;
+  let inQuestionSection = false;
   while ((block = blocks.exec(body))) {
     const content = decodeHtmlText(block[2]);
     if (!content || /^(?:Sua resposta|REPRODUZIR|Edição impressa|Compartilhar)$/i.test(content)) continue;
     if (content.length > 10000) continue;
-    const kind = /^h/i.test(block[1]) ? 'heading' : block[1] === 'li' ? 'question' : 'paragraph';
+    let kind;
+    if (/^h/i.test(block[1])) {
+      kind = 'heading';
+      inQuestionSection = /^(?:Para considerar|Analise mais a fundo|Medite no que aprendeu|Pense no quadro completo)$/i.test(content);
+    } else {
+      const hasQuestion = /\?/.test(content) && content.length < 700;
+      const questionFormat = block[1] === 'li' || /^\d{1,2}\.\s/.test(content);
+      kind = hasQuestion && (questionFormat || inQuestionSection) ? 'question' : 'paragraph';
+    }
     if (!chapters.length || chapters[chapters.length - 1].text !== content) {
       chapters.push({ kind, text: content });
     }
