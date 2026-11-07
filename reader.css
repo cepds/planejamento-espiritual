@@ -522,3 +522,17 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
   .study-jewels-comment{margin-top:16px}
 }
 @media(prefers-reduced-motion:reduce){.congregation-toggle::after{transition:none}}
+
+
+/* Um campo privado logo abaixo de cada pergunta de cada capítulo. */
+.congregation-content-question{margin:20px 0 8px}
+.congregation-comment-box{margin:0 0 24px;padding:12px 13px 13px}
+.congregation-comment-box .study-comment-label{font-size:.76rem;margin-bottom:7px}
+.congregation-comment-input{font-size:1rem}
+.congregation-comment-status{margin:7px 0 0;font-size:.73rem;line-height:1.45;color:var(--muted)}
+.congregation-chapter + .congregation-chapter{margin-top:19px;padding-top:27px;border-top:2px solid var(--line)}
+@media(max-width:600px){
+  .congregation-content-question{margin:19px 0 8px}
+  .congregation-comment-box{padding:11px;margin-bottom:21px}
+  .congregation-comment-input{font-size:16px}
+}
