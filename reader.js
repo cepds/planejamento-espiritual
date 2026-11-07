@@ -103,10 +103,19 @@
     setText('#today-date', asDate(daily.date));
     setText('#today-verse', daily.verse || 'Texto do dia indisponível.');
     setText('#today-reference', daily.reference);
-    appendParagraphs('#today-content', daily.content);
-    setSource('#today-original', daily.url);
-    setText('#today-week', meeting.reading || midweek.title || 'Consulte a programação da reunião.');
-    setText('#today-watchtower', watchtower.title || 'Consulte o estudo da semana.');
+
+    setText('#today-midweek-title', meeting.treasure || midweek.title || meeting.reading || 'Programação da reunião indisponível.');
+    setText('#today-midweek-reading', meeting.reading || midweek.title || '');
+    setText('#today-midweek-date', (midweek.weekOf || meeting.weekOf) ? 'Semana de ' + asDate(midweek.weekOf || meeting.weekOf) : '');
+    setCover('#today-midweek-cover', midweek.coverUrl || meeting.coverUrl || content.covers?.workbook, 'Capa da apostila de meio de semana');
+
+    setText('#today-watchtower-title', watchtower.title || 'Estudo de A Sentinela');
+    setText('#today-watchtower-date', watchtower.weekOf ? 'Semana de ' + asDate(watchtower.weekOf) : '');
+    setCover('#today-watchtower-cover', watchtower.coverUrl || content.covers?.watchtower, 'Capa de A Sentinela');
+
+    setText('#today-family-title', family.title || 'Adoração em família');
+    setText('#today-family-date', family.weekOf ? 'Semana de ' + asDate(family.weekOf) : '');
+    setCover('#today-family-cover', family.publicationImageUrl, 'Imagem da publicação da adoração em família');
 
     setText('#daily-date', asDate(daily.date));
     setText('#daily-verse', daily.verse || 'Texto do dia indisponível.');
