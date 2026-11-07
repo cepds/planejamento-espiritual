@@ -90,14 +90,17 @@ function extractWolChapter(html, bookCode, number, url) {
     let kind;
     if (/^h/i.test(block[1])) {
       kind = 'heading';
-      inQuestionSection = /^(?:Para considerar|Analise mais a fundo|Medite no que aprendeu|Pense no quadro completo)$/i.test(content);
+      inQuestionSection = /^(?:Para considerar|Analise mais a fundo|Medite no que aprendeu|Pense no quadro completo):?$/i.test(content);
     } else {
       const hasQuestion = /\?/.test(content) && content.length < 700;
       const questionFormat = block[1] === 'li' || /^\d{1,2}\.\s/.test(content);
       kind = hasQuestion && (questionFormat || inQuestionSection) ? 'question' : 'paragraph';
     }
     if (!chapters.length || chapters[chapters.length - 1].text !== content) {
-      chapters.push({ kind, text: content });
+      const cleaned = kind === 'question'
+        ? content.replace(/\s+(?:[A-Z]\s+)?Sua resposta(?:\s+Imagem\s+[A-Z])?\s*$/i, '').trim()
+        : content;
+      chapters.push({ kind, text: cleaned });
     }
     if (chapters.length >= 180) break;
   }
