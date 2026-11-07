@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=3">
+  <link rel="stylesheet" href="reader.css?v=4">
 </head>
 <body>
 <div class="app">
@@ -192,7 +192,7 @@
         <span class="event-widget-eyebrow">Agenda</span>
         <h2>Próximo evento</h2>
       </div>
-      <button type="button" id="event-open" class="event-add" aria-label="Adicionar congresso, assembleia ou visita">+ Evento</button>
+      <button type="button" id="event-open" class="event-add" aria-label="Adicionar congresso, assembleia ou visita" disabled>+ Evento</button>
     </div>
     <div id="event-preview" class="event-preview" aria-live="polite">
       <p id="event-empty" class="event-empty">Nenhum evento cadastrado.</p>
@@ -207,6 +207,8 @@
       <summary>Ver eventos cadastrados</summary>
       <ul id="event-list" class="event-list"></ul>
     </details>
+    <button id="event-import" class="event-import" type="button" hidden disabled>Publicar eventos antigos</button>
+    <p id="event-sync-status" class="event-sync-status" role="status">Conectando agenda compartilhada…</p>
   </aside>
 </div>
 
@@ -226,14 +228,18 @@
     <input id="event-form-date" type="date" required>
     <label for="event-form-location">Local (opcional)</label>
     <input id="event-form-location" type="text" maxlength="120" placeholder="Local do evento">
-    <p class="event-storage">Os eventos ficam salvos neste navegador.</p>
+    <p class="event-storage">Eventos compartilhados: qualquer visitante pode visualizar, adicionar, editar e excluir.</p>
     <div class="event-form-actions">
       <button id="event-cancel" type="button" class="event-cancel">Cancelar</button>
       <button type="submit" class="event-save">Salvar evento</button>
     </div>
   </form>
 </dialog>
-<script src="reader.js?v=3" defer></script>
+<script src="/__/firebase/8.10.1/firebase-app.js" defer></script>
+<script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
+<script src="/__/firebase/init.js" defer></script>
+<script src="reader.js?v=4" defer></script>
+<script src="public-events.js?v=1" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
    addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
