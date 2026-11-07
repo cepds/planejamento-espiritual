@@ -554,6 +554,84 @@
       .forEach(resizeWatchtowerComment);
   }
 
+  // A leitura bíblica sempre abre na publicação oficial do JW.org.
+  // Apenas a referência aparece neste site; o texto não é reproduzido.
+  const bibleBookNames = [
+    'Gênesis', 'Êxodo', 'Levítico', 'Números', 'Deuteronômio', 'Josué',
+    'Juízes', 'Rute', '1 Samuel', '2 Samuel', '1 Reis', '2 Reis',
+    '1 Crônicas', '2 Crônicas', 'Esdras', 'Neemias', 'Ester', 'Jó',
+    'Salmos', 'Provérbios', 'Eclesiastes', 'Cântico de Salomão',
+    'Isaías', 'Jeremias', 'Lamentações', 'Ezequiel', 'Daniel',
+    'Oseias', 'Joel', 'Amós', 'Obadias', 'Jonas', 'Miqueias',
+    'Naum', 'Habacuque', 'Sofonias', 'Ageu', 'Zacarias',
+    'Malaquias', 'Mateus', 'Marcos', 'Lucas', 'João', 'Atos',
+    'Romanos', '1 Coríntios', '2 Coríntios', 'Gálatas', 'Efésios',
+    'Filipenses', 'Colossenses', '1 Tessalonicenses', '2 Tessalonicenses',
+    '1 Timóteo', '2 Timóteo', 'Tito', 'Filêmon', 'Hebreus',
+    'Tiago', '1 Pedro', '2 Pedro', '1 João', '2 João', '3 João',
+    'Judas', 'Apocalipse'
+  ];
+
+  function normalizeBibleBook(name) {
+    return String(name || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().replace(/[.]/g, '').replace(/\s+/g, ' ').trim();
+  }
+
+  function parseOfficialBibleReference(reference) {
+    const original = String(reference || '').trim();
+    const match = original.match(/^(.+?)\s+(\d{1,3}):(\d{1,3})(?:\s*[-–—]\s*(\d{1,3}))?/);
+    if (!match) return null;
+    let book = normalizeBibleBook(match[1]);
+    if (book === 'salmo') book = 'salmos';
+    if (book === 'revelacao') book = 'apocalipse';
+    if (book === 'canticos') book = 'cantico de salomao';
+    const index = bibleBookNames.findIndex(name => normalizeBibleBook(name) === book);
+    const chapter = Number(match[2]);
+    const firstVerse = Number(match[3]);
+    const lastVerse = match[4] ? Number(match[4]) : null;
+    if (index < 0 || chapter < 1 || chapter > 150 ||
+        firstVerse < 1 || firstVerse > 176 ||
+        (lastVerse && (lastVerse < firstVerse || lastVerse > 176))) return null;
+    const bookName = bibleBookNames[index];
+    const slug = normalizeBibleBook(bookName).replace(/ /g, '-');
+    const url = 'https://www.jw.org/pt/biblioteca/biblia/nwt/livros/' + slug + '/' + chapter + '/';
+    return {
+      title: bookName + ' ' + chapter + ':' + firstVerse +
+        (lastVerse ? '–' + lastVerse : ''),
+      url, chapter, start: firstVerse, end: lastVerse,
+      lesson: original.match(/\((th\s+[^)]+)\)/i)?.[1] || ''
+    };
+  }
+
+  function createOfficialBibleReading(referenceText) {
+    const reference = parseOfficialBibleReference(referenceText);
+    const wrapper = studyEl('details', 'bible-reading-accordion');
+    const summary = studyEl('summary', 'bible-reading-toggle');
+    const title = studyEl('span', 'bible-reading-toggle-title',
+      reference ? reference.title : String(referenceText || 'Leitura da Bíblia').trim());
+    const description = studyEl('span', 'bible-reading-toggle-subtitle',
+      'Tradução do Novo Mundo · JW.org');
+    summary.append(title, description);
+    wrapper.append(summary);
+
+    const panel = studyEl('div', 'bible-reading-panel');
+    panel.append(studyEl('p', 'bible-reading-source', 'Leia a passagem na Bíblia oficial, diretamente no JW.org.'));
+    if (reference?.lesson) {
+      panel.append(studyEl('p', 'bible-reading-lesson', 'Preparação: ' + reference.lesson));
+    }
+    const link = studyEl('a', 'bible-reading-link',
+      reference ? 'Abrir ' + reference.title + ' no JW.org ↗' : 'Abrir a Bíblia no JW.org ↗');
+    // Sem iframe: a página original pode restringir incorporações.
+    // O link preserva todas as funções de leitura do próprio JW.org.
+    link.href = officialUrl(reference?.url) ||
+      'https://www.jw.org/pt/biblioteca/biblia/nwt/livros/';
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    panel.append(link);
+    wrapper.append(panel);
+    return wrapper;
+  }
+
   function renderMidweekReading(study) {
     const container = document.querySelector('#midweek-content');
     container.replaceChildren();
@@ -616,6 +694,9 @@
       if (!body) continue;
       if (/^Joias espirituais$/i.test(title)) {
         body.append(createJewelComment(study));
+      } else if (/^Leitura da Bíblia$/i.test(title)) {
+        const readingReference = body.textContent.trim();
+        body.replaceChildren(createOfficialBibleReading(readingReference));
       } else if (/^Estudo bíblico de congregação$/i.test(title)) {
         const source = body.textContent.trim();
         body.replaceChildren(createCongregationReading(study, source));
