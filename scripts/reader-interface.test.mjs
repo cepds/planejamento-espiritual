@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=8', 'reader.css?v=9', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=9', 'reader.css?v=10', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -177,4 +177,30 @@ test('comentários ficam separados por artigo e salvos localmente, sem publicaç
   assert.match(reader, /saveWatchtowerComment\(number, field\.value\)/);
   assert.match(html, /id="watchtower-comment-status"/);
   assert.doesNotMatch(events, /watchtower-commentarios/);
+});
+
+test('joias espirituais tem comentario autoexpansivel restrito ao meio de semana', () => {
+  assert.match(reader, /function createJewelComment\(study\)/);
+  assert.match(reader, /function jewelCommentKey\(study\)/);
+  assert.match(reader, /midweek-jewels-comment/);
+  assert.match(reader, /body\.append\(createJewelComment\(study\)\)/);
+  assert.match(reader, /resizeWatchtowerComment\(field\)/);
+  assert.match(reader, /localStorage\.setItem\(jewelCommentKey\(study\), field\.value\)/);
+  assert.match(css, /\.study-jewels-comment/);
+});
+
+test('estudo de congregacao exibe painel recolhido com capitulos separados', () => {
+  assert.match(reader, /function createCongregationReading\(study, referenceText\)/);
+  assert.match(reader, /studyEl\('details', 'congregation-accordion'\)/);
+  assert.match(reader, /studyEl\('summary', 'congregation-toggle'\)/);
+  assert.match(reader, /for \(const chapter of chapters\)/);
+  assert.match(reader, /body\.replaceChildren\(createCongregationReading\(study, source\)\)/);
+  assert.match(reader, /officialUrl\(chapter\.url\)/);
+  assert.match(css, /\.congregation-accordion/);
+  assert.match(css, /\.congregation-chapter/);
+});
+
+test('comentario de Joias não usa a coleção publica de eventos', () => {
+  assert.doesNotMatch(events, /midweek-jewels-comment/);
+  assert.doesNotMatch(events, /congregationStudy/);
 });
