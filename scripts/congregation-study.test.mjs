@@ -58,3 +58,24 @@ test('publicação desconhecida não recebe link de capítulo inventado', async 
   assert.equal(requests, 0);
   assert.match(study.chapters[0].url, /\/meetings\//);
 });
+
+test('reconhece perguntas do livro mesmo quando são parágrafos e têm referências bíblicas', () => {
+  const html = '<p>wcg cap. 16</p><div class="bodyTxt">' +
+    '<h1>“Certamente irei com você”</h1>' +
+    '<p>Um texto com uma pergunta retórica? Não deve virar cartão.</p>' +
+    '<h2>Para considerar</h2><p>De que maneiras mostraram coragem?</p>' +
+    '<h2>Analise mais a fundo</h2>' +
+    '<p>1. Como era a vida em Israel? (w15 1/8 13 § 6)</p>' +
+    '<h2>Medite no que aprendeu</h2>' +
+    '<li>Por que Débora precisou de coragem? (Juí. 4:4)</li>' +
+    '<h2>Pense no quadro completo</h2>' +
+    '<li>O que esse relato me ensina sobre Jeová?</li>' +
+    '<h2>Aprenda mais</h2><p>Um outro parágrafo comum.</p>' +
+    '</div>';
+  const study = extractWolChapter(html, 'wcg', 16, 'https://wol.jw.org/pt/wol/d/r5/lp-t/1102025916');
+  assert.ok(study);
+  const questions = study.content.filter(item => item.kind === 'question');
+  assert.equal(questions.length, 4);
+  assert.ok(questions.every(item => item.text.includes('?')));
+  assert.equal(study.content.find(item => item.text.startsWith('Um texto com')).kind, 'paragraph');
+});
