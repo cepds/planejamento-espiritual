@@ -45,7 +45,6 @@ jobs:
             echo "GOOGLE_APPLICATION_CREDENTIALS=$RUNNER_TEMP/firebase-service-account.json" >> "$GITHUB_ENV"
           fi
       - name: Garantir banco Firestore para eventos públicos
-        if: github.event_name != 'schedule'
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
@@ -69,10 +68,7 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
         run: |
-          DEPLOY_TARGETS=hosting
-          if [ "${{ github.event_name }}" != "schedule" ]; then
-            DEPLOY_TARGETS=hosting,firestore:rules
-          fi
+          DEPLOY_TARGETS=hosting,firestore:rules
           if [ -n "${GOOGLE_APPLICATION_CREDENTIALS:-}" ]; then
             npx --yes firebase-tools@15.34.1 deploy --only "$DEPLOY_TARGETS" --project planejamento-espiritual --non-interactive
           elif [ -n "$FIREBASE_TOKEN" ]; then
