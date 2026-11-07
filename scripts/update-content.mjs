@@ -472,7 +472,9 @@ async function getMeeting(date) {
   };
   const midweekStudy = {
     weekOf: meeting.weekOf, title: reading.toUpperCase(), content,
-    images: contentImages.length ? contentImages : (image ? [image] : []), coverUrl: meeting.coverUrl, url: wolMeetingUrl(monday)
+    images: contentImages.length ? contentImages : (image ? [image] : []),
+    heroImageUrl: contentImages[0] || image || null,
+    coverUrl: meeting.coverUrl, url: wolMeetingUrl(monday)
   };
   return { meeting, midweekStudy };
 }
@@ -509,7 +511,8 @@ async function getWatchtowerStudy(date) {
   if (!title || !theme || !objective || !content) throw new Error('Estudo de A Sentinela retornou formato inesperado no arquivo oficial.');
   return {
     weekOf: monday.toISOString().slice(0, 10), title, theme, objective, content,
-    images: image ? [image] : [], coverUrl: selected.media.pubImage?.url || image, url
+    images: image ? [image] : [], heroImageUrl: image,
+    coverUrl: selected.media.pubImage?.url || image, url
   };
 }
 
