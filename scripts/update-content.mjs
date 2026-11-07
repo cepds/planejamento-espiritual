@@ -1,5 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { inflateRawSync } from 'node:zlib';
+import { familyExpansion } from './family-expansion.mjs';
 import { loadCongregationStudy } from './congregation-study.mjs';
 
 const contentFile = new URL('../data/content.json', import.meta.url);
@@ -133,8 +134,17 @@ const familyCatalog = [
     ],
     "action": "Antes de uma decisão importante, pesquisem um princípio bíblico e conversem sobre como aplicá-lo.",
     "videoUrl": null
-  }
+  },
+  ...familyExpansion
 ];
+// Preserve the eight existing study dates and the Abigail study on 3 Nov 2026.
+const previousCategories = [
+  'Perseverança', 'Perseverança', 'Exemplos do passado', 'Exemplos do passado',
+  'Princípios', 'Perseverança', 'Exemplos do passado', 'Princípios'
+];
+familyCatalog.forEach((item, index) => {
+  if (!item.category) item.category = previousCategories[index] || 'Princípios';
+});
 const familyStart = new Date(Date.UTC(2026, 8, 22));
 const familyEnd = '2027-08-31';
 
@@ -298,6 +308,18 @@ function familyUpcomingFor(date, count = familyCatalog.length) {
     const next = new Date(current);
     next.setUTCDate(next.getUTCDate() + (index * 7));
     return familyWorshipFor(next);
+  });
+}
+
+// Full dated library, including earlier weeks, allows swapping the current
+// study with the lesson programmed for any other date.
+function familyScheduleFor() {
+  const end = new Date(familyEnd + 'T00:00:00Z');
+  const weeks = Math.floor((end - familyStart) / (7 * 86400000)) + 1;
+  return Array.from({ length: weeks }, (_, index) => {
+    const date = new Date(familyStart);
+    date.setUTCDate(date.getUTCDate() + index * 7);
+    return familyWorshipFor(date);
   });
 }
 
@@ -578,12 +600,37 @@ const { daily, meeting, midweekStudy, watchtower, errors } = resolveContentUpdat
   watchtower: watchtowerTarget.toISOString().slice(0, 10)
 });
 const covers = { workbook: midweekStudy.coverUrl || meeting.coverUrl, watchtower: watchtower.coverUrl };
-const familyUpcoming = await Promise.all(familyUpcomingFor(now).map(addFamilyVisuals));
-const familyWorship = familyUpcoming[0];
+const schedule = familyScheduleFor();
+const knownVisuals = new Map(
+  [...(Array.isArray(previous.familySchedule) ? previous.familySchedule : []),
+    ...(Array.isArray(previous.familyUpcoming) ? previous.familyUpcoming : []),
+    previous.familyWorship].filter(Boolean)
+    .filter(item => item.articleUrl && item.publicationImageUrl)
+    .map(item => [item.articleUrl, item.publicationImageUrl])
+);
+const imagesBySource = new Map(knownVisuals);
+const uniqueStudies = new Map(schedule.map(item => [item.articleUrl, item]));
+const missingVisuals = [...uniqueStudies.values()].filter(item => !imagesBySource.has(item.articleUrl));
+// Limit simultaneous requests and reuse previously verified images on later runs.
+for (let index = 0; index < missingVisuals.length; index += 10) {
+  const batch = missingVisuals.slice(index, index + 10);
+  const results = await Promise.all(batch.map(async item => ({
+    url: item.articleUrl,
+    image: (await addFamilyVisuals(item)).publicationImageUrl || null
+  })));
+  for (const { url, image } of results) if (image) imagesBySource.set(url, image);
+}
+const familySchedule = schedule.map(item => ({
+  ...item, publicationImageUrl: imagesBySource.get(item.articleUrl) || null, videoImageUrl: null
+}));
+const currentWeek = tuesdayOf(now).toISOString().slice(0, 10);
+const familyWorship = familySchedule.find(item => item.weekOf === currentWeek) || familyWorshipFor(now);
+const familyUpcoming = familySchedule.filter(item => item.weekOf >= currentWeek).slice(0, 8);
 const content = {
   updatedAt: new Date().toISOString(), timezone: 'America/Sao_Paulo',
   updateRules: { daily: 'todos os dias', midweek: 'toda sexta-feira para a próxima semana', watchtower: 'toda segunda-feira', familyWorship: 'toda terça-feira' },
   daily, meeting, midweekStudy, watchtower, covers, familyWorship, familyUpcoming,
+  familySchedule,
   previousUpdatedAt: previous.updatedAt || null, errors
 };
 await mkdir(new URL('../data/', import.meta.url), { recursive: true });
@@ -592,4 +639,4 @@ console.log(`Conteúdo salvo: texto ${daily.date}; apostila ${meeting.weekOf}; S
 if (errors.length) console.warn('Atualização parcial: ' + errors.join('; '));
 }
 
-export { resolveContentUpdates, studyRange, rangeIncludes, familyCatalog, familyWorshipFor, familyUpcomingFor, dailyHeadingPattern, dateInSaoPaulo, midweekTargetDate, mondayOf, tuesdayOf };
+export { resolveContentUpdates, studyRange, rangeIncludes, familyCatalog, familyWorshipFor, familyUpcomingFor, familyScheduleFor, dailyHeadingPattern, dateInSaoPaulo, midweekTargetDate, mondayOf, tuesdayOf };
