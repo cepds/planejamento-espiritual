@@ -84,6 +84,7 @@ test('galerias oferecem todas as ilustrações válidas e navegação ampliada',
   assert.match(reader, /ArrowLeft/);
   assert.match(reader, /ArrowRight/);
   assert.match(updater, /publicationContentImages\(media, current\.track\)/);
-  assert.match(updater, /publicationContentImages\(selected\.media, selected\.file\.track\)/);
+  assert.match(updater, /const articleIndex = Number\(selected\.file\.track\) - 1/);
+  assert.match(updater, /publicationContentImages\(selected\.media, articleIndex\)/);
   assert.match(updater, /images, heroImageUrl: image/);
 });
