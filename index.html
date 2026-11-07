@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=6">
+  <link rel="stylesheet" href="reader.css?v=7">
 </head>
 <body>
 <div class="app">
@@ -84,23 +84,46 @@
     <section class="page" data-reader-page="meetings" aria-label="Informações das reuniões" hidden>
       
       <div class="quick-links"><button type="button" data-scroll-to="midweek">Meio de semana</button><button type="button" data-scroll-to="weekend">Fim de semana</button></div>
-      <article class="reading" id="midweek">
-        <div class="reading-heading"><span class="kicker">Reunião de meio de semana</span><h2 id="midweek-title">Carregando…</h2><p id="midweek-date"></p></div>
+      <article class="reading study-reading study-reading--midweek" id="midweek">
+        <header class="study-heading">
+          <div class="study-date-band">
+            <span class="study-date-band-label">Nossa Vida e Ministério Cristão</span>
+            <span id="midweek-date" class="study-date-band-date"></span>
+          </div>
+          <div class="study-heading-inner">
+            <span class="study-edition">Reunião de meio de semana</span>
+            <h2 id="midweek-title">Carregando…</h2>
+            <p class="study-heading-description">Programa da semana</p>
+          </div>
+        </header>
+        <div id="midweek-content" class="study-document study-document--midweek" aria-label="Programa da reunião"></div>
         <section class="study-gallery" id="midweek-gallery" aria-label="Todas as imagens da reunião de meio de semana" hidden>
           <div class="study-gallery-heading"><h3>Imagens da reunião</h3><span id="midweek-image-count" class="small"></span></div>
           <div class="study-gallery-grid" id="midweek-images"></div>
         </section>
-        <div id="midweek-content" class="prose"></div>
         <div class="source-line"><a class="inline-link" id="midweek-original" hidden target="_blank" rel="noopener noreferrer">Abrir programação oficial ↗</a></div>
       </article>
-      <article class="reading" id="weekend">
-        <div class="reading-heading"><span class="kicker">Estudo de A Sentinela</span><h2 id="watchtower-title">Carregando…</h2><p id="watchtower-date"></p></div>
-        <div class="reading-cover"><div><p id="watchtower-theme"></p><p class="small" id="watchtower-objective" hidden></p></div></div>
+      <article class="reading study-reading study-reading--watchtower" id="weekend">
+        <header class="study-heading">
+          <div class="study-date-band">
+            <span class="study-date-band-label">A Sentinela · Edição de estudo</span>
+            <span id="watchtower-date" class="study-date-band-date"></span>
+          </div>
+          <div class="study-heading-inner">
+            <span class="study-edition">Estudo de A Sentinela</span>
+            <h2 id="watchtower-title">Carregando…</h2>
+            <p id="watchtower-theme" class="study-scripture-theme"></p>
+            <aside class="study-goal" id="watchtower-goal" hidden>
+              <strong>Objetivo</strong>
+              <p id="watchtower-objective"></p>
+            </aside>
+          </div>
+        </header>
+        <div id="watchtower-content" class="study-document study-document--watchtower" aria-label="Texto do estudo"></div>
         <section class="study-gallery" id="watchtower-gallery" aria-label="Todas as imagens do estudo de A Sentinela" hidden>
           <div class="study-gallery-heading"><h3>Imagens do estudo</h3><span id="watchtower-image-count" class="small"></span></div>
           <div class="study-gallery-grid" id="watchtower-images"></div>
         </section>
-        <div id="watchtower-content" class="prose"></div>
         <div class="source-line"><a class="inline-link" id="watchtower-original" hidden target="_blank" rel="noopener noreferrer">Abrir estudo oficial ↗</a></div>
       </article>
     </section>
@@ -265,7 +288,7 @@
 <script src="/__/firebase/8.10.1/firebase-app.js" defer></script>
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
-<script src="reader.js?v=5" defer></script>
+<script src="reader.js?v=6" defer></script>
 <script src="public-events.js?v=2" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
