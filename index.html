@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=8">
+  <link rel="stylesheet" href="reader.css?v=9">
 </head>
 <body>
 <div class="app">
@@ -120,6 +120,7 @@
               <strong>Objetivo</strong>
               <p id="watchtower-objective"></p>
             </aside>
+            <p id="watchtower-comment-status" class="study-comment-status" role="status" aria-live="polite">Comentários pessoais salvos neste navegador.</p>
           </div>
         </header>
         <div id="watchtower-content" class="study-document study-document--watchtower" aria-label="Texto do estudo"></div>
@@ -291,7 +292,7 @@
 <script src="/__/firebase/8.10.1/firebase-app.js" defer></script>
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
-<script src="reader.js?v=7" defer></script>
+<script src="reader.js?v=8" defer></script>
 <script src="public-events.js?v=2" defer></script>
 <script>
  if ('serviceWorker' in navigator) {

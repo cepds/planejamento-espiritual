@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=7', 'reader.css?v=8', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=8', 'reader.css?v=9', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -103,7 +103,8 @@ test('Sentinela preserva perguntas e texto completo com apresentação de leitur
   assert.match(reader, /study-review-list/);
   assert.match(reader, /studyIllustration\(images, imageIndex/);
   assert.match(reader, /studyRangeText\(watchtower.title/);
-  assert.doesNotMatch(html.slice(html.indexOf('id="weekend"'), html.indexOf('data-reader-page="daily"')), /<textarea|contenteditable/);
+  assert.match(html, /id="watchtower-comment-status"/);
+  assert.doesNotMatch(html, /contenteditable/);
 });
 
 test('reunião de meio de semana mantém programação com seções e duração', () => {
@@ -147,4 +148,33 @@ test('meio de semana e fim de semana aparecem em abas separadas', () => {
   assert.match(reader, /document\.querySelectorAll\('\[data-meeting-tab\]'\)/);
   assert.doesNotMatch(reader, /pendingMeetingScroll/);
   assert.doesNotMatch(reader, /data-scroll-to/);
+});
+
+test('comentários são criados acima de cada parágrafo da Sentinela e não no meio de semana', () => {
+  const section = reader.slice(reader.indexOf('function renderWatchtowerReading('), reader.indexOf('function renderMidweekReading('));
+  const before = section.indexOf('container.append(createWatchtowerComment(numbered[1]))');
+  const after = section.indexOf('container.append(paragraph)', before);
+  assert.ok(before >= 0 && after > before, 'campo deve vir antes do parágrafo');
+  const midweek = reader.slice(reader.indexOf('function renderMidweekReading('));
+  assert.doesNotMatch(midweek, /createWatchtowerComment/);
+  assert.match(reader, /function createWatchtowerComment\(number\)/);
+  assert.match(reader, /field\.placeholder = 'Escreva seu comentário…'/);
+  assert.match(reader, /field\.addEventListener\('input'/);
+  assert.match(reader, /field\.value = currentWatchtowerComments\[number\]/);
+  assert.match(reader, /function resizeWatchtowerComment/);
+  assert.match(reader, /field\.scrollHeight/);
+  assert.match(css, /\.study-comment-input/);
+  assert.match(css, /resize:none;overflow:hidden/);
+});
+
+test('comentários ficam separados por artigo e salvos localmente, sem publicação pública', () => {
+  assert.match(reader, /function watchtowerCommentKey\(study\)/);
+  assert.match(reader, /study\.weekOf/);
+  assert.match(reader, /String\(study\?\.title/);
+  assert.match(reader, /localStorage\.getItem\(currentWatchtowerCommentKey\)/);
+  assert.match(reader, /localStorage\.setItem\(currentWatchtowerCommentKey/);
+  assert.match(reader, /loadWatchtowerComments\(study\)/);
+  assert.match(reader, /saveWatchtowerComment\(number, field\.value\)/);
+  assert.match(html, /id="watchtower-comment-status"/);
+  assert.doesNotMatch(events, /watchtower-commentarios/);
 });
