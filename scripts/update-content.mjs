@@ -324,7 +324,9 @@ function familyScheduleFor() {
 }
 
 async function getOpenGraphImage(url) {
-  const response = await fetchWithTimeout(url);
+  // Imagens são complementares: não atrasar a atualização das leituras.
+  const response = await fetch(url, { signal: AbortSignal.timeout(14000) });
+  if (!response.ok) return null;
   const html = await response.text();
   const tags = html.match(/<meta\s+[^>]*>/gi) || [];
   const tag = tags.find((value) => /(?:property|name)=["']og:image["']/i.test(value));
