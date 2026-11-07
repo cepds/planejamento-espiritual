@@ -34,7 +34,7 @@ test('sem rede utiliza a cópia salva', async () => {
 test('limpeza mantém caches de outros aplicativos', async () => {
   const h = harness(async () => new Response('ok'));let done;
   h.handlers.activate({waitUntil: value => done=value}); await done;
-  assert.deepEqual(h.deleted,['planejamento-espiritual-shell-v2','planejamento-espiritual-shell-v7','planejamento-espiritual-shell-v8','planejamento-espiritual-shell-v9-leitura','planejamento-espiritual-shell-v10-cards','planejamento-espiritual-shell-v11-estudos-eventos']);
+  assert.deepEqual(h.deleted,['planejamento-espiritual-shell-v2','planejamento-espiritual-shell-v7','planejamento-espiritual-shell-v8','planejamento-espiritual-shell-v9-leitura','planejamento-espiritual-shell-v10-cards','planejamento-espiritual-shell-v11-estudos-eventos','planejamento-espiritual-shell-v12-eventos-compartilhados']);
 });
 
 test('primeira instalação prepara o conteúdo offline', async () => {
