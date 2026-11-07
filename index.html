@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=7">
+  <link rel="stylesheet" href="reader.css?v=8">
 </head>
 <body>
 <div class="app">
@@ -48,7 +48,7 @@
           <span class="today-feature-decoration" aria-hidden="true">✧</span>
         </a>
 
-        <a class="today-feature-card today-feature-card--publication" href="#meetings" data-target-reading="midweek" aria-label="Abrir apostila da reunião de meio de semana">
+        <a class="today-feature-card today-feature-card--publication" href="#meetings-midweek" aria-label="Abrir apostila da reunião de meio de semana">
           <div class="today-feature-media"><img id="today-midweek-cover" alt="Ilustração do tema da reunião de meio de semana" hidden></div>
           <div class="today-feature-copy">
             <span class="today-feature-eyebrow">Próxima reunião · Meio de semana</span>
@@ -59,7 +59,7 @@
           </div>
         </a>
 
-        <a class="today-feature-card today-feature-card--publication" href="#meetings" data-target-reading="weekend" aria-label="Abrir estudo de A Sentinela">
+        <a class="today-feature-card today-feature-card--publication" href="#meetings-weekend" aria-label="Abrir estudo de A Sentinela">
           <div class="today-feature-media"><img id="today-watchtower-cover" alt="Ilustração inicial do estudo de A Sentinela" hidden></div>
           <div class="today-feature-copy">
             <span class="today-feature-eyebrow">A Sentinela · Estudo da semana</span>
@@ -83,8 +83,11 @@
 
     <section class="page" data-reader-page="meetings" aria-label="Informações das reuniões" hidden>
       
-      <div class="quick-links"><button type="button" data-scroll-to="midweek">Meio de semana</button><button type="button" data-scroll-to="weekend">Fim de semana</button></div>
-      <article class="reading study-reading study-reading--midweek" id="midweek">
+      <div class="meeting-tabs" role="tablist" aria-label="Selecione a reunião">
+        <button type="button" id="meeting-tab-midweek" role="tab" aria-controls="midweek" aria-selected="true" data-meeting-tab="midweek">Meio de semana</button>
+        <button type="button" id="meeting-tab-weekend" role="tab" aria-controls="weekend" aria-selected="false" data-meeting-tab="weekend">Fim de semana</button>
+      </div>
+      <article class="reading study-reading study-reading--midweek" id="midweek" role="tabpanel" tabindex="0" aria-labelledby="meeting-tab-midweek">
         <header class="study-heading">
           <div class="study-date-band">
             <span class="study-date-band-label">Nossa Vida e Ministério Cristão</span>
@@ -103,7 +106,7 @@
         </section>
         <div class="source-line"><a class="inline-link" id="midweek-original" hidden target="_blank" rel="noopener noreferrer">Abrir programação oficial ↗</a></div>
       </article>
-      <article class="reading study-reading study-reading--watchtower" id="weekend">
+      <article class="reading study-reading study-reading--watchtower" id="weekend" role="tabpanel" tabindex="0" aria-labelledby="meeting-tab-weekend" hidden>
         <header class="study-heading">
           <div class="study-date-band">
             <span class="study-date-band-label">A Sentinela · Edição de estudo</span>
@@ -288,7 +291,7 @@
 <script src="/__/firebase/8.10.1/firebase-app.js" defer></script>
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
-<script src="reader.js?v=6" defer></script>
+<script src="reader.js?v=7" defer></script>
 <script src="public-events.js?v=2" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
