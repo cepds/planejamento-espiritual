@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=10">
+  <link rel="stylesheet" href="reader.css?v=11">
 </head>
 <body>
 <div class="app">
@@ -149,7 +149,7 @@
       
       <article class="reading">
         <div class="reading-heading"><span class="kicker" id="family-topic">Tema da semana</span><h2 id="family-title">Carregando…</h2><p id="family-date"></p></div>
-        <div class="reading-cover"><img id="family-cover" hidden alt="Imagem da publicação da semana"><div><p id="family-prompt"></p><p><strong>Leitura bíblica:</strong> <span id="family-reading"></span></p></div></div>
+        <div class="reading-cover"><img id="family-cover" hidden alt="Imagem da publicação da semana"><div><p id="family-prompt"></p><p id="family-reading-wrap"><strong>Leitura bíblica:</strong> <span id="family-reading"></span></p></div></div>
         <div class="prose">
           <h3>O que aprender</h3><p id="family-do"></p>
           <h3>O que evitar</h3><p id="family-avoid"></p>
@@ -158,6 +158,29 @@
         </div>
         <div class="source-line"><p class="small" id="family-source-title"></p><a class="inline-link" id="family-original" hidden target="_blank" rel="noopener noreferrer">Ler publicação no JW.org ↗</a></div>
       </article>
+      <details id="family-library" class="family-library">
+        <summary class="family-library-toggle">
+          <span><strong>Biblioteca e calendário de estudos</strong><small>Consulte as datas e troque o tema de hoje</small></span>
+          <span id="family-library-count" class="family-library-count"></span>
+        </summary>
+        <div class="family-library-body">
+          <p class="family-library-help">Toque em <strong>Trocar com hoje</strong> para colocar outro estudo nesta semana. O estudo atual ocupará a data escolhida.</p>
+          <div class="family-library-controls">
+            <label for="family-category-filter">Assunto</label>
+            <select id="family-category-filter">
+              <option value="Todos">Todos os assuntos</option>
+              <option value="Perseverança">Perseverança</option>
+              <option value="Família">Família</option>
+              <option value="Princípios">Princípios</option>
+              <option value="Exemplos do passado">Exemplos do passado</option>
+              <option value="Pregação">Ajuda na pregação</option>
+            </select>
+            <button type="button" id="family-plan-reset" hidden>Restaurar programação</button>
+          </div>
+          <p id="family-plan-status" class="family-plan-status" role="status" aria-live="polite"></p>
+          <ol id="family-plan-list" class="family-plan-list"></ol>
+        </div>
+      </details>
     </section>
 
     <section class="page" data-reader-page="emergencies" aria-label="Preparação para emergências" hidden>
@@ -292,7 +315,7 @@
 <script src="/__/firebase/8.10.1/firebase-app.js" defer></script>
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
-<script src="reader.js?v=9" defer></script>
+<script src="reader.js?v=10" defer></script>
 <script src="public-events.js?v=2" defer></script>
 <script>
  if ('serviceWorker' in navigator) {

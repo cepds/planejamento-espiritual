@@ -41,14 +41,32 @@ test('novo ciclo de adoração começa na terça e mantém o tema até segunda',
   assert.notEqual(familyWorshipFor(utcDate('2026-09-29')).title, first.title);
 });
 
-test('plano exibe oito semanas distintas e reinicia após o ciclo completo', async () => {
-  const { familyUpcomingFor, familyWorshipFor } = await import('./update-content.mjs');
-  const weeks = familyUpcomingFor(utcDate('2026-09-22'));
-  assert.equal(weeks.length, 8);
-  assert.equal(new Set(weeks.map((item) => item.title)).size, 8);
-  assert.equal(familyWorshipFor(utcDate('2026-11-17')).title, weeks[0].title);
-  for (let index = 1; index < weeks.length; index++) {
-    assert.equal(utcDate(weeks[index].weekOf) - utcDate(weeks[index-1].weekOf), 7 * 86400000);
+test('calendário ampliado preserva as oito semanas iniciais e a data de Abigail', async () => {
+  const { familyCatalog, familyUpcomingFor, familyWorshipFor, familyScheduleFor } = await import('./update-content.mjs');
+  assert.equal(familyCatalog.length, 39);
+  const weeks = familyUpcomingFor(utcDate('2026-09-22'), familyCatalog.length);
+  assert.equal(weeks.length, 39);
+  assert.equal(new Set(weeks.map((item) => item.title)).size, 39);
+  assert.equal(familyWorshipFor(utcDate('2026-11-03')).title, 'Abigail: acalmar conflitos com sensatez');
+  assert.equal(familyWorshipFor(utcDate('2026-11-17')).title, familyCatalog[8].title);
+  const schedule = familyScheduleFor();
+  assert.equal(schedule[0].weekOf, '2026-09-22');
+  assert.equal(schedule.at(-1).weekOf, '2027-08-31');
+  assert.equal(new Set(schedule.map((item) => item.weekOf)).size, schedule.length);
+  for (let index = 1; index < schedule.length; index++) {
+    assert.equal(utcDate(schedule[index].weekOf) - utcDate(schedule[index - 1].weekOf), 7 * 86400000);
+  }
+});
+test('família, princípios, perseverança, exemplos e pregação constam na biblioteca', async () => {
+  const { familyCatalog } = await import('./update-content.mjs');
+  const categories = new Set(familyCatalog.map(item => item.category));
+  for (const name of ['Perseverança', 'Família', 'Princípios', 'Exemplos do passado', 'Pregação']) {
+    assert.ok(categories.has(name), name);
+  }
+  for (const item of familyCatalog) {
+    assert.match(item.articleUrl, /^https:\/\/www\.jw\.org\/pt\//);
+    assert.ok(item.title && item.prompt && item.action);
+    assert.ok(Array.isArray(item.questions) && item.questions.length >= 2);
   }
 });
 
