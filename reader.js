@@ -31,6 +31,9 @@
       else link.removeAttribute('aria-current');
     }
     if (page === 'meetings') selectMeeting(requested === 'meetings-weekend' ? 'weekend' : 'midweek');
+    if (page === 'meetings' && !document.querySelector('#weekend').hidden) {
+      requestAnimationFrame(resizeVisibleWatchtowerComments);
+    }
     document.querySelector('#page-title').textContent = pageTitles[page];
     document.title = pageTitles[page] + ' · Planejamento Espiritual';
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -233,9 +236,84 @@
     return figure;
   }
 
+  // Comentários privados por estudo e parágrafo. Sem sincronização pública.
+  const watchtowerCommentPrefix = 'planejamento-espiritual-watchtower-commentarios-v1:';
+  let currentWatchtowerCommentKey = '';
+  let currentWatchtowerComments = Object.create(null);
+
+  function watchtowerCommentKey(study) {
+    const date = /^\d{4}-\d{2}-\d{2}$/.test(String(study?.weekOf || ''))
+      ? study.weekOf : 'sem-data';
+    return watchtowerCommentPrefix + date + ':' + String(study?.title || 'sem-titulo').trim();
+  }
+
+  function loadWatchtowerComments(study) {
+    currentWatchtowerCommentKey = watchtowerCommentKey(study);
+    currentWatchtowerComments = Object.create(null);
+    try {
+      const saved = JSON.parse(localStorage.getItem(currentWatchtowerCommentKey) || '{}');
+      if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
+        for (const [number, comment] of Object.entries(saved)) {
+          if (/^\d{1,2}$/.test(number) && typeof comment === 'string') {
+            currentWatchtowerComments[number] = comment;
+          }
+        }
+      }
+      setText('#watchtower-comment-status', 'Seus comentários ficam salvos apenas neste navegador.');
+    } catch (error) {
+      console.warn('Não foi possível ler os comentários locais:', error);
+      setText('#watchtower-comment-status', 'Não foi possível carregar comentários salvos neste navegador.');
+    }
+  }
+
+  function saveWatchtowerComment(number, value) {
+    if (value.trim()) currentWatchtowerComments[number] = value;
+    else delete currentWatchtowerComments[number];
+    try {
+      localStorage.setItem(currentWatchtowerCommentKey, JSON.stringify(currentWatchtowerComments));
+      setText('#watchtower-comment-status', 'Comentários salvos neste navegador.');
+    } catch (error) {
+      console.warn('Não foi possível salvar o comentário:', error);
+      setText('#watchtower-comment-status', 'Não foi possível salvar. Copie seu comentário antes de sair desta página.');
+    }
+  }
+
+  function resizeWatchtowerComment(field) {
+    // Deixe a caixa ocupar quantas linhas forem necessárias, sem barra de rolagem interna.
+    if (!field.getClientRects().length) return;
+    field.style.height = '0px';
+    field.style.height = Math.max(76, field.scrollHeight) + 'px';
+  }
+
+  function createWatchtowerComment(number) {
+    const wrapper = studyEl('div', 'study-comment-box');
+    const label = studyEl('label', 'study-comment-label', 'Meu comentário · parágrafo ' + number);
+    const field = studyEl('textarea', 'study-comment-input');
+    const id = 'watchtower-comment-' + number;
+    field.id = id;
+    field.rows = 2;
+    field.spellcheck = true;
+    field.setAttribute('autocapitalize', 'sentences');
+    field.setAttribute('aria-describedby', 'watchtower-comment-status');
+    field.placeholder = 'Escreva seu comentário…';
+    field.value = currentWatchtowerComments[number] || '';
+    label.htmlFor = id;
+    field.addEventListener('input', () => {
+      resizeWatchtowerComment(field);
+      saveWatchtowerComment(number, field.value);
+    });
+    wrapper.append(label, field);
+    return wrapper;
+  }
+
+  function resizeVisibleWatchtowerComments() {
+    document.querySelectorAll('#watchtower-content .study-comment-input').forEach(resizeWatchtowerComment);
+  }
+
   function renderWatchtowerReading(study) {
     const container = document.querySelector('#watchtower-content');
     container.replaceChildren();
+    loadWatchtowerComments(study);
     const paragraphs = studyParagraphs(study.content);
     const images = imageList(study);
     const articleName = 'Estudo de A Sentinela';
@@ -301,6 +379,8 @@
       } else if (/^Cântico\s+\d+/i.test(text)) {
         container.append(studyEl('p', 'study-song', text));
       } else if (numbered) {
+        // O comentário aparece imediatamente antes do parágrafo correspondente.
+        container.append(createWatchtowerComment(numbered[1]));
         const paragraph = studyEl('p', 'study-numbered-paragraph');
         paragraph.append(studyEl('span', 'study-paragraph-index', numbered[1]));
         paragraph.append(document.createTextNode(numbered[2]));
@@ -432,6 +512,7 @@
     setVisible('#watchtower-goal', !!watchtower.objective);
     renderWatchtowerReading(watchtower);
     renderStudyGallery('watchtower', watchtower, 'Estudo de A Sentinela');
+    requestAnimationFrame(resizeVisibleWatchtowerComments);
     setSource('#watchtower-original', watchtower.url);
 
     setText('#family-topic', family.topic || 'Tema da semana');
@@ -494,6 +575,7 @@
       else location.hash = hash;
     });
   });
+  addEventListener('resize', resizeVisibleWatchtowerComments);
   addEventListener('hashchange', navigate);
   navigate();
   load();
