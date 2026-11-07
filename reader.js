@@ -190,6 +190,14 @@
       : fallback;
   }
 
+  function midweekRangeText(study, fallback) {
+    const first = studyParagraphs(study?.content)[0] || '';
+    const match = first.match(/^(\d{1,2})\s+a\s+(\d{1,2})\s+de\s+([a-zà-ÿ]+)/i);
+    const year = String(study?.weekOf || '').slice(0, 4);
+    return match ? match[1] + '–' + match[2] + ' de ' + match[3] +
+      (year ? ' de ' + year : '') : fallback;
+  }
+
   function studyEl(tag, className, text) {
     const element = document.createElement(tag);
     if (className) element.className = className;
@@ -406,7 +414,7 @@
     setSource('#daily-original', daily.url);
 
     setText('#midweek-title', midweek.title || meeting.reading || 'Reunião de meio de semana');
-    setText('#midweek-date', asDate(midweek.weekOf || meeting.weekOf));
+    setText('#midweek-date', midweekRangeText(midweek, asDate(midweek.weekOf || meeting.weekOf)));
     renderMidweekReading(midweek);
     renderStudyGallery('midweek', midweek, 'Reunião de meio de semana');
     setSource('#midweek-original', midweek.url);
