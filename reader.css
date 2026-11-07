@@ -426,3 +426,33 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
   .study-review h3,.study-scripture strong,.study-question-number,.study-review-list li::before{color:#9cbce3}
   .study-program-number{background:#285586}
 }
+
+
+/* Reuniões independentes: uma leitura por vez, com abas acessíveis. */
+.meeting-tabs{
+  display:flex;gap:9px;flex-wrap:wrap;margin:0 0 24px;
+  padding:5px;width:max-content;max-width:100%;
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:16px
+}
+.meeting-tabs [role="tab"]{
+  flex:0 1 auto;min-height:44px;padding:10px 17px;
+  border:1px solid transparent;border-radius:11px;
+  background:transparent;color:var(--muted);
+  cursor:pointer;font:750 .9rem/1.35 "Segoe UI",system-ui,sans-serif;
+  transition:background .18s ease,color .18s ease
+}
+.meeting-tabs [role="tab"]:hover{color:var(--ink);background:var(--soft)}
+.meeting-tabs [role="tab"][aria-selected="true"]{
+  background:#245942;color:#fff;box-shadow:0 2px 7px rgba(5,45,24,.15)
+}
+.meeting-tabs [role="tab"]:focus-visible{outline:3px solid #c7a65b;outline-offset:2px}
+#midweek[hidden],#weekend[hidden]{display:none!important}
+@media(max-width:600px){
+  .meeting-tabs{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:4px;padding:4px;margin-bottom:17px}
+  .meeting-tabs [role="tab"]{min-width:0;padding:11px 5px;font-size:.84rem}
+}
+@media(prefers-color-scheme:dark){
+  .meeting-tabs [role="tab"][aria-selected="true"]{background:#285b44;color:#f4fff5}
+}
+@media(prefers-reduced-motion:reduce){.meeting-tabs [role="tab"]{transition:none}}
