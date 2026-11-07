@@ -511,7 +511,9 @@ async function getWatchtowerStudy(date) {
   // Falhas ao baixar essa mídia não devem retirar o estudo nem o destaque inicial.
   let studyImages = [];
   try {
-    studyImages = await publicationContentImages(selected.media, selected.file.track);
+    // Em A Sentinela, o track da API começa em 1; a lista JWPUB começa em 0.
+    const articleIndex = Number(selected.file.track) - 1;
+    studyImages = await publicationContentImages(selected.media, articleIndex);
   } catch (error) {
     console.warn('Ilustrações adicionais de A Sentinela indisponíveis:', error.message);
   }
