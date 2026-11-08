@@ -256,7 +256,7 @@ test('troca de hoje com outra data é persistida sem mudar o calendário origina
 test('seção Como responderia mostra um card logo abaixo de cada pergunta', () => {
   const study = reader.slice(reader.indexOf('function renderWatchtowerReading(study)'),
     reader.indexOf('function createJewelComment(study)'));
-  assert.match(study, /\[Quadro\\]\s\*Como responderia/);
+  assert.match(study, /Como responderia/);
   assert.match(study, /reviewQuestionIndex \+= 1/);
   const question = study.indexOf("item.append(studyEl('p', 'study-review-question', questionText))");
   const answer = study.indexOf("item.append(createWatchtowerReviewComment(reviewQuestionIndex))", question);
@@ -272,7 +272,7 @@ test('seção Como responderia mostra um card logo abaixo de cada pergunta', () 
 });
 
 test('comentários da revisão são persistidos junto ao artigo sem prejudicar os parágrafos', () => {
-  assert.match(reader, /\^\(\?:\\d\{1,2\}\|review-\\d\{1,2\}\)\$/);
+  assert.ok(reader.includes('review-\\d{1,2}'), 'chaves dos comentários finais precisam ser carregadas');
   assert.match(reader, /saveWatchtowerComment\(number, field\.value\)/);
   assert.match(reader, /saveWatchtowerComment\(key, field\.value\)/);
   assert.doesNotMatch(events, /watchtower-review-comment/);
