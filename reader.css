@@ -589,3 +589,16 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
  .family-plan-source{font-size:.68rem}
 }
 @media(prefers-reduced-motion:reduce){.family-library-toggle::after{transition:none}}
+
+
+/* Comentários individuais na revisão "Como responderia?" de A Sentinela. */
+.study-review-list .study-review-item{padding:16px 0 12px}
+.study-review-question{font-size:1rem;font-weight:750;line-height:1.65;margin:0 0 12px;color:var(--ink)}
+.study-review-comment{margin:0;padding:12px 13px 13px;background:var(--surface)}
+.study-review-comment .study-comment-label{margin-bottom:8px}
+.study-review-comment-input{font-size:1rem}
+@media(max-width:600px){
+ .study-review-list .study-review-item{padding:15px 0 9px}
+ .study-review-comment{padding:11px 10px 12px}
+ .study-review-comment-input{font-size:16px}
+}

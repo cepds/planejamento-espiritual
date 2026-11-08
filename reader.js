@@ -257,7 +257,7 @@
       const saved = JSON.parse(localStorage.getItem(currentWatchtowerCommentKey) || '{}');
       if (saved && typeof saved === 'object' && !Array.isArray(saved)) {
         for (const [number, comment] of Object.entries(saved)) {
-          if (/^\d{1,2}$/.test(number) && typeof comment === 'string') {
+          if (/^(?:\d{1,2}|review-\d{1,2})$/.test(number) && typeof comment === 'string') {
             currentWatchtowerComments[number] = comment;
           }
         }
@@ -309,6 +309,28 @@
     return wrapper;
   }
 
+  function createWatchtowerReviewComment(index) {
+    const key = 'review-' + index;
+    const wrapper = studyEl('div', 'study-comment-box study-review-comment');
+    const id = 'watchtower-review-comment-' + index;
+    const label = studyEl('label', 'study-comment-label', 'Meu comentário · pergunta ' + index);
+    label.htmlFor = id;
+    const field = studyEl('textarea', 'study-comment-input study-review-comment-input');
+    field.id = id;
+    field.rows = 2;
+    field.spellcheck = true;
+    field.placeholder = 'Escreva sua resposta ou comentário…';
+    field.setAttribute('autocapitalize', 'sentences');
+    field.setAttribute('aria-describedby', 'watchtower-comment-status');
+    field.value = currentWatchtowerComments[key] || '';
+    field.addEventListener('input', () => {
+      resizeWatchtowerComment(field);
+      saveWatchtowerComment(key, field.value);
+    });
+    wrapper.append(label, field);
+    return wrapper;
+  }
+
   function resizeVisibleWatchtowerComments() {
     document.querySelectorAll('#watchtower-content .study-comment-input').forEach(resizeWatchtowerComment);
   }
@@ -332,6 +354,7 @@
     let imageIndex = images.length ? 1 : 0;
     let review = null;
     let reviewList = null;
+    let reviewQuestionIndex = 0;
     for (let index = 0; index < paragraphs.length; index++) {
       const text = paragraphs[index];
       const question = text.match(/^Pergunta\s+(\d+(?:\s*(?:a|e|[-–])\s*\d+)?)\.\s*(.+)$/i);
@@ -343,8 +366,15 @@
         review.append(reviewList);
         container.append(review);
       } else if (review && /^[\uE000-\uF8FF•]\s*/u.test(text)) {
-        const item = text.replace(/^[\uE000-\uF8FF•]\s*/u, '').replace(/\s*\[Fim do quadro\.\]\s*/gi, '').trim();
-        if (item) reviewList.append(studyEl('li', '', item));
+        const questionText = text.replace(/^[\uE000-\uF8FF•]\s*/u, '')
+          .replace(/\s*\[Fim do quadro\.\]\s*/gi, '').trim();
+        if (questionText) {
+          reviewQuestionIndex += 1;
+          const item = studyEl('li', 'study-review-item');
+          item.append(studyEl('p', 'study-review-question', questionText));
+          item.append(createWatchtowerReviewComment(reviewQuestionIndex));
+          reviewList.append(item);
+        }
       } else if (question) {
         const card = studyEl('div', 'study-question');
         card.append(studyEl('span', 'study-question-number', question[1].replace(/\s+a\s+/i, '–')));
