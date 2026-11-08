@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=10', 'reader.css?v=11', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=11', 'reader.css?v=12', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -251,4 +251,29 @@ test('troca de hoje com outra data é persistida sem mudar o calendário origina
   assert.match(reader, /localStorage\.removeItem\(familyPlanStorageKey\)/);
   assert.match(reader, /renderFamilyStudy\(familyStudyForDate\(familyCurrentWeek\)\)/);
   assert.doesNotMatch(events, /family-agenda-v1/);
+});
+
+test('seção Como responderia mostra um card logo abaixo de cada pergunta', () => {
+  const study = reader.slice(reader.indexOf('function renderWatchtowerReading(study)'),
+    reader.indexOf('function createJewelComment(study)'));
+  assert.match(study, /\[Quadro\\]\s\*Como responderia/);
+  assert.match(study, /reviewQuestionIndex \+= 1/);
+  const question = study.indexOf("item.append(studyEl('p', 'study-review-question', questionText))");
+  const answer = study.indexOf("item.append(createWatchtowerReviewComment(reviewQuestionIndex))", question);
+  assert.ok(question >= 0 && answer > question, 'comentário abaixo da pergunta');
+  assert.match(reader, /function createWatchtowerReviewComment\(index\)/);
+  assert.match(reader, /'review-' \+ index/);
+  assert.match(reader, /'watchtower-review-comment-' \+ index/);
+  assert.match(reader, /field\.value = currentWatchtowerComments\[key\] \|\| ''/);
+  assert.match(reader, /saveWatchtowerComment\(key, field\.value\)/);
+  assert.match(reader, /resizeWatchtowerComment\(field\)/);
+  assert.match(css, /\.study-review-comment/);
+  assert.match(css, /\.study-review-question/);
+});
+
+test('comentários da revisão são persistidos junto ao artigo sem prejudicar os parágrafos', () => {
+  assert.match(reader, /\^\(\?:\\d\{1,2\}\|review-\\d\{1,2\}\)\$/);
+  assert.match(reader, /saveWatchtowerComment\(number, field\.value\)/);
+  assert.match(reader, /saveWatchtowerComment\(key, field\.value\)/);
+  assert.doesNotMatch(events, /watchtower-review-comment/);
 });
