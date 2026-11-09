@@ -565,6 +565,28 @@ async function getWatchtowerStudy(date) {
   };
 }
 
+function nextDates(date, count) {
+  return Array.from({ length: count }, (_, index) => {
+    const next = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+    next.setUTCDate(next.getUTCDate() + index);
+    return next;
+  });
+}
+
+function mergeDailyReadings(dates, current, futureOutcomes, previous) {
+  const candidates = [
+    current,
+    ...(futureOutcomes || []).filter(result => result.status === 'fulfilled').map(result => result.value),
+    ...(Array.isArray(previous.dailyReadings) ? previous.dailyReadings : []),
+    previous.daily
+  ];
+  return dates.map(date => {
+    const key = date.toISOString().slice(0, 10);
+    return candidates.find(item => item?.date === key &&
+      item.verse && item.reference && item.content && item.url);
+  }).filter(Boolean);
+}
+
 function resolveContentUpdates(previous, outcomes, expected) {
   const errors = [];
   function useLatest(index, label, valid, fallback) {
@@ -601,6 +623,18 @@ const { daily, meeting, midweekStudy, watchtower, errors } = resolveContentUpdat
   midweek: meetingTarget.toISOString().slice(0, 10),
   watchtower: watchtowerTarget.toISOString().slice(0, 10)
 });
+// Publique antecipadamente os próximos dias: no navegador a troca pode
+// acontecer às 00:00 mesmo quando o agendador externo atrasa.
+const dailyDates = nextDates(now, 4);
+const futureDaily = await Promise.allSettled(dailyDates.slice(1).map(getDaily));
+const dailyReadings = mergeDailyReadings(dailyDates, daily, futureDaily, previous);
+for (const [index, result] of futureDaily.entries()) {
+  if (result.status === 'rejected') {
+    console.warn('Pré-carregamento do texto diário de ' +
+      dailyDates[index + 1].toISOString().slice(0, 10) +
+      ' não disponível:', result.reason?.message || String(result.reason));
+  }
+}
 const covers = { workbook: midweekStudy.coverUrl || meeting.coverUrl, watchtower: watchtower.coverUrl };
 const schedule = familyScheduleFor();
 const knownVisuals = new Map(
@@ -630,8 +664,8 @@ const familyWorship = familySchedule.find(item => item.weekOf === currentWeek) |
 const familyUpcoming = familySchedule.filter(item => item.weekOf >= currentWeek).slice(0, 8);
 const content = {
   updatedAt: new Date().toISOString(), timezone: 'America/Sao_Paulo',
-  updateRules: { daily: 'todos os dias', midweek: 'toda sexta-feira para a próxima semana', watchtower: 'toda segunda-feira', familyWorship: 'toda terça-feira' },
-  daily, meeting, midweekStudy, watchtower, covers, familyWorship, familyUpcoming,
+  updateRules: { daily: '00:00 de Brasília, com leituras antecipadas', midweek: 'toda sexta-feira para a próxima semana', watchtower: 'toda segunda-feira', familyWorship: 'toda terça-feira' },
+  daily, dailyReadings, meeting, midweekStudy, watchtower, covers, familyWorship, familyUpcoming,
   familySchedule,
   previousUpdatedAt: previous.updatedAt || null, errors
 };
@@ -641,4 +675,4 @@ console.log(`Conteúdo salvo: texto ${daily.date}; apostila ${meeting.weekOf}; S
 if (errors.length) console.warn('Atualização parcial: ' + errors.join('; '));
 }
 
-export { resolveContentUpdates, studyRange, rangeIncludes, familyCatalog, familyWorshipFor, familyUpcomingFor, familyScheduleFor, dailyHeadingPattern, dateInSaoPaulo, midweekTargetDate, mondayOf, tuesdayOf };
+export { resolveContentUpdates, studyRange, rangeIncludes, familyCatalog, familyWorshipFor, familyUpcomingFor, familyScheduleFor, dailyHeadingPattern, nextDates, mergeDailyReadings, dateInSaoPaulo, midweekTargetDate, mondayOf, tuesdayOf };

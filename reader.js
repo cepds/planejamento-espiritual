@@ -864,16 +864,86 @@
     familyPlanStatus('Programação original restaurada neste navegador.');
   });
 
+  let latestContent = null;
+  let displayedBrazilDay = '';
+  let dailyNeedsRefresh = false;
+  let lastDailyRequest = 0;
+
+  function brazilDay(now = new Date()) {
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(now).filter(part => part.type !== 'literal')
+      .map(part => [part.type, part.value]));
+    return parts.year + '-' + parts.month + '-' + parts.day;
+  }
+
+  function officialDailyLink(date) {
+    const [year, month, day] = date.split('-').map(Number);
+    return 'https://wol.jw.org/pt/wol/h/r5/lp-t/' + year + '/' + month + '/' + day;
+  }
+
+  function renderDailyOnly(content) {
+    const today = brazilDay();
+    displayedBrazilDay = today;
+    const readings = [...(Array.isArray(content?.dailyReadings) ? content.dailyReadings : []), content?.daily];
+    const selected = readings.find(item => item?.date === today &&
+      item.verse && item.reference && item.content);
+    dailyNeedsRefresh = !selected;
+    setText('#today-date', asDate(today));
+    setText('#daily-date', asDate(today));
+    setText('#today-verse', selected?.verse || 'Texto diário de hoje ainda não disponível neste site.');
+    setText('#today-reference', selected?.reference || '');
+    setText('#daily-verse', selected?.verse || 'Texto diário de hoje ainda não disponível neste site.');
+    setText('#daily-reference', selected?.reference || '');
+    appendParagraphs('#daily-content', selected?.content ||
+      'Abra o texto de hoje diretamente na Biblioteca Online da Torre de Vigia pelo link abaixo.');
+    setSource('#daily-original', selected?.url || officialDailyLink(today));
+  }
+
+  async function refreshDailyFromSite() {
+    const now = Date.now();
+    if (now - lastDailyRequest < 60000) return;
+    lastDailyRequest = now;
+    try {
+      const response = await fetch('data/content.json?at=' + now, { cache: 'no-store' });
+      if (!response.ok) return;
+      const incoming = await response.json();
+      if (!incoming?.daily) return;
+      latestContent = incoming;
+      renderDailyOnly(incoming);
+    } catch (error) {
+      console.warn('Não foi possível atualizar o texto diário neste momento:', error);
+    }
+  }
+
+  function checkDailyDate() {
+    const today = brazilDay();
+    if (!latestContent) return;
+    if (displayedBrazilDay !== today) {
+      // Troca instantaneamente para a leitura pré-publicada, mesmo com atraso no GitHub Actions.
+      renderDailyOnly(latestContent);
+      void refreshDailyFromSite();
+    } else if (dailyNeedsRefresh && Date.now() - lastDailyRequest >= 300000) {
+      void refreshDailyFromSite();
+    }
+  }
+
+  function scheduleDailyMidnightCheck() {
+    // Alinha à virada do minuto; também confere ao retornar ao app no celular.
+    const next = 60000 - (Date.now() % 60000) + 100;
+    setTimeout(() => {
+      checkDailyDate();
+      scheduleDailyMidnightCheck();
+    }, next);
+  }
+
   function render(content) {
-    const daily = content.daily || {};
     const meeting = content.meeting || {};
     const midweek = content.midweekStudy || {};
     const watchtower = content.watchtower || {};
     const family = content.familyWorship || {};
 
-    setText('#today-date', asDate(daily.date));
-    setText('#today-verse', daily.verse || 'Texto do dia indisponível.');
-    setText('#today-reference', daily.reference);
+    renderDailyOnly(content);
 
     setText('#today-midweek-title', meeting.treasure || midweek.title || meeting.reading || 'Programação da reunião indisponível.');
     setText('#today-midweek-reading', meeting.reading || midweek.title || '');
@@ -888,11 +958,6 @@
     setText('#today-family-date', family.weekOf ? 'Semana de ' + asDate(family.weekOf) : '');
     setCover('#today-family-cover', family.publicationImageUrl, 'Imagem da publicação da adoração em família');
 
-    setText('#daily-date', asDate(daily.date));
-    setText('#daily-verse', daily.verse || 'Texto do dia indisponível.');
-    setText('#daily-reference', daily.reference);
-    appendParagraphs('#daily-content', daily.content);
-    setSource('#daily-original', daily.url);
 
     setText('#midweek-title', midweek.title || meeting.reading || 'Reunião de meio de semana');
     setText('#midweek-date', midweekRangeText(midweek, asDate(midweek.weekOf || meeting.weekOf)));
@@ -924,6 +989,7 @@
       if (!response.ok) throw new Error('HTTP ' + response.status);
       const data = await response.json();
       if (!data || typeof data !== 'object' || !data.daily) throw new Error('Dados incompletos');
+      latestContent = data;
       render(data);
       status.hidden = true;
     } catch (error) {
@@ -957,6 +1023,11 @@
     resizeVisibleMidweekComments();
   });
   addEventListener('hashchange', navigate);
+  addEventListener('focus', checkDailyDate);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) checkDailyDate();
+  });
+  scheduleDailyMidnightCheck();
   navigate();
   load();
 

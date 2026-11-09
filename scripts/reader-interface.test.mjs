@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=11', 'reader.css?v=12', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=12', 'reader.css?v=12', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -276,4 +276,30 @@ test('comentários da revisão são persistidos junto ao artigo sem prejudicar o
   assert.match(reader, /saveWatchtowerComment\(number, field\.value\)/);
   assert.match(reader, /saveWatchtowerComment\(key, field\.value\)/);
   assert.doesNotMatch(events, /watchtower-review-comment/);
+});
+
+test('texto diário troca na data local de Brasília sem recarregar outros estudos', () => {
+  assert.match(reader, /function brazilDay\(now = new Date\(\)\)/);
+  assert.match(reader, /timeZone: 'America\/Sao_Paulo'/);
+  assert.match(reader, /function renderDailyOnly\(content\)/);
+  assert.match(reader, /item\?\.date === today/);
+  assert.match(reader, /dailyReadings/);
+  assert.match(reader, /function scheduleDailyMidnightCheck\(\)/);
+  assert.match(reader, /60000 - \(Date\.now\(\) % 60000\)/);
+  assert.match(reader, /addEventListener\('visibilitychange'/);
+  assert.match(reader, /addEventListener\('focus', checkDailyDate\)/);
+  assert.match(reader, /renderDailyOnly\(latestContent\)/);
+  assert.match(reader, /function refreshDailyFromSite\(\)/);
+  assert.match(reader, /cache: 'no-store'/);
+  assert.match(reader, /'Texto diário de hoje ainda não disponível neste site\.'/);
+  assert.match(reader, /selected\?\.url \|\| officialDailyLink\(today\)/);
+});
+
+test('atualização programa meia-noite de Brasília e pré-carrega próximos textos', async () => {
+  const workflow = await read('.github/workflows/update-content.yml');
+  assert.match(workflow, /cron: '0 3 \* \* \*'/);
+  assert.match(workflow, /cron: '10 3 \* \* \*'/);
+  assert.match(updater, /const dailyDates = nextDates\(now, 4\)/);
+  assert.match(updater, /getDaily/);
+  assert.match(updater, /daily, dailyReadings,/);
 });
