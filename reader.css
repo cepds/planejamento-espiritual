@@ -102,7 +102,6 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
 .today-feature-media:has(img[hidden])::after{content:"✧";font:700 44px Georgia,serif;color:#7ba18a}
 .today-feature-card--daily{background:linear-gradient(130deg,#f8faf5 0%,#e9f3e9 100%)}
 .today-feature-card--daily h3{font-size:clamp(1.35rem,2vw,1.75rem);max-width:450px}
-.today-feature-decoration{position:absolute;right:22px;top:15px;font:400 125px Georgia,serif;line-height:1;color:#c5ddc9;opacity:.45;pointer-events:none}
 .daily-single-reading .reading-heading h2.verse{font:600 clamp(1.5rem,3vw,2.3rem)/1.42 Georgia,serif;color:var(--green);margin:12px 0 10px}
 .daily-single-reading .reference{margin:0}
 .daily-single-reading .reading-heading{margin-bottom:25px}
