@@ -130,3 +130,27 @@ test('não fabrica conteúdo quando não existe cópia anterior válida', async 
     {status:'rejected',reason:new Error('sem rede')}
   ], {daily:'2026-10-26',midweek:'2026-10-26',watchtower:'2026-10-26'}), /sem conteúdo anterior válido/);
 });
+
+test('virada do dia ocorre à meia-noite de Brasília, mesmo quando UTC ainda está no dia anterior', async () => {
+  const { dateInSaoPaulo } = await import('./update-content.mjs');
+  assert.equal(dateInSaoPaulo(new Date('2026-11-09T02:59:59Z')).toISOString().slice(0, 10), '2026-11-08');
+  assert.equal(dateInSaoPaulo(new Date('2026-11-09T03:00:00Z')).toISOString().slice(0, 10), '2026-11-09');
+});
+
+test('textos dos próximos três dias são preparados com datas exatas', async () => {
+  const { nextDates, mergeDailyReadings } = await import('./update-content.mjs');
+  const dates = nextDates(utcDate('2026-12-30'), 4);
+  assert.deepEqual(dates.map(item => item.toISOString().slice(0, 10)),
+    ['2026-12-30', '2026-12-31', '2027-01-01', '2027-01-02']);
+  const entry = date => ({ date, verse: 'Versículo ' + date, reference: 'Referência',
+    content: 'Comentário', url: 'https://wol.jw.org/pt/wol/h/r5/lp-t/2026/12/30' });
+  const previous = { daily: entry('2026-12-29'),
+    dailyReadings: [entry('2027-01-01'), entry('2026-12-29')] };
+  const results = [{ status: 'fulfilled', value: entry('2026-12-31') },
+    { status: 'rejected', reason: Error('fonte temporariamente fora') },
+    { status: 'fulfilled', value: entry('2027-01-02') }];
+  const selected = mergeDailyReadings(dates, entry('2026-12-30'), results, previous);
+  assert.deepEqual(selected.map(item => item.date),
+    ['2026-12-30', '2026-12-31', '2027-01-01', '2027-01-02']);
+  assert.ok(!selected.some(item => item.date === '2026-12-29'));
+});
