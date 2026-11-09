@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=12', 'reader.css?v=12', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=12', 'reader.css?v=13', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -302,4 +302,10 @@ test('atualização programa meia-noite de Brasília e pré-carrega próximos te
   assert.match(updater, /const dailyDates = nextDates\(now, 4\)/);
   assert.match(updater, /getDaily/);
   assert.match(updater, /daily, dailyReadings,/);
+});
+
+test('card do Texto Diário não exibe estrela decorativa', () => {
+  const dailyCard = html.slice(html.indexOf('today-feature-card--daily'), html.indexOf('today-feature-card--publication'));
+  assert.doesNotMatch(dailyCard, /today-feature-decoration|✧/);
+  assert.doesNotMatch(css, /\.today-feature-decoration/);
 });
