@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-16T10:36:44.006Z",
+  "updatedAt": "2026-11-16T11:00:02.907Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "00:00 de Brasília, com leituras antecipadas",
@@ -1534,6 +1534,6 @@
       "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-11-16T00:27:27.134Z",
+  "previousUpdatedAt": "2026-11-16T10:36:44.006Z",
   "errors": []
 }
