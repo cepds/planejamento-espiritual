@@ -118,7 +118,7 @@
   }
   // Computed exclusively from Firestore events, using Brasília calendar dates.
   function upcomingEvents(items) {
-    return items.filter(item => validDate(item.date) && until(item.date) >= 0)
+    return items.filter(item => validDate(item.date) && until(item.dateEnd || item.date) >= 0)
       .slice().sort((a,b) => a.date.localeCompare(b.date) || titleOf(a).localeCompare(titleOf(b)));
   }
   function countByType(items) {
@@ -136,7 +136,7 @@
     });
   }
   function remainingLabel(days) {
-    return days === 0 ? 'É hoje' : days === 1 ? 'Falta 1 dia' : 'Faltam '+days+' dias';
+    return days < 0 ? 'Em andamento' : days === 0 ? 'É hoje' : days === 1 ? 'Falta 1 dia' : 'Faltam '+days+' dias';
   }
   function renderTypeChart(items) {
     const target = document.getElementById('agenda-type-chart');
@@ -231,8 +231,13 @@
       ?dateLabel(next.date)+(next.location?' · '+next.location:'')
       :'Adicione um evento para começar seu planejamento.';
     const left=next?until(next.date):null;
-    document.getElementById('agenda-hero-days').textContent=left===null?'—':left===0?'HOJE':String(left);
-    document.getElementById('agenda-hero-days-label').textContent=left===null?'sem eventos':left===0?'é hoje':'dias restantes';
+    document.getElementById('agenda-hero-days').textContent=left===null?'—':left<0?'ATUAL':left===0?'HOJE':String(left);
+    const cover=document.getElementById('agenda-hero-image');
+    const coverSource=next?imageOf(next):'';
+    cover.hidden=!coverSource;
+    if (coverSource) cover.src=coverSource;
+    cover.alt=coverSource?'Imagem do próximo compromisso':'';
+    document.getElementById('agenda-hero-days-label').textContent=left===null?'sem eventos':left<0?'em andamento':left===0?'é hoje':'dias restantes';
     document.getElementById('agenda-kpi-upcoming').textContent=String(upcoming.length);
     document.getElementById('agenda-kpi-month').textContent=String(upcoming.filter(item=>until(item.date)<=30).length);
     document.getElementById('agenda-kpi-types').textContent=String(new Set(upcoming.map(item=>item.type)).size);
@@ -400,7 +405,7 @@
       programId: item.programId === 'CA-brpgm27' ? item.programId : '',
       programText: typeof item.programText === 'string' ? item.programText.slice(0, 8000) : '',
       talks: cleanTalks(item.talks),
-      time: /^([01]\\d|2[0-3]):[0-5]\\d$/.test(item.time || '') ? item.time : '',
+      time: /^([01]\d|2[0-3]):[0-5]\d$/.test(item.time || '') ? item.time : '',
       official: false
     };
   }
@@ -423,7 +428,7 @@
   function render() {
     const ordered = allEventsWithOfficialDates().filter(item => item.date)
       .sort((a, b) => a.date.localeCompare(b.date) || titleOf(a).localeCompare(titleOf(b)));
-    const next = ordered.find(item => until(item.date) >= 0);
+    const next = ordered.find(item => until(item.dateEnd || item.date) >= 0);
     const mini = document.getElementById('event-mini');
     if (next) {
       const [year, month, day] = next.date.split('-');
@@ -434,15 +439,20 @@
     document.getElementById('event-empty').hidden = Boolean(next);
     document.getElementById('event-next').hidden = !next;
     const days=next?until(next.date):null;
-    document.getElementById('event-days').textContent=days===null?'—':days===0?'HOJE':String(days);
-    document.getElementById('event-days-label').textContent=days===0?'é hoje':'dias restantes';
+    document.getElementById('event-days').textContent=days===null?'—':days<0?'ATUAL':days===0?'HOJE':String(days);
+    document.getElementById('event-days-label').textContent=days!==null&&days<0?'em andamento':days===0?'é hoje':'dias restantes';
+    const miniImage=document.getElementById('event-next-image');
+    const nextImage=next?imageOf(next):'';
+    miniImage.hidden=!nextImage;
+    if (nextImage) miniImage.src=nextImage;
+    miniImage.alt=nextImage?'Imagem do evento '+titleOf(next):'';
     renderDashboard(upcomingEvents(ordered));
     if (next) {
       document.getElementById('event-next-type').textContent = next.type;
       document.getElementById('event-next-title').textContent = titleOf(next);
       const remaining = until(next.date);
-      const distance = remaining === 0 ? 'Hoje' : remaining === 1 ? 'Amanhã' : 'Em ' + remaining + ' dias';
-      document.getElementById('event-next-date').textContent = dateLabel(next.date) + ' · ' + distance;
+      const distance = remaining < 0 ? 'Em andamento' : remaining === 0 ? 'Hoje' : remaining === 1 ? 'Amanhã' : 'Em ' + remaining + ' dias';
+      document.getElementById('event-next-date').textContent = dateLabel(next.date) + (next.dateEnd && next.dateEnd !== next.date ? ' a ' + dateLabel(next.dateEnd) : '') + ' · ' + distance;
       const location = document.getElementById('event-next-location');
       location.textContent = next.location;
       location.hidden = !next.location;
