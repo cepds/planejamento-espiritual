@@ -216,7 +216,12 @@
         message('Não foi possível excluir o evento.',true);
       }
     });
-    actions.append(edit,remove);
+    if (!item.official) actions.append(edit,remove);
+    const detail = document.createElement('button');
+    detail.type = 'button';
+    detail.textContent = item.type === 'Assembleia' ? 'Programa' : 'Detalhes';
+    detail.addEventListener('click', () => showEventDetails(item));
+    actions.append(detail);
     return actions;
   }
   function renderDashboard(upcoming) {
@@ -257,7 +262,7 @@
       title.textContent=titleOf(item);
       const meta=document.createElement('span');
       meta.className='agenda-event-meta';
-      meta.textContent=dateLabel(item.date)+(item.location?' · '+item.location:'');
+      meta.textContent=dateLabel(item.date)+(item.dateEnd && item.dateEnd !== item.date?' a '+dateLabel(item.dateEnd):'')+(item.location?' · '+item.location:'');
       const remaining=document.createElement('span');
       remaining.className='agenda-event-remaining';
       remaining.textContent=remainingLabel(until(item.date));
@@ -285,7 +290,17 @@
       type: types.has(item.type) ? item.type : 'Outro',
       title: typeof item.title === 'string' ? item.title.slice(0, 100) : '',
       date: validDate(item.date) ? item.date : '',
-      location: typeof item.location === 'string' ? item.location.slice(0, 120) : ''
+      location: typeof item.location === 'string' ? item.location.slice(0, 120) : '',
+      dateEnd: validDate(item.dateEnd) ? item.dateEnd : '',
+      theme: typeof item.theme === 'string' ? item.theme.slice(0, 140) : '',
+      scripture: typeof item.scripture === 'string' ? item.scripture.slice(0, 100) : '',
+      imageUrl: safeHttpsUrl(item.imageUrl),
+      sourceUrl: safeHttpsUrl(item.sourceUrl),
+      programId: item.programId === 'CA-brpgm27' ? item.programId : '',
+      programText: typeof item.programText === 'string' ? item.programText.slice(0, 8000) : '',
+      talks: cleanTalks(item.talks),
+      time: /^([01]\\d|2[0-3]):[0-5]\\d$/.test(item.time || '') ? item.time : '',
+      official: false
     };
   }
 
@@ -305,7 +320,7 @@
   }
 
   function render() {
-    const ordered = sharedEvents.filter(item => item.date)
+    const ordered = allEventsWithOfficialDates().filter(item => item.date)
       .sort((a, b) => a.date.localeCompare(b.date) || titleOf(a).localeCompare(titleOf(b)));
     const next = ordered.find(item => until(item.date) >= 0);
     const mini = document.getElementById('event-mini');
@@ -347,6 +362,7 @@
       const actions = document.createElement('div');
       actions.className = 'event-list-actions';
 
+      if (!item.official) {
       const edit = document.createElement('button');
       edit.type = 'button';
       edit.textContent = 'Editar';
@@ -371,6 +387,12 @@
       });
 
       actions.append(edit, remove);
+      }
+      const detail = document.createElement('button');
+      detail.type = 'button';
+      detail.textContent = 'Detalhes';
+      detail.addEventListener('click', () => showEventDetails(item));
+      actions.append(detail);
       row.append(info, actions);
       list.append(row);
     }
