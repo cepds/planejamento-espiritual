@@ -1,7 +1,7 @@
 const CACHE_PREFIX = 'planejamento-espiritual-shell-';
-const CACHE_NAME = CACHE_PREFIX + 'v22-sem-estrela-texto-diario';
+const CACHE_NAME = CACHE_PREFIX + 'v23-videos-vida-crista';
 const CONTENT_KEY = '/data/content.json';
-const SHELL = ['/', '/index.html', '/reader.css?v=13', '/reader.js?v=12', '/public-events.js?v=2', '/manifest.webmanifest', '/icons/favicon-3d.png'];
+const SHELL = ['/', '/index.html', '/reader.css?v=14', '/reader.js?v=13', '/public-events.js?v=2', '/manifest.webmanifest', '/icons/favicon-3d.png'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
