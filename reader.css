@@ -1635,3 +1635,259 @@ body.meetings-reading-theme{background:#111317}
   [data-reader-page="family"] .family-plan-swap:hover{background:#4775a0}
   [data-reader-page="emergencies"] .reading-heading .kicker{color:#aec6e7}
 }
+
+
+/* Navegação lateral editorial — paleta azul-ardósia / grafite.
+   Cinco destinos originais; estados acessíveis e adaptação ao celular. */
+@media(min-width:881px){
+  .app{grid-template-columns:270px minmax(0,1fr)}
+}
+.sidebar{
+  position:sticky;
+  top:0;
+  align-self:start;
+  min-width:0;
+  height:100vh;
+  overflow-x:hidden;
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:#53718a #1e2c3c;
+  padding:31px 17px 26px;
+  background:
+    radial-gradient(ellipse at 0% 0%,rgba(136,167,213,.12),transparent 48%),
+    linear-gradient(160deg,#1b2d3e 0%,#182838 52%,#142230 100%);
+  border-right:1px solid #3b5064;
+  color:#edf3f9
+}
+.sidebar .brand{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  min-width:0;
+  margin:0 2px 29px;
+  padding:9px 7px 23px;
+  border-bottom:1px solid rgba(211,225,241,.14);
+  border-radius:0;
+  color:#f8fafc;
+  text-decoration:none
+}
+.sidebar .brand-mark{
+  flex:0 0 48px;
+  width:48px;
+  height:48px;
+  border:1px solid rgba(184,213,245,.3);
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(145deg,#365573,#263b54);
+  color:#e2edf9;
+  font:700 17px/1 Georgia,"Times New Roman",serif;
+  letter-spacing:-.07em;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 7px 18px rgba(0,0,0,.1)
+}
+.sidebar .brand-name{
+  min-width:0;
+  font:700 21px/1.13 Georgia,"Times New Roman",serif;
+  letter-spacing:-.025em;
+  overflow-wrap:normal
+}
+.sidebar .brand-name em{
+  color:#b8d2ed;
+  font-style:normal
+}
+.sidebar .sidebar-section-label{
+  padding:0 15px;
+  margin:0 0 11px;
+  color:#94aec5;
+  font-size:.69rem;
+  line-height:1.5;
+  font-weight:800;
+  letter-spacing:.17em;
+  text-transform:uppercase
+}
+.sidebar .nav{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:7px
+}
+.sidebar .nav a{
+  display:flex;
+  align-items:center;
+  gap:13px;
+  position:relative;
+  min-width:0;
+  min-height:65px;
+  padding:12px 14px;
+  border-radius:13px;
+  border:1px solid transparent;
+  color:#d6e2ee;
+  text-decoration:none;
+  background:transparent;
+  box-shadow:none;
+  font-size:.91rem;
+  line-height:1.4;
+  font-weight:650;
+  transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease
+}
+.sidebar .nav a:hover{
+  transform:none;
+  background:rgba(188,209,235,.085);
+  border-color:rgba(185,209,240,.16);
+  color:#fff
+}
+.sidebar .nav a[aria-current="page"]{
+  background:linear-gradient(115deg,#2b4865,#2c5172);
+  border-color:#54799c;
+  color:#fff;
+  box-shadow:0 4px 16px rgba(5,15,27,.14)
+}
+.sidebar .nav a[aria-current="page"]::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:12px;
+  bottom:12px;
+  width:3px;
+  border-radius:0 4px 4px 0;
+  background:#c0daf4
+}
+.sidebar .nav-symbol{
+  display:grid;
+  flex:0 0 38px;
+  width:38px;
+  height:38px;
+  place-items:center;
+  border-radius:11px;
+  background:rgba(160,190,226,.08);
+  border:1px solid rgba(170,201,238,.12);
+  color:#acc3dc;
+  text-align:center
+}
+.sidebar .nav a:hover .nav-symbol{
+  background:rgba(184,211,244,.13);
+  color:#edf6ff
+}
+.sidebar .nav a[aria-current="page"] .nav-symbol{
+  color:#fff;
+  border-color:rgba(205,226,250,.22);
+  background:rgba(207,226,248,.13)
+}
+.sidebar .nav-svg{display:block;width:19px;height:19px}
+.sidebar .nav-copy{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  min-width:0;
+  flex:1;
+  gap:3px
+}
+.sidebar .nav-label{
+  color:inherit;
+  font-size:.9rem;
+  font-weight:750;
+  line-height:1.3;
+  text-wrap:pretty
+}
+.sidebar .nav-description{
+  color:#9db1c7;
+  font-size:.69rem;
+  font-weight:450;
+  line-height:1.4
+}
+.sidebar .nav a[aria-current="page"] .nav-description{color:#c9ddee}
+.sidebar .nav a:focus-visible,
+.sidebar .brand:focus-visible{
+  outline:3px solid #d9b477;
+  outline-offset:3px
+}
+@media(max-width:880px){
+  .sidebar{
+    position:relative;
+    top:auto;
+    height:auto;
+    overflow:visible;
+    padding:17px clamp(15px,3vw,25px) 18px;
+    border-right:0;
+    border-bottom:1px solid #38526b
+  }
+  .sidebar .brand{
+    width:max-content;
+    max-width:100%;
+    margin:0 0 17px;
+    padding:0;
+    border-bottom:0;
+    gap:11px
+  }
+  .sidebar .brand-mark{
+    width:41px;
+    height:41px;
+    flex-basis:41px;
+    border-radius:12px;
+    font-size:15px
+  }
+  .sidebar .brand-name{font-size:19px}
+  .sidebar .sidebar-section-label{display:none}
+  .sidebar .nav{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:stretch;
+    gap:8px
+  }
+  .sidebar .nav a{
+    flex:1 1 180px;
+    min-width:0;
+    min-height:51px;
+    padding:9px 12px;
+    gap:10px
+  }
+  .sidebar .nav a[aria-current="page"]{box-shadow:0 3px 12px rgba(3,12,26,.16)}
+  .sidebar .nav-symbol{
+    flex-basis:34px;
+    width:34px;
+    height:34px;
+    border-radius:9px
+  }
+  .sidebar .nav-label{font-size:.84rem}
+  .sidebar .nav-description{display:none}
+}
+@media(max-width:600px){
+  .sidebar{
+    padding:16px 13px 15px;
+    border-bottom:1px solid #3c536c
+  }
+  .sidebar .brand{margin-bottom:14px}
+  .sidebar .nav{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px
+  }
+  .sidebar .nav a{
+    min-height:54px;
+    padding:9px 10px;
+    gap:9px;
+    border-radius:12px
+  }
+  .sidebar .nav a:last-child{grid-column:1/-1}
+  .sidebar .nav a[aria-current="page"]::before{
+    top:10px;
+    bottom:10px
+  }
+  .sidebar .nav-symbol{
+    width:34px;
+    height:34px;
+    flex-basis:34px
+  }
+  .sidebar .nav-svg{width:18px;height:18px}
+  .sidebar .nav-label{font-size:.78rem}
+}
+@media(prefers-color-scheme:dark){
+  .sidebar{
+    background:
+      radial-gradient(ellipse at top left,rgba(136,167,213,.12),transparent 48%),
+      linear-gradient(160deg,#1b2d3e,#182838 52%,#142230);
+    color:#edf3f9
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .sidebar .nav a{transition:none}
+}

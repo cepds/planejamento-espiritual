@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=15', 'reader.css?v=18', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=15', 'reader.css?v=19', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -479,4 +479,39 @@ test('ajuste residual mantém estudos e controles de Emergências', () => {
   assert.match(reader, /function swapFamilyStudy\(otherDate\)/);
   assert.match(reader, /function renderDailyOnly\(content\)/);
   assert.match(reader, /document\.querySelectorAll\('\[data-reader-page="emergencies"\] \[data-scroll-to\]'\)/);
+});
+
+
+test('barra lateral tem cinco destinos originais e identidades visuais refinadas', () => {
+  const sidebar = html.slice(html.indexOf('<aside class="sidebar"'), html.indexOf('</aside>') + 8);
+  const found = [...sidebar.matchAll(/data-reader-link="([^"]+)"/g)].map(match => match[1]);
+  assert.deepEqual(found, ['today', 'meetings', 'daily', 'family', 'emergencies']);
+  assert.match(sidebar, /class="sidebar-section-label">Navegação/);
+  assert.match(sidebar, /class="brand-mark" aria-hidden="true">PE/);
+  assert.doesNotMatch(sidebar, /<span class="brand-mark" aria-hidden="true">✧/);
+  assert.equal((sidebar.match(/class="nav-svg"/g) || []).length, 5);
+  assert.equal((sidebar.match(/class="nav-label"/g) || []).length, 5);
+  assert.equal((sidebar.match(/class="nav-description"/g) || []).length, 5);
+  for (const name of ['Hoje', 'Reuniões', 'Texto diário', 'Adoração em família', 'Emergências']) {
+    assert.ok(sidebar.includes('class="nav-label">' + name + '</span>'), name);
+  }
+  assert.match(reader, /link\.dataset\.readerLink === page/);
+  assert.match(reader, /link\.setAttribute\('aria-current', 'page'\)/);
+  assert.match(css, /Navegação lateral editorial — paleta azul-ardósia/);
+  assert.match(css, /\.sidebar \.nav a\[aria-current="page"\]/);
+  assert.match(css, /\.sidebar \.nav a:focus-visible/);
+});
+
+test('barra lateral mantém opções acessíveis no celular sem mudar as páginas', () => {
+  assert.match(css, /@media\(max-width:880px\)\{/);
+  assert.match(css, /@media\(max-width:600px\)\{/);
+  assert.match(css, /\.sidebar \.nav-description\{display:none\}/);
+  assert.match(css, /\.sidebar \.nav a:last-child\{grid-column:1\/-1\}/);
+  assert.match(css, /@media\(prefers-reduced-motion:reduce\)\{/);
+  assert.match(css, /linear-gradient\(160deg,#1b2d3e/);
+  assert.match(html, /data-reader-page="today"/);
+  assert.match(html, /data-reader-page="meetings"/);
+  assert.match(html, /data-reader-page="daily"/);
+  assert.match(html, /data-reader-page="family"/);
+  assert.match(html, /data-reader-page="emergencies"/);
 });
