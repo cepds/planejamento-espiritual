@@ -504,21 +504,85 @@
     importButton.textContent = 'Publicar ' + unsent.length + ' evento(s) antigo(s)';
   }
 
+  function field(id) { return document.getElementById(id); }
+
+  function prefillOfficialAssembly() {
+    if (field('event-form-program').value !== 'CA-brpgm27' || !references.assembly) return;
+    field('event-form-theme').value = references.assembly.title;
+    field('event-form-scripture').value = references.assembly.scripture;
+    field('event-form-image').value = references.assembly.image;
+    field('event-form-source').value = references.assembly.source;
+    field('event-form-program-lines').value = '';
+  }
+
+  function updateVisitDates(resetTalks = true) {
+    const start = field('event-form-date').value;
+    const isTuesday = validDate(start) &&
+      new Date(start + 'T00:00:00Z').getUTCDay() === 2;
+    field('event-form-date-end').value = isTuesday ? addDays(start, 5) : '';
+    if (resetTalks) {
+      field('event-talk-1-date').value = isTuesday ? start : '';
+      field('event-talk-2-date').value = isTuesday ? addDays(start, 4) : '';
+    }
+  }
+
+  function toggleEventFields() {
+    const type = field('event-form-type').value;
+    field('event-form-assembly').hidden = type !== 'Assembleia';
+    field('event-form-visit').hidden = type !== 'Visita';
+    field('event-form-memorial').hidden = type !== 'Celebração';
+    if (type === 'Visita') updateVisitDates(false);
+  }
+
+  field('event-form-type').addEventListener('change', () => {
+    toggleEventFields();
+    const type = field('event-form-type').value;
+    if (type === 'Assembleia' && !field('event-form-theme').value) prefillOfficialAssembly();
+    if (type === 'Visita') updateVisitDates(true);
+    if (type === 'Celebração' && !field('event-form-date').value && references.memorial) {
+      const next = references.memorial.dates.find(date => date >= currentDate());
+      if (next) field('event-form-date').value = next;
+    }
+  });
+  field('event-form-program').addEventListener('change', () => {
+    if (field('event-form-program').value === 'CA-brpgm27') prefillOfficialAssembly();
+  });
+  field('event-form-date').addEventListener('change', () => {
+    if (field('event-form-type').value === 'Visita') updateVisitDates(true);
+  });
+
   function openDialog(item = null) {
     if (!connected || !collection) return;
     form.reset();
     editingId = item ? item.id : null;
-    document.getElementById('event-dialog-title').textContent =
-      item ? 'Editar evento' : 'Adicionar evento';
+    field('event-dialog-title').textContent = item ? 'Editar evento' : 'Adicionar evento';
     submit.textContent = item ? 'Salvar alterações' : 'Salvar evento';
-    const inputDate = document.getElementById('event-form-date');
+    const inputDate = field('event-form-date');
     inputDate.min = item && item.date < currentDate() ? '' : currentDate();
+    field('event-form-program').value = 'CA-brpgm27';
     if (item) {
-      document.getElementById('event-form-type').value = item.type;
-      document.getElementById('event-form-title').value = item.title;
+      field('event-form-type').value = item.type;
+      field('event-form-title').value = item.title;
       inputDate.value = item.date;
-      document.getElementById('event-form-location').value = item.location;
+      field('event-form-location').value = item.location;
+      field('event-form-program').value = item.programId || 'custom';
+      field('event-form-theme').value = item.theme || '';
+      field('event-form-scripture').value = item.scripture || '';
+      field('event-form-image').value = item.imageUrl || '';
+      field('event-form-source').value = item.sourceUrl || '';
+      field('event-form-program-lines').value = item.programText || '';
+      field('event-memorial-time').value = item.time || '';
+      const talks = cleanTalks(item.talks);
+      for (const index of [1, 2]) {
+        const talk = talks[index - 1] || {};
+        field('event-talk-' + index + '-date').value = talk.date || '';
+        field('event-talk-' + index + '-time').value = talk.time || '';
+        field('event-talk-' + index + '-theme').value = talk.theme || '';
+      }
+      field('event-form-date-end').value = item.dateEnd || '';
     }
+    toggleEventFields();
+    if (!item && field('event-form-type').value === 'Assembleia') prefillOfficialAssembly();
     dialog.showModal();
   }
 
@@ -567,7 +631,11 @@
     event.preventDefault();
     if (saving || !connected || !collection || !form.reportValidity()) return;
     const type = document.getElementById('event-form-type').value;
-    const title = document.getElementById('event-form-title').value.trim() || type;
+    const programId = type === 'Assembleia' && field('event-form-program').value === 'CA-brpgm27'
+      ? 'CA-brpgm27' : '';
+    const title = field('event-form-title').value.trim() ||
+      (type === 'Celebração' ? (references.memorial?.title || type)
+        : programId ? references.assembly?.title || type : type);
     const date = document.getElementById('event-form-date').value;
     const location = document.getElementById('event-form-location').value.trim();
     if (!types.has(type) || !validDate(date) || (!editingId && date < currentDate())) {
@@ -582,10 +650,53 @@
       message('Este evento já está cadastrado.', true);
       return;
     }
+    if (type === 'Visita') {
+      if (!visitWeekIsValid(date, field('event-form-date-end').value)) {
+        message('A visita deve começar na terça e terminar no domingo.', true);
+        return;
+      }
+      for (const index of [1, 2]) {
+        const day = field('event-talk-' + index + '-date').value;
+        const theme = field('event-talk-' + index + '-theme').value.trim();
+        if ((day && !dayWithin(day, date, field('event-form-date-end').value)) ||
+            (theme && !day)) {
+          message('Informe datas de discursos dentro da visita (terça a domingo).', true);
+          return;
+        }
+      }
+    }
+    if (type === 'Assembleia') {
+      const img = field('event-form-image').value.trim();
+      const url = field('event-form-source').value.trim();
+      if ((img && !safeHttpsUrl(img)) || (url && !safeHttpsUrl(url))) {
+        message('Use somente URLs HTTPS válidas para imagem e programa.', true);
+        return;
+      }
+      if (field('event-form-theme').value.length > 140 ||
+          field('event-form-program-lines').value.length > 8000) {
+        message('O tema ou a programação ultrapassou o limite.', true);
+        return;
+      }
+    }
     saving = true;
     submit.disabled = true;
     try {
-      const payload = { type, title, date, location };
+      const payload = {
+        type, title, date, location,
+        dateEnd: type === 'Visita' ? field('event-form-date-end').value : '',
+        theme: type === 'Assembleia' ? field('event-form-theme').value.trim() : '',
+        scripture: type === 'Assembleia' ? field('event-form-scripture').value.trim() : '',
+        imageUrl: type === 'Assembleia' ? safeHttpsUrl(field('event-form-image').value.trim()) : '',
+        sourceUrl: type === 'Assembleia' ? safeHttpsUrl(field('event-form-source').value.trim()) : '',
+        programId,
+        programText: type === 'Assembleia' ? field('event-form-program-lines').value.trim() : '',
+        talks: type === 'Visita' ? [1, 2].map(index => ({
+          date: field('event-talk-' + index + '-date').value,
+          time: field('event-talk-' + index + '-time').value,
+          theme: field('event-talk-' + index + '-theme').value.trim()
+        })) : [],
+        time: type === 'Celebração' ? field('event-memorial-time').value : ''
+      };
       if (editingId) await collection.doc(editingId).update(payload);
       else await collection.add(payload);
       dialog.close();
