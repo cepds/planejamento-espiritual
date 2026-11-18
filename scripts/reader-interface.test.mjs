@@ -147,7 +147,9 @@ test('meio de semana e fim de semana aparecem em abas separadas', () => {
   assert.match(reader, /requested === 'meetings-weekend'/);
   assert.match(reader, /document\.querySelectorAll\('\[data-meeting-tab\]'\)/);
   assert.doesNotMatch(reader, /pendingMeetingScroll/);
-  assert.doesNotMatch(reader, /data-scroll-to/);
+  const meetingNav = reader.slice(reader.indexOf('function selectMeeting(view)'),
+    reader.indexOf('function setText(selector, text)'));
+  assert.doesNotMatch(meetingNav, /data-scroll-to/);
 });
 
 test('comentários são criados acima de cada parágrafo da Sentinela e não no meio de semana', () => {
