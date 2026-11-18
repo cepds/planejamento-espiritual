@@ -11,11 +11,11 @@ function normalizeVideoTitle(value) {
 }
 
 function isVideoInstruction(text) {
-  return /(?:mostre|assista|veja|reproduza)\s+(?:ao?\s+)?v[ií]deo\b/i.test(text);
+  return /(?:mostre|assista|veja|reproduza)\s+(?:(?:ao|a|o)\s+)?v[ií]deo\b/i.test(text);
 }
 
 function videoTitleFromInstruction(text) {
-  const title = String(text).match(/(?:mostre|assista|veja|reproduza)\s+(?:ao?\s+)?v[ií]deo\s*[:—–-]?\s*(.*?)(?=(?:\.\s*(?:depois|em seguida|a seguir)\b)|(?:\.\s*$)|(?:\]\s*$)|$)/i)?.[1]?.trim() || '';
+  const title = String(text).match(/(?:mostre|assista|veja|reproduza)\s+(?:(?:ao|a|o)\s+)?v[ií]deo\s*[:—–-]?\s*(.*?)(?=(?:\.\s*(?:depois|em seguida|a seguir)\b)|(?:\.\s*$)|(?:\]\s*$)|$)/i)?.[1]?.trim() || '';
   return title.replace(/^\[/, '').replace(/\]$/, '').replace(/[.]+$/, '').trim();
 }
 
