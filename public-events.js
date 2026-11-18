@@ -216,6 +216,7 @@
     connected = value;
     add.disabled = !value;
     importButton.disabled = !value;
+    dashboardAdd.disabled = !value;
   }
 
   function fromDoc(doc) {
@@ -257,6 +258,10 @@
     }
     document.getElementById('event-empty').hidden = Boolean(next);
     document.getElementById('event-next').hidden = !next;
+    const days=next?until(next.date):null;
+    document.getElementById('event-days').textContent=days===null?'—':days===0?'HOJE':String(days);
+    document.getElementById('event-days-label').textContent=days===0?'é hoje':'dias restantes';
+    renderDashboard(upcomingEvents(ordered));
     if (next) {
       document.getElementById('event-next-type').textContent = next.type;
       document.getElementById('event-next-title').textContent = titleOf(next);
@@ -335,6 +340,27 @@
     dialog.showModal();
   }
 
+  openDashboard.addEventListener('click', () => {
+    render();
+    if (!dashboard.open) dashboard.showModal();
+  });
+  closeDashboard.addEventListener('click', () => dashboard.close());
+  dashboard.addEventListener('click', event => {
+    if (event.target === dashboard) dashboard.close();
+  });
+  dashboardAdd.addEventListener('click', () => openDialog());
+  let lastDay = currentDate();
+  function refreshWhenDateChanges() {
+    const today = currentDate();
+    if (today !== lastDay) {
+      lastDay = today;
+      render();
+    }
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) refreshWhenDateChanges();
+  });
+  setInterval(refreshWhenDateChanges, 60000);
   add.addEventListener('click', () => openDialog());
   document.getElementById('event-cancel').addEventListener('click', () => dialog.close());
   form.addEventListener('submit', async event => {
