@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Planejamento Espiritual">
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#315a78"/><stop offset=".35" stop-color="#142f4c"/><stop offset="1" stop-color="#06172c"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff4ce"/><stop offset=".48" stop-color="#d8b16a"/><stop offset="1" stop-color="#f3dfa8"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#e7c17c" stop-opacity=".4"/><stop offset="1" stop-color="#e7c17c" stop-opacity="0"/></radialGradient>
+    <filter id="shadow"><feGaussianBlur stdDeviation="9"/></filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#blue)"/>
+  <rect x="15" y="15" width="482" height="482" rx="100" fill="none" stroke="#4c7794" stroke-width="8" opacity=".6"/>
+  <rect x="25" y="25" width="462" height="462" rx="90" fill="none" stroke="url(#gold)" stroke-width="6"/>
+  <circle cx="256" cy="142" r="106" fill="url(#glow)"/>
+  <path d="M122 219c-3-80 57-151 134-151 75 0 137 70 134 151" fill="none" stroke="url(#gold)" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+  <path d="m256 63 11 43 34 10-34 9-11 45-10-45-34-9 34-10z" fill="url(#gold)"/>
+  <path d="m256 88 5 23 20 5-20 5-5 26-5-26-20-5 20-5z" fill="#fff9de"/>
+  <text x="256" y="329" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="203" font-weight="700" letter-spacing="-11" fill="#fff2d6">PE</text>
+  <path d="M74 395c55-28 121-32 181 9 57-41 122-37 183-9-68 0-128 12-183 49-58-38-118-50-181-49Z" fill="#e9d6aa"/>
+  <path d="M75 419c73-20 128-11 180 32 53-43 110-52 182-32-61 4-121 27-182 50-59-25-119-47-180-50Z" fill="url(#gold)"/>
+  <path d="M255 405v43" stroke="#fff2d6" stroke-width="5" stroke-linecap="round"/>
+</svg>
