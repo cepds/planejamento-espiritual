@@ -584,6 +584,75 @@
       .forEach(resizeWatchtowerComment);
   }
 
+  function lifeVideoCommentKey(study, video, videoIndex, questionIndex) {
+    return 'planejamento-espiritual-vida-crista-video-v1:' +
+      String(study?.weekOf || 'sem-data') + ':' + video.partNumber + ':' +
+      videoIndex + ':' + questionIndex;
+  }
+
+  function createLifeVideoComment(study, video, videoIndex, questionIndex) {
+    const box = studyEl('div', 'study-comment-box life-video-comment');
+    const id = 'life-video-comment-' + video.partNumber + '-' + videoIndex + '-' + questionIndex;
+    const label = studyEl('label', 'study-comment-label', 'Meu comentário');
+    label.htmlFor = id;
+    const field = studyEl('textarea', 'study-comment-input life-video-comment-input');
+    field.id = id;
+    field.rows = 2;
+    field.spellcheck = true;
+    field.setAttribute('autocapitalize', 'sentences');
+    field.placeholder = 'Escreva seu comentário sobre o vídeo…';
+    const status = studyEl('p', 'life-video-comment-status');
+    status.id = id + '-status';
+    field.setAttribute('aria-describedby', status.id);
+    const key = lifeVideoCommentKey(study, video, videoIndex, questionIndex);
+    try {
+      field.value = localStorage.getItem(key) || '';
+      status.textContent = 'Comentário salvo somente neste navegador.';
+    } catch (error) {
+      console.warn('Falha ao recuperar comentário do vídeo:', error);
+      status.textContent = 'Não foi possível recuperar o comentário.';
+    }
+    field.addEventListener('input', () => {
+      resizeWatchtowerComment(field);
+      try {
+        if (field.value.trim()) localStorage.setItem(key, field.value);
+        else localStorage.removeItem(key);
+        status.textContent = 'Salvo neste navegador.';
+      } catch (error) {
+        console.warn('Falha ao salvar comentário do vídeo:', error);
+        status.textContent = 'Não foi possível salvar. Copie seu texto antes de sair.';
+      }
+    });
+    box.append(label, field, status);
+    return box;
+  }
+
+  function createLifeVideoCard(study, video, videoIndex) {
+    const card = studyEl('section', 'life-video-card');
+    card.append(studyEl('span', 'life-video-eyebrow', 'Vídeo da programação'));
+    if (video.videoTitle) card.append(studyEl('h5', 'life-video-title', video.videoTitle));
+    const directVideoUrl = officialUrl(video.videoUrl);
+    const sourceUrl = officialUrl(video.sourceUrl || study.url);
+    if (directVideoUrl || sourceUrl) {
+      const link = studyEl('a', 'life-video-link',
+        directVideoUrl ? 'Assistir no JW.org ↗' : 'Consultar vídeo na programação oficial ↗');
+      link.href = directVideoUrl || sourceUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      card.append(link);
+    }
+    const questions = Array.isArray(video.questions) ? video.questions.filter(Boolean) : [];
+    if (!questions.length) {
+      card.append(createLifeVideoComment(study, video, videoIndex, 0));
+    } else {
+      questions.forEach((question, questionIndex) => {
+        card.append(studyEl('p', 'life-video-question', question));
+        card.append(createLifeVideoComment(study, video, videoIndex, questionIndex + 1));
+      });
+    }
+    return card;
+  }
+
   function renderMidweekReading(study) {
     const container = document.querySelector('#midweek-content');
     container.replaceChildren();
@@ -646,7 +715,14 @@
       if (!body) continue;
       if (/^Joias espirituais$/i.test(title)) {
         body.append(createJewelComment(study));
-      } else if (/^Estudo bíblico de congregação$/i.test(title)) {
+      } else if (item.closest('.study-program-section--life') &&
+                 /^\d/.test(item.querySelector('.study-program-number')?.textContent || '')) {
+        const number = Number(item.querySelector('.study-program-number')?.textContent);
+        const videos = Array.isArray(study.lifeVideos) ? study.lifeVideos
+          .filter(video => Number(video.partNumber) === number) : [];
+        videos.forEach((video, index) => body.append(createLifeVideoCard(study, video, index)));
+      }
+      if (/^Estudo bíblico de congregação$/i.test(title)) {
         const source = body.textContent.trim();
         body.replaceChildren(createCongregationReading(study, source));
       }
