@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-18T14:39:09.888Z",
+  "updatedAt": "2026-11-18T18:32:57.884Z",
   "timezone": "America/Sao_Paulo",
   "updateRules": {
     "daily": "00:00 de Brasília, com leituras antecipadas",
@@ -211,7 +211,19 @@
       ],
       "bookUrl": "https://www.jw.org/pt/biblioteca/livros/ande-corajosamente-com-deus/",
       "sourceUrl": "https://wol.jw.org/pt/wol/meetings/r5/lp-t/2026/47"
-    }
+    },
+    "lifeVideos": [
+      {
+        "partNumber": 7,
+        "partTitle": "Não se esqueça de nossos irmãos e irmãs inativos",
+        "videoTitle": "Ajudar os Inativos",
+        "videoUrl": "https://www.jw.org/open?lank=pub-jwbai_201511_1_VIDEO&wtlocale=T",
+        "sourceUrl": "https://wol.jw.org/pt/wol/meetings/r5/lp-t/2026/47",
+        "questions": [
+          "Que lições você aprendeu com esse vídeo?"
+        ]
+      }
+    ]
   },
   "watchtower": {
     "weekOf": "2026-11-16",
@@ -1534,6 +1546,6 @@
       "videoImageUrl": null
     }
   ],
-  "previousUpdatedAt": "2026-11-18T11:29:52.436Z",
+  "previousUpdatedAt": "2026-11-18T14:39:09.888Z",
   "errors": []
 }
