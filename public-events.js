@@ -168,7 +168,7 @@
       :'Adicione um evento para começar seu planejamento.';
     const left=next?until(next.date):null;
     document.getElementById('agenda-hero-days').textContent=left===null?'—':left===0?'HOJE':String(left);
-    document.getElementById('agenda-hero-days-label').textContent=left===0?'é hoje':'dias restantes';
+    document.getElementById('agenda-hero-days-label').textContent=left===null?'sem eventos':left===0?'é hoje':'dias restantes';
     document.getElementById('agenda-kpi-upcoming').textContent=String(upcoming.length);
     document.getElementById('agenda-kpi-month').textContent=String(upcoming.filter(item=>until(item.date)<=30).length);
     document.getElementById('agenda-kpi-types').textContent=String(new Set(upcoming.map(item=>item.type)).size);
