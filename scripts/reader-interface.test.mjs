@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=13', 'reader.css?v=14', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=14', 'reader.css?v=15', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -327,4 +327,23 @@ test('videos de Nossa Vida Cristã exibem fonte oficial e comentários por pergu
   assert.match(updater, /extractLifeVideoDiscussions\(completeText, wolMeetingUrl\(monday\)\)/);
   assert.match(updater, /congregationStudy, lifeVideos/);
   assert.doesNotMatch(events, /vida-crista-video-v1/);
+});
+
+test('tema grafite é aplicado apenas nas rotas de reuniões e não altera outros conteúdos', () => {
+  assert.match(reader, /document\.body\.classList\.toggle\('meetings-reading-theme', page === 'meetings'\)/);
+  assert.match(reader, /const meetingsRoute = \['meetings', 'meetings-midweek', 'meetings-weekend'\]/);
+  assert.match(css, /body\.meetings-reading-theme\{background:#111317\}/);
+  assert.match(css, /\.meetings-reading-theme \.main\{/);
+  assert.match(css, /\.meetings-reading-theme \.study-reading\{/);
+  assert.match(css, /\.meetings-reading-theme \.meeting-tabs \[role="tab"\]\[aria-selected="true"\]/);
+  assert.match(css, /--surface:#1b1e23/);
+  assert.match(css, /--soft:#262a31/);
+  assert.match(css, /--ink:#f2f3f5/);
+  assert.match(css, /color-scheme:dark/);
+  assert.match(css, /\.meetings-reading-theme \.study-reading \.study-comment-input\{/);
+  assert.match(css, /\.meetings-reading-theme \.study-reading \.congregation-accordion\{/);
+  assert.match(css, /\.meetings-reading-theme \.study-reading \.life-video-card\{/);
+  assert.match(css, /\.meetings-reading-theme \.study-reading \.study-gallery-item\{/);
+  assert.match(css, /\.meetings-reading-theme \.study-reading--watchtower \.study-heading h2/);
+  assert.match(css, /\.meetings-reading-theme \.study-reading \.study-date-band/);
 });

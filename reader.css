@@ -617,3 +617,117 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
  .life-video-comment{padding:11px 10px}
  .life-video-comment-input{font-size:16px}
 }
+
+
+/* Reuniões: visual neutro de leitura inspirado no modo escuro do JW Library.
+   A paleta só é ativada nas rotas de Meio de semana e A Sentinela. */
+body.meetings-reading-theme{background:#111317}
+.meetings-reading-theme .main{
+  color-scheme:dark;
+  --bg:#111317;
+  --surface:#1b1e23;
+  --ink:#f2f3f5;
+  --muted:#bac0c9;
+  --line:#383d47;
+  --soft:#262a31;
+  --green:#a8c7f0;
+  --shadow:none;
+  color:var(--ink)
+}
+.meetings-reading-theme .topbar{border-bottom-color:#363b44}
+.meetings-reading-theme .topbar .eyebrow{color:#a3b4ca}
+.meetings-reading-theme .source-pill{background:#242830;color:#d2d8e2;border-color:#414754}
+.meetings-reading-theme .meeting-tabs{background:#1b1e23;border-color:#383d47}
+.meetings-reading-theme .meeting-tabs [role="tab"]{color:#c4c9d3}
+.meetings-reading-theme .meeting-tabs [role="tab"]:hover{color:#fff;background:#282e39}
+.meetings-reading-theme .meeting-tabs [role="tab"][aria-selected="true"]{
+  color:#fff;background:#284b7f;border-color:#46699c;box-shadow:none
+}
+.meetings-reading-theme .study-reading{
+  color-scheme:dark;
+  --bg:#111317;
+  --surface:#1b1e23;
+  --ink:#f2f3f5;
+  --muted:#bac0c9;
+  --line:#383d47;
+  --soft:#262a31;
+  --green:#a8c7f0;
+  --study-blue:#85abe6;
+  --study-soft-blue:#afc6ea;
+  background:#1b1e23;
+  border-color:#383d47;
+  color:#f2f3f5;
+  box-shadow:none
+}
+.meetings-reading-theme .study-reading .study-date-band{
+  background:#203c6b;color:#f5f7fa
+}
+.meetings-reading-theme .study-reading .study-date-band-label{color:#c7d8f2}
+.meetings-reading-theme .study-reading .study-heading h2{color:#f1f3f6}
+.meetings-reading-theme .study-reading--watchtower .study-heading h2{color:#b1c6d1}
+.meetings-reading-theme .study-reading .study-section-title{color:#a9bece}
+.meetings-reading-theme .study-reading .study-goal{border-left-color:#578aca}
+.meetings-reading-theme .study-reading .study-program-section-title{
+  background:#262a31;color:#f2f3f5;border-left-color:#7e9cb8
+}
+.meetings-reading-theme .study-reading .study-program-section--ministry .study-program-section-title{border-left-color:#d1a36d}
+.meetings-reading-theme .study-reading .study-program-section--life .study-program-section-title{border-left-color:#ac96d2}
+.meetings-reading-theme .study-reading .study-program-number{
+  background:#315e9b;color:#fff
+}
+.meetings-reading-theme .study-reading .study-review,
+.meetings-reading-theme .study-reading .study-scripture,
+.meetings-reading-theme .study-reading .study-emphasis{
+  background:#262a31
+}
+.meetings-reading-theme .study-reading .study-review h3,
+.meetings-reading-theme .study-reading .study-scripture strong,
+.meetings-reading-theme .study-reading .study-question-number,
+.meetings-reading-theme .study-reading .study-review-list li::before{
+  color:#aec8ee
+}
+.meetings-reading-theme .study-reading .study-comment-box{
+  background:#262a31;border-color:#454a55
+}
+.meetings-reading-theme .study-reading .study-comment-label{color:#bad1f2}
+.meetings-reading-theme .study-reading .study-comment-input{
+  background:#14171c;border-color:#4b5260;color:#f2f3f5
+}
+.meetings-reading-theme .study-reading .study-comment-input::placeholder{color:#aeb5c0}
+.meetings-reading-theme .study-reading .study-comment-input:focus-visible{
+  outline-color:#85abe6
+}
+.meetings-reading-theme .study-reading .study-review-comment,
+.meetings-reading-theme .study-reading .life-video-comment{background:#1e2229}
+.meetings-reading-theme .study-reading .life-video-card{
+  background:#272b33;border-color:#444a55
+}
+.meetings-reading-theme .study-reading .life-video-link{
+  background:#315e9b;color:#fff!important
+}
+.meetings-reading-theme .study-reading .congregation-accordion{
+  background:#1b1e23;border-color:#454a55
+}
+.meetings-reading-theme .study-reading .congregation-toggle{background:#272b33}
+.meetings-reading-theme .study-reading .study-inline-image,
+.meetings-reading-theme .study-reading .study-gallery-item{
+  background:#15181d;border-color:#414752
+}
+.meetings-reading-theme .study-reading .inline-link{
+  color:#d5e4fa;background:#263e60;border-color:#466790
+}
+.meetings-reading-theme .study-reading .inline-link:hover{background:#304d73}
+.meetings-reading-theme .study-reading .congregation-source,
+.meetings-reading-theme .study-reading .life-video-eyebrow{color:#aec8ee}
+.meetings-reading-theme .study-image-dialog{
+  background:#1b1e23;color:#f2f3f5;border-color:#454a55
+}
+.meetings-reading-theme .study-image-dialog .study-image-full,
+.meetings-reading-theme .study-image-dialog .study-image-close,
+.meetings-reading-theme .study-image-dialog .study-image-nav button{
+  background:#272b33;color:#f2f3f5;border-color:#454a55
+}
+@media(max-width:600px){
+  .meetings-reading-theme .study-reading{border-radius:12px}
+  .meetings-reading-theme .meeting-tabs{border-radius:12px}
+}
