@@ -3,7 +3,8 @@
   // Agenda pública: qualquer visitante pode ver, adicionar, editar e excluir eventos.
   // Eventos locais antigos só são compartilhados após confirmação explícita.
   const legacyKey = 'planejamento-espiritual-20-events';
-  const types = new Set(['Congresso', 'Assembleia', 'Visita', 'Outro']);
+  const types = new Set(['Congresso', 'Assembleia', 'Visita', 'Celebração', 'Outro']);
+  const references = window.spiritualEventPrograms || { assembly: null, memorial: null };
   const dialog = document.getElementById('event-dialog');
   const form = document.getElementById('event-form');
   const submit = form.querySelector('button[type="submit"]');
@@ -57,13 +58,71 @@
       Date.parse(currentDate() + 'T00:00:00Z')) / 86400000);
   }
 
+  function addDays(date, count) {
+    if (!validDate(date)) return '';
+    const next = new Date(date + 'T00:00:00Z');
+    next.setUTCDate(next.getUTCDate() + count);
+    return next.toISOString().slice(0, 10);
+  }
+  function visitWeekIsValid(start, end) {
+    return validDate(start) && new Date(start + 'T00:00:00Z').getUTCDay() === 2 &&
+      end === addDays(start, 5);
+  }
+  function safeHttpsUrl(value) {
+    return typeof value === 'string' && /^https:\/\/[^\s<>"']+$/i.test(value) ?
+      value.slice(0, 500) : '';
+  }
+  function dayWithin(date, start, end) {
+    return validDate(date) && date >= start && date <= end;
+  }
+  function cleanTalks(input) {
+    if (!Array.isArray(input)) return [];
+    return input.slice(0, 2).map(item => ({
+      date: validDate(item?.date) ? item.date : '',
+      time: /^([01]\d|2[0-3]):[0-5]\d$/.test(item?.time || '') ? item.time : '',
+      theme: typeof item?.theme === 'string' ? item.theme.slice(0, 180) : ''
+    }));
+  }
+  function memorialEvents() {
+    if (!references.memorial) return [];
+    return references.memorial.dates.map(date => ({
+      id: 'official-memorial-' + date, type: 'Celebração',
+      title: references.memorial.title, date, location: '', dateEnd: date,
+      theme: '', scripture: 'Lucas 22:19', programId: '',
+      programText: '', talks: [], time: '', sourceUrl: references.memorial.source,
+      imageUrl: references.memorial.image, official: true
+    }));
+  }
+  function allEventsWithOfficialDates() {
+    const items = sharedEvents.slice();
+    for (const official of memorialEvents()) {
+      if (!items.some(item => item.type === 'Celebração' && item.date === official.date)) {
+        items.push(official);
+      }
+    }
+    return items;
+  }
+  function imageOf(item) {
+    if (item.type === 'Celebração' && references.memorial) return references.memorial.image;
+    if (item.type === 'Assembleia' && item.programId === 'CA-brpgm27' && references.assembly) {
+      return safeHttpsUrl(item.imageUrl) || references.assembly.image;
+    }
+    return safeHttpsUrl(item.imageUrl);
+  }
+  function sourceOf(item) {
+    if (item.type === 'Celebração' && references.memorial) return references.memorial.source;
+    if (item.type === 'Assembleia' && item.programId === 'CA-brpgm27' && references.assembly) {
+      return safeHttpsUrl(item.sourceUrl) || references.assembly.source;
+    }
+    return safeHttpsUrl(item.sourceUrl);
+  }
   // Computed exclusively from Firestore events, using Brasília calendar dates.
   function upcomingEvents(items) {
-    return items.filter(item => validDate(item.date) && until(item.date) >= 0)
+    return items.filter(item => validDate(item.date) && until(item.dateEnd || item.date) >= 0)
       .slice().sort((a,b) => a.date.localeCompare(b.date) || titleOf(a).localeCompare(titleOf(b)));
   }
   function countByType(items) {
-    return ['Congresso','Assembleia','Visita','Outro'].map(type => ({
+    return ['Congresso','Assembleia','Visita','Celebração','Outro'].map(type => ({
       name:type, count:items.filter(item => item.type === type).length
     }));
   }
@@ -77,7 +136,7 @@
     });
   }
   function remainingLabel(days) {
-    return days === 0 ? 'É hoje' : days === 1 ? 'Falta 1 dia' : 'Faltam '+days+' dias';
+    return days < 0 ? 'Em andamento' : days === 0 ? 'É hoje' : days === 1 ? 'Falta 1 dia' : 'Faltam '+days+' dias';
   }
   function renderTypeChart(items) {
     const target = document.getElementById('agenda-type-chart');
@@ -157,7 +216,12 @@
         message('Não foi possível excluir o evento.',true);
       }
     });
-    actions.append(edit,remove);
+    if (!item.official) actions.append(edit,remove);
+    const detail = document.createElement('button');
+    detail.type = 'button';
+    detail.textContent = item.type === 'Assembleia' ? 'Programa' : 'Detalhes';
+    detail.addEventListener('click', () => showEventDetails(item));
+    actions.append(detail);
     return actions;
   }
   function renderDashboard(upcoming) {
@@ -167,8 +231,13 @@
       ?dateLabel(next.date)+(next.location?' · '+next.location:'')
       :'Adicione um evento para começar seu planejamento.';
     const left=next?until(next.date):null;
-    document.getElementById('agenda-hero-days').textContent=left===null?'—':left===0?'HOJE':String(left);
-    document.getElementById('agenda-hero-days-label').textContent=left===null?'sem eventos':left===0?'é hoje':'dias restantes';
+    document.getElementById('agenda-hero-days').textContent=left===null?'—':left<0?'ATUAL':left===0?'HOJE':String(left);
+    const cover=document.getElementById('agenda-hero-image');
+    const coverSource=next?imageOf(next):'';
+    cover.hidden=!coverSource;
+    if (coverSource) cover.src=coverSource;
+    cover.alt=coverSource?'Imagem do próximo compromisso':'';
+    document.getElementById('agenda-hero-days-label').textContent=left===null?'sem eventos':left<0?'em andamento':left===0?'é hoje':'dias restantes';
     document.getElementById('agenda-kpi-upcoming').textContent=String(upcoming.length);
     document.getElementById('agenda-kpi-month').textContent=String(upcoming.filter(item=>until(item.date)<=30).length);
     document.getElementById('agenda-kpi-types').textContent=String(new Set(upcoming.map(item=>item.type)).size);
@@ -198,7 +267,7 @@
       title.textContent=titleOf(item);
       const meta=document.createElement('span');
       meta.className='agenda-event-meta';
-      meta.textContent=dateLabel(item.date)+(item.location?' · '+item.location:'');
+      meta.textContent=dateLabel(item.date)+(item.dateEnd && item.dateEnd !== item.date?' a '+dateLabel(item.dateEnd):'')+(item.location?' · '+item.location:'');
       const remaining=document.createElement('span');
       remaining.className='agenda-event-remaining';
       remaining.textContent=remainingLabel(until(item.date));
@@ -206,6 +275,107 @@
       row.append(badge,info,dashboardActions(item));
       list.append(row);
     }
+  }
+
+  function detailText(tag, className, value) {
+    const el = document.createElement(tag);
+    el.className = className;
+    el.textContent = value;
+    return el;
+  }
+
+  function renderProgramSection(root, title, entries) {
+    if (!entries.length) return;
+    const section = document.createElement('section');
+    section.className = 'event-details-section';
+    section.append(detailText('h3', 'event-details-section-title', title));
+    const list = document.createElement('ol');
+    list.className = 'event-details-timeline';
+    for (const [clock, description] of entries) {
+      const row = document.createElement('li');
+      if (clock) row.append(detailText('time', 'event-details-time', clock));
+      row.append(detailText('span', 'event-details-talk-title', description));
+      list.append(row);
+    }
+    section.append(list);
+    root.append(section);
+  }
+
+  function parseCustomProgram(text) {
+    const sections = new Map();
+    for (const line of String(text || '').split(/\r?\n/).slice(0, 90)) {
+      if (!line.trim()) continue;
+      const parts = line.split('|').map(item => item.trim());
+      if (parts.length !== 4 || !parts[3]) continue;
+      const heading = [parts[0], parts[1]].filter(Boolean).join(' · ') || 'Programação';
+      if (!sections.has(heading)) sections.set(heading, []);
+      sections.get(heading).push([parts[2].slice(0, 12), parts[3].slice(0, 200)]);
+    }
+    return [...sections.entries()].map(([title, items]) => ({title, items}));
+  }
+
+  function showEventDetails(item) {
+    const details = document.getElementById('event-details-dialog');
+    const cover = document.getElementById('event-details-image');
+    const image = imageOf(item);
+    cover.hidden = !image;
+    if (image) cover.src = image;
+    cover.alt = image ? 'Imagem de ' + titleOf(item) : '';
+    const officialAssembly = item.type === 'Assembleia' && item.programId === 'CA-brpgm27'
+      ? references.assembly : null;
+    document.getElementById('event-details-kind').textContent =
+      item.official ? 'DATA OFICIAL · ' + item.type.toUpperCase() : item.type.toUpperCase();
+    document.getElementById('event-details-title').textContent =
+      item.theme || officialAssembly?.title || titleOf(item);
+    const scripture = item.scripture || officialAssembly?.scripture || '';
+    const scriptureElement = document.getElementById('event-details-scripture');
+    scriptureElement.hidden = !scripture;
+    scriptureElement.textContent = scripture;
+    document.getElementById('event-details-period').textContent =
+      validDate(item.date)
+        ? dateLabel(item.date) + (item.dateEnd && item.dateEnd !== item.date
+          ? ' — ' + dateLabel(item.dateEnd) : '')
+        : 'Referência oficial · data do evento ainda não cadastrada';
+    const location = document.getElementById('event-details-location');
+    location.textContent = item.location || '';
+    location.hidden = !item.location;
+    const note = document.getElementById('event-details-note');
+    note.hidden = item.type !== 'Celebração';
+    note.textContent = item.type === 'Celebração'
+      ? 'Realizada após o pôr do sol' +
+        (item.time ? ' · Horário cadastrado: ' + item.time : ' · Confira o horário com a congregação.')
+      : '';
+    const program = document.getElementById('event-details-program');
+    program.replaceChildren();
+    if (item.type === 'Assembleia') {
+      const sections = item.programText ? parseCustomProgram(item.programText)
+        : officialAssembly?.sections || [];
+      for (const section of sections) renderProgramSection(program, section.title, section.items);
+      if (!sections.length) {
+        program.append(detailText('p', 'event-details-empty',
+          'Ainda não há uma programação cadastrada para esta assembleia.'));
+      }
+    } else if (item.type === 'Visita') {
+      const talks = cleanTalks(item.talks);
+      talks.forEach((talk, index) => {
+        const title = 'Discurso ' + (index + 1) +
+          (talk.date ? ' · ' + dateLabel(talk.date) : '') +
+          (talk.time ? ' às ' + talk.time : '');
+        renderProgramSection(program, title, [
+          ['', talk.theme || 'Tema ainda não informado.']
+        ]);
+      });
+      if (!talks.length) program.append(detailText('p', 'event-details-empty',
+        'Os discursos ainda não foram cadastrados. Edite a visita para incluir datas e temas.'));
+    } else if (item.type === 'Celebração') {
+      program.append(detailText('p', 'event-details-memorial',
+        'A Celebração recorda a morte de Jesus Cristo. O horário local deve ser confirmado antes do evento.'));
+    }
+    const link = document.getElementById('event-details-source');
+    const url = sourceOf(item);
+    link.hidden = !url;
+    if (url) link.href = url;
+    if (!details.open) details.showModal();
   }
   function message(text, error = false) {
     status.textContent = text;
@@ -226,7 +396,17 @@
       type: types.has(item.type) ? item.type : 'Outro',
       title: typeof item.title === 'string' ? item.title.slice(0, 100) : '',
       date: validDate(item.date) ? item.date : '',
-      location: typeof item.location === 'string' ? item.location.slice(0, 120) : ''
+      location: typeof item.location === 'string' ? item.location.slice(0, 120) : '',
+      dateEnd: validDate(item.dateEnd) ? item.dateEnd : '',
+      theme: typeof item.theme === 'string' ? item.theme.slice(0, 140) : '',
+      scripture: typeof item.scripture === 'string' ? item.scripture.slice(0, 100) : '',
+      imageUrl: safeHttpsUrl(item.imageUrl),
+      sourceUrl: safeHttpsUrl(item.sourceUrl),
+      programId: item.programId === 'CA-brpgm27' ? item.programId : '',
+      programText: typeof item.programText === 'string' ? item.programText.slice(0, 8000) : '',
+      talks: cleanTalks(item.talks),
+      time: /^([01]\d|2[0-3]):[0-5]\d$/.test(item.time || '') ? item.time : '',
+      official: false
     };
   }
 
@@ -246,9 +426,9 @@
   }
 
   function render() {
-    const ordered = sharedEvents.filter(item => item.date)
+    const ordered = allEventsWithOfficialDates().filter(item => item.date)
       .sort((a, b) => a.date.localeCompare(b.date) || titleOf(a).localeCompare(titleOf(b)));
-    const next = ordered.find(item => until(item.date) >= 0);
+    const next = ordered.find(item => until(item.dateEnd || item.date) >= 0);
     const mini = document.getElementById('event-mini');
     if (next) {
       const [year, month, day] = next.date.split('-');
@@ -259,15 +439,20 @@
     document.getElementById('event-empty').hidden = Boolean(next);
     document.getElementById('event-next').hidden = !next;
     const days=next?until(next.date):null;
-    document.getElementById('event-days').textContent=days===null?'—':days===0?'HOJE':String(days);
-    document.getElementById('event-days-label').textContent=days===0?'é hoje':'dias restantes';
+    document.getElementById('event-days').textContent=days===null?'—':days<0?'ATUAL':days===0?'HOJE':String(days);
+    document.getElementById('event-days-label').textContent=days!==null&&days<0?'em andamento':days===0?'é hoje':'dias restantes';
+    const miniImage=document.getElementById('event-next-image');
+    const nextImage=next?imageOf(next):'';
+    miniImage.hidden=!nextImage;
+    if (nextImage) miniImage.src=nextImage;
+    miniImage.alt=nextImage?'Imagem do evento '+titleOf(next):'';
     renderDashboard(upcomingEvents(ordered));
     if (next) {
       document.getElementById('event-next-type').textContent = next.type;
       document.getElementById('event-next-title').textContent = titleOf(next);
       const remaining = until(next.date);
-      const distance = remaining === 0 ? 'Hoje' : remaining === 1 ? 'Amanhã' : 'Em ' + remaining + ' dias';
-      document.getElementById('event-next-date').textContent = dateLabel(next.date) + ' · ' + distance;
+      const distance = remaining < 0 ? 'Em andamento' : remaining === 0 ? 'Hoje' : remaining === 1 ? 'Amanhã' : 'Em ' + remaining + ' dias';
+      document.getElementById('event-next-date').textContent = dateLabel(next.date) + (next.dateEnd && next.dateEnd !== next.date ? ' a ' + dateLabel(next.dateEnd) : '') + ' · ' + distance;
       const location = document.getElementById('event-next-location');
       location.textContent = next.location;
       location.hidden = !next.location;
@@ -288,6 +473,7 @@
       const actions = document.createElement('div');
       actions.className = 'event-list-actions';
 
+      if (!item.official) {
       const edit = document.createElement('button');
       edit.type = 'button';
       edit.textContent = 'Editar';
@@ -312,6 +498,12 @@
       });
 
       actions.append(edit, remove);
+      }
+      const detail = document.createElement('button');
+      detail.type = 'button';
+      detail.textContent = 'Detalhes';
+      detail.addEventListener('click', () => showEventDetails(item));
+      actions.append(detail);
       row.append(info, actions);
       list.append(row);
     }
@@ -322,23 +514,105 @@
     importButton.textContent = 'Publicar ' + unsent.length + ' evento(s) antigo(s)';
   }
 
+  function field(id) { return document.getElementById(id); }
+
+  function prefillOfficialAssembly() {
+    if (field('event-form-program').value !== 'CA-brpgm27' || !references.assembly) return;
+    field('event-form-theme').value = references.assembly.title;
+    field('event-form-scripture').value = references.assembly.scripture;
+    field('event-form-image').value = references.assembly.image;
+    field('event-form-source').value = references.assembly.source;
+    field('event-form-program-lines').value = '';
+  }
+
+  function updateVisitDates(resetTalks = true) {
+    const start = field('event-form-date').value;
+    const isTuesday = validDate(start) &&
+      new Date(start + 'T00:00:00Z').getUTCDay() === 2;
+    field('event-form-date-end').value = isTuesday ? addDays(start, 5) : '';
+    if (resetTalks) {
+      field('event-talk-1-date').value = isTuesday ? start : '';
+      field('event-talk-2-date').value = isTuesday ? addDays(start, 4) : '';
+    }
+  }
+
+  function toggleEventFields() {
+    const type = field('event-form-type').value;
+    field('event-form-assembly').hidden = type !== 'Assembleia';
+    field('event-form-visit').hidden = type !== 'Visita';
+    field('event-form-memorial').hidden = type !== 'Celebração';
+    if (type === 'Visita') updateVisitDates(false);
+  }
+
+  field('event-form-type').addEventListener('change', () => {
+    toggleEventFields();
+    const type = field('event-form-type').value;
+    if (type === 'Assembleia' && !field('event-form-theme').value) prefillOfficialAssembly();
+    if (type === 'Visita') updateVisitDates(true);
+    if (type === 'Celebração' && !field('event-form-date').value && references.memorial) {
+      const next = references.memorial.dates.find(date => date >= currentDate());
+      if (next) field('event-form-date').value = next;
+    }
+  });
+  field('event-form-program').addEventListener('change', () => {
+    if (field('event-form-program').value === 'CA-brpgm27') prefillOfficialAssembly();
+  });
+  field('event-form-date').addEventListener('change', () => {
+    if (field('event-form-type').value === 'Visita') updateVisitDates(true);
+  });
+
   function openDialog(item = null) {
     if (!connected || !collection) return;
     form.reset();
     editingId = item ? item.id : null;
-    document.getElementById('event-dialog-title').textContent =
-      item ? 'Editar evento' : 'Adicionar evento';
+    field('event-dialog-title').textContent = item ? 'Editar evento' : 'Adicionar evento';
     submit.textContent = item ? 'Salvar alterações' : 'Salvar evento';
-    const inputDate = document.getElementById('event-form-date');
+    const inputDate = field('event-form-date');
     inputDate.min = item && item.date < currentDate() ? '' : currentDate();
+    field('event-form-program').value = 'CA-brpgm27';
     if (item) {
-      document.getElementById('event-form-type').value = item.type;
-      document.getElementById('event-form-title').value = item.title;
+      field('event-form-type').value = item.type;
+      field('event-form-title').value = item.title;
       inputDate.value = item.date;
-      document.getElementById('event-form-location').value = item.location;
+      field('event-form-location').value = item.location;
+      field('event-form-program').value = item.programId || 'custom';
+      field('event-form-theme').value = item.theme || '';
+      field('event-form-scripture').value = item.scripture || '';
+      field('event-form-image').value = item.imageUrl || '';
+      field('event-form-source').value = item.sourceUrl || '';
+      field('event-form-program-lines').value = item.programText || '';
+      field('event-memorial-time').value = item.time || '';
+      const talks = cleanTalks(item.talks);
+      for (const index of [1, 2]) {
+        const talk = talks[index - 1] || {};
+        field('event-talk-' + index + '-date').value = talk.date || '';
+        field('event-talk-' + index + '-time').value = talk.time || '';
+        field('event-talk-' + index + '-theme').value = talk.theme || '';
+      }
+      field('event-form-date-end').value = item.dateEnd || '';
     }
+    toggleEventFields();
+    if (!item && field('event-form-type').value === 'Assembleia') prefillOfficialAssembly();
     dialog.showModal();
   }
+
+  document.getElementById('event-details-close').addEventListener('click', () =>
+    document.getElementById('event-details-dialog').close());
+  document.getElementById('event-details-dialog').addEventListener('click', event => {
+    if (event.target === document.getElementById('event-details-dialog')) {
+      document.getElementById('event-details-dialog').close();
+    }
+  });
+  document.getElementById('agenda-reference-view').addEventListener('click', () => {
+    if (!references.assembly) return;
+    showEventDetails({
+      type: 'Assembleia', title: references.assembly.title,
+      theme: references.assembly.title,
+      programId: references.assembly.id,
+      date: '', dateEnd: '', location: '',
+      imageUrl: references.assembly.image, sourceUrl: references.assembly.source
+    });
+  });
 
   openDashboard.addEventListener('click', () => {
     render();
@@ -367,7 +641,11 @@
     event.preventDefault();
     if (saving || !connected || !collection || !form.reportValidity()) return;
     const type = document.getElementById('event-form-type').value;
-    const title = document.getElementById('event-form-title').value.trim() || type;
+    const programId = type === 'Assembleia' && field('event-form-program').value === 'CA-brpgm27'
+      ? 'CA-brpgm27' : '';
+    const title = field('event-form-title').value.trim() ||
+      (type === 'Celebração' ? (references.memorial?.title || type)
+        : programId ? references.assembly?.title || type : type);
     const date = document.getElementById('event-form-date').value;
     const location = document.getElementById('event-form-location').value.trim();
     if (!types.has(type) || !validDate(date) || (!editingId && date < currentDate())) {
@@ -382,10 +660,53 @@
       message('Este evento já está cadastrado.', true);
       return;
     }
+    if (type === 'Visita') {
+      if (!visitWeekIsValid(date, field('event-form-date-end').value)) {
+        message('A visita deve começar na terça e terminar no domingo.', true);
+        return;
+      }
+      for (const index of [1, 2]) {
+        const day = field('event-talk-' + index + '-date').value;
+        const theme = field('event-talk-' + index + '-theme').value.trim();
+        if ((day && !dayWithin(day, date, field('event-form-date-end').value)) ||
+            (theme && !day)) {
+          message('Informe datas de discursos dentro da visita (terça a domingo).', true);
+          return;
+        }
+      }
+    }
+    if (type === 'Assembleia') {
+      const img = field('event-form-image').value.trim();
+      const url = field('event-form-source').value.trim();
+      if ((img && !safeHttpsUrl(img)) || (url && !safeHttpsUrl(url))) {
+        message('Use somente URLs HTTPS válidas para imagem e programa.', true);
+        return;
+      }
+      if (field('event-form-theme').value.length > 140 ||
+          field('event-form-program-lines').value.length > 8000) {
+        message('O tema ou a programação ultrapassou o limite.', true);
+        return;
+      }
+    }
     saving = true;
     submit.disabled = true;
     try {
-      const payload = { type, title, date, location };
+      const payload = {
+        type, title, date, location,
+        dateEnd: type === 'Visita' ? field('event-form-date-end').value : '',
+        theme: type === 'Assembleia' ? field('event-form-theme').value.trim() : '',
+        scripture: type === 'Assembleia' ? field('event-form-scripture').value.trim() : '',
+        imageUrl: type === 'Assembleia' ? safeHttpsUrl(field('event-form-image').value.trim()) : '',
+        sourceUrl: type === 'Assembleia' ? safeHttpsUrl(field('event-form-source').value.trim()) : '',
+        programId,
+        programText: type === 'Assembleia' ? field('event-form-program-lines').value.trim() : '',
+        talks: type === 'Visita' ? [1, 2].map(index => ({
+          date: field('event-talk-' + index + '-date').value,
+          time: field('event-talk-' + index + '-time').value,
+          theme: field('event-talk-' + index + '-theme').value.trim()
+        })) : [],
+        time: type === 'Celebração' ? field('event-memorial-time').value : ''
+      };
       if (editingId) await collection.doc(editingId).update(payload);
       else await collection.add(payload);
       dialog.close();
