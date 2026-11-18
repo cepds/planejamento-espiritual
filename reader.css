@@ -2418,6 +2418,7 @@ body [data-reader-page="family"] .family-plan-swap:hover{background:#466f9d}
 }
 .sidebar .brand{
   display:flex;
+  position:relative;
   align-items:center;
   gap:12px;
   min-width:0;
