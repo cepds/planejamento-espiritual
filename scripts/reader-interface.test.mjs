@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=15', 'reader.css?v=21', 'public-events.js?v=3']) {
+  for (const file of ['reader.js?v=15', 'reader.css?v=22', 'public-events.js?v=4', 'event-programs.js?v=1']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -610,4 +610,38 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   assert.match(svg, /Planejamento Espiritual/);
   assert.match(worker, /v30-sidebar-icone-original/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
+});
+
+
+test('Agenda suporta Assembleia, Visita e Celebração com datas e fontes oficiais', async () => {
+  for (const id of ['event-form-assembly','event-form-visit','event-form-memorial',
+    'event-form-date-end','event-form-program','event-form-theme','event-form-scripture',
+    'event-form-image','event-form-source','event-form-program-lines',
+    'event-talk-1-date','event-talk-1-time','event-talk-1-theme',
+    'event-talk-2-date','event-talk-2-time','event-talk-2-theme',
+    'event-memorial-time','agenda-reference-view','event-details-dialog',
+    'event-details-close','event-details-program','event-details-image',
+    'event-next-image','agenda-hero-image']) {
+    assert.match(html, new RegExp('id="' + id + '"'), id);
+  }
+  assert.match(html, /<option value="Celebração">Celebração<\/option>/);
+  assert.match(html, /Realizada após o pôr do sol|Sempre após o pôr do sol/);
+  assert.match(html, /event-programs\.js\?v=1/);
+  assert.match(events, /function memorialEvents\(\)/);
+  assert.match(events, /function visitWeekIsValid\(start, end\)/);
+  assert.match(events, /function showEventDetails\(item\)/);
+  assert.match(events, /function renderProgramSection\(root, title, entries\)/);
+  assert.match(events, /function parseCustomProgram\(text\)/);
+  assert.match(events, /function toggleEventFields\(\)/);
+  assert.match(events, /function updateVisitDates\(resetTalks = true\)/);
+  assert.match(events, /function allEventsWithOfficialDates\(\)/);
+  assert.match(events, /function imageOf\(item\)/);
+  assert.match(events, /function sourceOf\(item\)/);
+  assert.match(css, /\.event-details-dialog\{/);
+  assert.match(css, /\.event-talk-fields\{/);
+  assert.match(css, /\.agenda-reference-panel\{/);
+  const program = await read('event-programs.js');
+  assert.match(program, /CA-brpgm27/);
+  for (const date of ['2027-03-22','2028-04-09','2029-03-29']) assert.ok(program.includes(date));
+  assert.match(program, /images\/celebracao-jesus\.webp/);
 });
