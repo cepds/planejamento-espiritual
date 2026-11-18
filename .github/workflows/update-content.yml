@@ -70,8 +70,16 @@ jobs:
           if firebase_cli firestore:databases:get "(default)" > /dev/null 2>&1; then
             echo "Firestore padrão já configurado."
           else
-            echo "Tentando criar banco Firestore padrão na região de São Paulo."
-            firebase_cli firestore:databases:create "(default)" --location=southamerica-east1
+            echo "Verificação direta indisponível; conferindo existência do banco padrão."
+            if result=$(firebase_cli firestore:databases:create "(default)" --location=southamerica-east1 2>&1); then
+              echo "Banco Firestore padrão criado."
+            elif printf '%s' "$result" | grep -Eq 'HTTP Error: 409|Database already exists'; then
+              echo "Firestore padrão já existe; continuando publicação."
+            else
+              printf '%s\n' "$result"
+              echo "::error::Não foi possível confirmar o banco Firestore padrão."
+              exit 1
+            fi
           fi
       - name: Publicar no Firebase
         env:
