@@ -271,6 +271,107 @@
       list.append(row);
     }
   }
+
+  function detailText(tag, className, value) {
+    const el = document.createElement(tag);
+    el.className = className;
+    el.textContent = value;
+    return el;
+  }
+
+  function renderProgramSection(root, title, entries) {
+    if (!entries.length) return;
+    const section = document.createElement('section');
+    section.className = 'event-details-section';
+    section.append(detailText('h3', 'event-details-section-title', title));
+    const list = document.createElement('ol');
+    list.className = 'event-details-timeline';
+    for (const [clock, description] of entries) {
+      const row = document.createElement('li');
+      if (clock) row.append(detailText('time', 'event-details-time', clock));
+      row.append(detailText('span', 'event-details-talk-title', description));
+      list.append(row);
+    }
+    section.append(list);
+    root.append(section);
+  }
+
+  function parseCustomProgram(text) {
+    const sections = new Map();
+    for (const line of String(text || '').split(/\r?\n/).slice(0, 90)) {
+      if (!line.trim()) continue;
+      const parts = line.split('|').map(item => item.trim());
+      if (parts.length !== 4 || !parts[3]) continue;
+      const heading = [parts[0], parts[1]].filter(Boolean).join(' · ') || 'Programação';
+      if (!sections.has(heading)) sections.set(heading, []);
+      sections.get(heading).push([parts[2].slice(0, 12), parts[3].slice(0, 200)]);
+    }
+    return [...sections.entries()].map(([title, items]) => ({title, items}));
+  }
+
+  function showEventDetails(item) {
+    const details = document.getElementById('event-details-dialog');
+    const cover = document.getElementById('event-details-image');
+    const image = imageOf(item);
+    cover.hidden = !image;
+    if (image) cover.src = image;
+    cover.alt = image ? 'Imagem de ' + titleOf(item) : '';
+    const officialAssembly = item.type === 'Assembleia' && item.programId === 'CA-brpgm27'
+      ? references.assembly : null;
+    document.getElementById('event-details-kind').textContent =
+      item.official ? 'DATA OFICIAL · ' + item.type.toUpperCase() : item.type.toUpperCase();
+    document.getElementById('event-details-title').textContent =
+      item.theme || officialAssembly?.title || titleOf(item);
+    const scripture = item.scripture || officialAssembly?.scripture || '';
+    const scriptureElement = document.getElementById('event-details-scripture');
+    scriptureElement.hidden = !scripture;
+    scriptureElement.textContent = scripture;
+    document.getElementById('event-details-period').textContent =
+      validDate(item.date)
+        ? dateLabel(item.date) + (item.dateEnd && item.dateEnd !== item.date
+          ? ' — ' + dateLabel(item.dateEnd) : '')
+        : 'Referência oficial · data do evento ainda não cadastrada';
+    const location = document.getElementById('event-details-location');
+    location.textContent = item.location || '';
+    location.hidden = !item.location;
+    const note = document.getElementById('event-details-note');
+    note.hidden = item.type !== 'Celebração';
+    note.textContent = item.type === 'Celebração'
+      ? 'Realizada após o pôr do sol' +
+        (item.time ? ' · Horário cadastrado: ' + item.time : ' · Confira o horário com a congregação.')
+      : '';
+    const program = document.getElementById('event-details-program');
+    program.replaceChildren();
+    if (item.type === 'Assembleia') {
+      const sections = item.programText ? parseCustomProgram(item.programText)
+        : officialAssembly?.sections || [];
+      for (const section of sections) renderProgramSection(program, section.title, section.items);
+      if (!sections.length) {
+        program.append(detailText('p', 'event-details-empty',
+          'Ainda não há uma programação cadastrada para esta assembleia.'));
+      }
+    } else if (item.type === 'Visita') {
+      const talks = cleanTalks(item.talks);
+      talks.forEach((talk, index) => {
+        const title = 'Discurso ' + (index + 1) +
+          (talk.date ? ' · ' + dateLabel(talk.date) : '') +
+          (talk.time ? ' às ' + talk.time : '');
+        renderProgramSection(program, title, [
+          ['', talk.theme || 'Tema ainda não informado.']
+        ]);
+      });
+      if (!talks.length) program.append(detailText('p', 'event-details-empty',
+        'Os discursos ainda não foram cadastrados. Edite a visita para incluir datas e temas.'));
+    } else if (item.type === 'Celebração') {
+      program.append(detailText('p', 'event-details-memorial',
+        'A Celebração recorda a morte de Jesus Cristo. O horário local deve ser confirmado antes do evento.'));
+    }
+    const link = document.getElementById('event-details-source');
+    const url = sourceOf(item);
+    link.hidden = !url;
+    if (url) link.href = url;
+    if (!details.open) details.showModal();
+  }
   function message(text, error = false) {
     status.textContent = text;
     status.classList.toggle('error', error);
@@ -420,6 +521,24 @@
     }
     dialog.showModal();
   }
+
+  document.getElementById('event-details-close').addEventListener('click', () =>
+    document.getElementById('event-details-dialog').close());
+  document.getElementById('event-details-dialog').addEventListener('click', event => {
+    if (event.target === document.getElementById('event-details-dialog')) {
+      document.getElementById('event-details-dialog').close();
+    }
+  });
+  document.getElementById('agenda-reference-view').addEventListener('click', () => {
+    if (!references.assembly) return;
+    showEventDetails({
+      type: 'Assembleia', title: references.assembly.title,
+      theme: references.assembly.title,
+      programId: references.assembly.id,
+      date: '', dateEnd: '', location: '',
+      imageUrl: references.assembly.image, sourceUrl: references.assembly.source
+    });
+  });
 
   openDashboard.addEventListener('click', () => {
     render();
