@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=12', 'reader.css?v=13', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=13', 'reader.css?v=14', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -308,4 +308,23 @@ test('card do Texto Diário não exibe estrela decorativa', () => {
   const dailyCard = html.slice(html.indexOf('today-feature-card--daily'), html.indexOf('today-feature-card--publication'));
   assert.doesNotMatch(dailyCard, /today-feature-decoration|✧/);
   assert.doesNotMatch(css, /\.today-feature-decoration/);
+});
+
+test('videos de Nossa Vida Cristã exibem fonte oficial e comentários por pergunta', () => {
+  assert.match(reader, /function createLifeVideoCard\(study, video, videoIndex\)/);
+  assert.match(reader, /function createLifeVideoComment\(study, video, videoIndex, questionIndex\)/);
+  assert.match(reader, /function lifeVideoCommentKey\(study, video, videoIndex, questionIndex\)/);
+  assert.match(reader, /filter\(video => Number\(video\.partNumber\) === number\)/);
+  assert.match(reader, /body\.append\(createLifeVideoCard\(study, video, index\)\)/);
+  assert.match(reader, /card\.append\(studyEl\('p', 'life-video-question', question\)\)/);
+  assert.match(reader, /card\.append\(createLifeVideoComment\(study, video, videoIndex, questionIndex \+ 1\)\)/);
+  assert.match(reader, /directVideoUrl \|\| sourceUrl/);
+  assert.match(reader, /'Consultar vídeo na programação oficial/);
+  assert.match(reader, /resizeWatchtowerComment\(field\)/);
+  assert.match(reader, /localStorage\.setItem\(key, field\.value\)/);
+  assert.match(css, /\.life-video-card/);
+  assert.match(css, /\.life-video-comment-input/);
+  assert.match(updater, /extractLifeVideoDiscussions\(completeText, wolMeetingUrl\(monday\)\)/);
+  assert.match(updater, /congregationStudy, lifeVideos/);
+  assert.doesNotMatch(events, /vida-crista-video-v1/);
 });

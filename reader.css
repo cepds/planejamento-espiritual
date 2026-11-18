@@ -600,3 +600,20 @@ button:focus-visible,a:focus-visible{outline:3px solid #b9913d;outline-offset:4p
  .study-review-comment{padding:11px 10px 12px}
  .study-review-comment-input{font-size:16px}
 }
+
+
+/* Vídeos e comentários de Nossa Vida Cristã. */
+.life-video-card{margin:20px 0 22px;padding:18px;border:1px solid var(--line);border-radius:13px;background:var(--soft)}
+.life-video-eyebrow{display:block;font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--study-soft-blue)}
+.life-video-title{font:700 1.16rem/1.4 Georgia,serif;color:var(--ink);margin:8px 0 12px}
+.life-video-link{display:inline-flex;align-items:center;min-height:40px;padding:8px 13px;margin:4px 0 14px;border-radius:9px;background:#285b43;color:#fff!important;text-decoration:none;font-size:.82rem;font-weight:750}
+.life-video-link:hover{filter:brightness(1.12)}
+.life-video-question{font-size:.97rem;font-weight:750;line-height:1.6;margin:15px 0 9px;color:var(--ink)}
+.life-video-comment{padding:12px;margin:0 0 16px;background:var(--surface)}
+.life-video-comment:last-child{margin-bottom:0}
+.life-video-comment-status{margin:8px 0 0;font-size:.72rem;color:var(--muted);line-height:1.4}
+@media(max-width:600px){
+ .life-video-card{padding:13px;margin:16px 0 19px}
+ .life-video-comment{padding:11px 10px}
+ .life-video-comment-input{font-size:16px}
+}
