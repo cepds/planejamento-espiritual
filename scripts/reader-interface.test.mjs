@@ -437,7 +437,7 @@ test('Emergências mantém as referências e tem navegação por atalhos em cart
 });
 
 test('refinamento destas três abas não modifica a barra lateral nem a aba Hoje', () => {
-  const nav = html.slice(html.indexOf('<aside class="sidebar">'),
+  const nav = html.slice(html.indexOf('<aside class="sidebar"'),
     html.indexOf('</aside>') + '</aside>'.length);
   assert.match(nav, /class="sidebar"/);
   assert.match(nav, /data-reader-link="today"/);
