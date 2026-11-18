@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=14', 'reader.css?v=16', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=15', 'reader.css?v=17', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -375,4 +375,76 @@ test('imagens da aba Hoje preenchem a largura inteira e o texto diário fica ref
   assert.match(css, /@media\(max-width:600px\)/);
   assert.match(css, /@media\(prefers-color-scheme:dark\)/);
   assert.match(css, /@media\(prefers-reduced-motion:reduce\)/);
+});
+
+
+test('Texto Diário tem leitura editorial refinada sem perder texto, data e fonte', () => {
+  const daily = html.slice(html.indexOf('data-reader-page="daily"'),
+    html.indexOf('data-reader-page="family"'));
+  assert.match(daily, /class="reading daily-single-reading daily-editorial"/);
+  for (const id of ['daily-date', 'daily-verse', 'daily-reference', 'daily-content', 'daily-original']) {
+    assert.match(daily, new RegExp('id="' + id + '"'));
+  }
+  assert.match(css, /\[data-reader-page="daily"\] \.daily-editorial \.reading-heading\{/);
+  assert.match(css, /\[data-reader-page="daily"\] \.daily-editorial \.prose\{/);
+  assert.match(css, /\[data-reader-page="daily"\] \.daily-editorial \.source-line\{/);
+  assert.match(reader, /renderDailyOnly\(content\)/);
+});
+
+test('Adoração em família tem imagem sem margens e conserva o calendário de trocas', () => {
+  const family = html.slice(html.indexOf('data-reader-page="family"'),
+    html.indexOf('data-reader-page="emergencies"'));
+  assert.match(family, /class="reading family-feature-reading"/);
+  assert.match(family, /class="reading-cover family-feature-cover"/);
+  assert.match(family, /class="prose family-feature-content"/);
+  assert.match(family, /class="family-insight family-insight--learn"/);
+  assert.match(family, /class="family-insight family-insight--avoid"/);
+  assert.match(family, /class="family-insight family-insight--practice"/);
+  for (const id of ['family-cover', 'family-prompt', 'family-reading', 'family-do',
+    'family-avoid', 'family-questions', 'family-action', 'family-original',
+    'family-library', 'family-category-filter', 'family-plan-list', 'family-plan-reset']) {
+    assert.match(family, new RegExp('id="' + id + '"'));
+  }
+  assert.match(css, /\[data-reader-page="family"\] \.family-feature-cover img:not\(\[hidden\]\)\{/);
+  assert.match(css, /max-width:none/);
+  assert.match(css, /object-fit:cover/);
+  assert.match(css, /border-radius:0/);
+  assert.match(css, /\[data-reader-page="family"\] \.family-library-toggle\{/);
+  assert.match(reader, /function swapFamilyStudy\(otherDate\)/);
+  assert.match(reader, /function renderFamilySchedule\(\)/);
+});
+
+test('Emergências mantém as referências e tem navegação por atalhos em cartões', () => {
+  const emergencies = html.slice(html.indexOf('data-reader-page="emergencies"'),
+    html.indexOf('id="content-updated"'));
+  assert.match(emergencies, /class="intro emergency-intro"/);
+  assert.match(emergencies, /class="quick-links emergency-links"/);
+  for (const section of ['planning', 'bag', 'action', 'sources']) {
+    assert.match(emergencies, new RegExp('id="' + section + '"'));
+    assert.match(emergencies, new RegExp('data-scroll-to="' + section + '"'));
+  }
+  for (const phrase of ['Organize um plano de emergência', 'Bolsa de emergência',
+    'Como agir em uma emergência', 'Preparação espiritual e ajuda mútua',
+    'Continue lendo no JW.org']) {
+    assert.ok(emergencies.includes(phrase), phrase);
+  }
+  assert.match(css, /\[data-reader-page="emergencies"\] \.emergency-intro\{/);
+  assert.match(css, /\[data-reader-page="emergencies"\] \.emergency-links button\{/);
+  assert.match(css, /\[data-reader-page="emergencies"\] \.topic-grid section\{/);
+  assert.match(css, /\[data-reader-page="emergencies"\] \.sources li\{/);
+  assert.match(reader, /document\.querySelectorAll\('\[data-reader-page="emergencies"\] \[data-scroll-to\]'\)/);
+  assert.match(reader, /target\.scrollIntoView\(\{ behavior: 'smooth', block: 'start' \}\)/);
+});
+
+test('refinamento destas três abas não modifica a barra lateral nem a aba Hoje', () => {
+  const nav = html.slice(html.indexOf('<aside class="sidebar">'),
+    html.indexOf('</aside>') + '</aside>'.length);
+  assert.match(nav, /class="sidebar"/);
+  assert.match(nav, /data-reader-link="today"/);
+  assert.match(nav, /data-reader-link="daily"/);
+  assert.match(nav, /data-reader-link="family"/);
+  assert.match(nav, /data-reader-link="emergencies"/);
+  assert.match(css, /Leitura editorial refinada: Texto diário, Adoração em família e Emergências/);
+  assert.match(css, /Aba Hoje — refinamento editorial dos quatro cards originais/);
+  assert.match(css, /body\.meetings-reading-theme\{background:#111317\}/);
 });
