@@ -1,7 +1,7 @@
 const CACHE_PREFIX = 'planejamento-espiritual-shell-';
-const CACHE_NAME = CACHE_PREFIX + 'v24-reunioes-grafite';
+const CACHE_NAME = CACHE_PREFIX + 'v25-hoje-refinado';
 const CONTENT_KEY = '/data/content.json';
-const SHELL = ['/', '/index.html', '/reader.css?v=15', '/reader.js?v=14', '/public-events.js?v=2', '/manifest.webmanifest', '/icons/favicon-3d.png'];
+const SHELL = ['/', '/index.html', '/reader.css?v=16', '/reader.js?v=14', '/public-events.js?v=2', '/manifest.webmanifest', '/icons/favicon-3d.png'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {

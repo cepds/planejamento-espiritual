@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=14', 'reader.css?v=15', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=14', 'reader.css?v=16', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -346,4 +346,33 @@ test('tema grafite é aplicado apenas nas rotas de reuniões e não altera outro
   assert.match(css, /\.meetings-reading-theme \.study-reading \.study-gallery-item\{/);
   assert.match(css, /\.meetings-reading-theme \.study-reading--watchtower \.study-heading h2/);
   assert.match(css, /\.meetings-reading-theme \.study-reading \.study-date-band/);
+});
+
+test('aba Hoje mantém os quatro cards originais com seus destinos', () => {
+  const today = html.slice(html.indexOf('data-reader-page="today"'),
+    html.indexOf('data-reader-page="meetings"'));
+  const destinations = [...today.matchAll(/<a class="today-feature-card[^"]*" href="([^"]+)"/g)]
+    .map(match => match[1]);
+  assert.deepEqual(destinations,
+    ['#daily', '#meetings-midweek', '#meetings-weekend', '#family']);
+  for (const id of ['today-verse', 'today-midweek-title', 'today-watchtower-title', 'today-family-title',
+    'today-midweek-cover', 'today-watchtower-cover', 'today-family-cover']) {
+    assert.match(today, new RegExp('id="' + id + '"'));
+  }
+  assert.match(today, /<span class="today-feature-eyebrow">Meio de semana<\/span>/);
+  assert.doesNotMatch(today, /Próxima reunião/);
+});
+
+test('imagens da aba Hoje preenchem a largura inteira e o texto diário fica refinado', () => {
+  assert.match(css, /Aba Hoje — refinamento editorial dos quatro cards originais/);
+  assert.match(css, /\[data-reader-page="today"\] \.today-feature-card--publication \.today-feature-media\{/);
+  assert.match(css, /\[data-reader-page="today"\] \.today-feature-card--publication \.today-feature-media img\{/);
+  assert.match(css, /object-fit:cover/);
+  assert.match(css, /border-radius:0/);
+  assert.match(css, /\[data-reader-page="today"\] \.today-feature-card--daily\{/);
+  assert.match(css, /linear-gradient\(125deg,#182c34 0%,#142e30 53%,#1b3842 100%\)/);
+  assert.match(css, /\[data-reader-page="today"\] \.today-feature-card--daily h3\{/);
+  assert.match(css, /@media\(max-width:600px\)/);
+  assert.match(css, /@media\(prefers-color-scheme:dark\)/);
+  assert.match(css, /@media\(prefers-reduced-motion:reduce\)/);
 });
