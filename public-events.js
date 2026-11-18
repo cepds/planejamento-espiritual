@@ -28,6 +28,15 @@
   const openDashboard = document.getElementById('event-dashboard-open');
   const closeDashboard = document.getElementById('event-dashboard-close');
   const dashboardAdd = document.getElementById('agenda-add');
+  const nextCard = document.getElementById('event-next');
+  let nextCardItem = null;
+  nextCard.addEventListener('click', () => { if (nextCardItem) showEventDetails(nextCardItem); });
+  nextCard.addEventListener('keydown', event => {
+    if (nextCardItem && (event.key === 'Enter' || event.key === ' ')) {
+      event.preventDefault();
+      showEventDetails(nextCardItem);
+    }
+  });
 
   function setMobileCollapsed(collapsed) {
     widget.dataset.mobileCollapsed = String(collapsed);
@@ -53,6 +62,13 @@
     }).format(new Date(value + 'T00:00:00Z'));
   }
 
+  function shortDate(value) {
+    if (!validDate(value)) return '';
+    const date = new Date(value + 'T00:00:00Z');
+    const month = new Intl.DateTimeFormat('pt-BR',{timeZone:'UTC',month:'short'})
+      .format(date).replace(/\./g,'').toUpperCase();
+    return String(date.getUTCDate()).padStart(2,'0')+' '+month+' '+date.getUTCFullYear();
+  }
   function until(value) {
     return Math.round((Date.parse(value + 'T00:00:00Z') -
       Date.parse(currentDate() + 'T00:00:00Z')) / 86400000);
@@ -102,12 +118,15 @@
     }
     return items;
   }
+  function defaultCover(item) {
+    if (item.type === 'Visita') return 'images/visita-super.jpg';
+    if (item.type === 'Assembleia') return references.assembly?.image || 'images/evento-padrao.svg';
+    if (item.type === 'Celebração') return references.memorial?.image || 'images/celebracao-jesus.webp';
+    if (item.type === 'Congresso') return 'images/congresso.svg';
+    return 'images/evento-padrao.svg';
+  }
   function imageOf(item) {
-    if (item.type === 'Celebração' && references.memorial) return references.memorial.image;
-    if (item.type === 'Assembleia' && item.programId === 'CA-brpgm27' && references.assembly) {
-      return safeHttpsUrl(item.imageUrl) || references.assembly.image;
-    }
-    return safeHttpsUrl(item.imageUrl);
+    return safeHttpsUrl(item.imageUrl) || defaultCover(item);
   }
   function sourceOf(item) {
     if (item.type === 'Celebração' && references.memorial) return references.memorial.source;
@@ -237,6 +256,9 @@
     cover.hidden=!coverSource;
     if (coverSource) cover.src=coverSource;
     cover.alt=coverSource?'Imagem do próximo compromisso':'';
+    const heroDate=document.getElementById('agenda-hero-date-chip');
+    heroDate.hidden=!next;
+    if (next) { heroDate.dateTime=next.date; heroDate.textContent=shortDate(next.date); }
     document.getElementById('agenda-hero-days-label').textContent=left===null?'sem eventos':left<0?'em andamento':left===0?'é hoje':'dias restantes';
     document.getElementById('agenda-kpi-upcoming').textContent=String(upcoming.length);
     document.getElementById('agenda-kpi-month').textContent=String(upcoming.filter(item=>until(item.date)<=30).length);
@@ -272,7 +294,25 @@
       remaining.className='agenda-event-remaining';
       remaining.textContent=remainingLabel(until(item.date));
       info.append(type,title,meta,remaining);
-      row.append(badge,info,dashboardActions(item));
+      const coverButton=document.createElement('button');
+      coverButton.type='button';
+      coverButton.className='agenda-event-cover';
+      coverButton.setAttribute('aria-label','Abrir detalhes de '+titleOf(item));
+      const coverImage=document.createElement('img');
+      coverImage.className='agenda-event-image';
+      coverImage.src=imageOf(item);
+      coverImage.alt='Imagem de '+titleOf(item);
+      coverImage.loading='lazy';
+      const imageDate=document.createElement('time');
+      imageDate.className='agenda-event-image-date';
+      imageDate.dateTime=item.date;
+      imageDate.textContent=shortDate(item.date);
+      const imageDays=document.createElement('span');
+      imageDays.className='agenda-event-image-days';
+      imageDays.textContent=remainingLabel(until(item.date));
+      coverButton.append(coverImage,imageDate,imageDays);
+      coverButton.addEventListener('click',()=>showEventDetails(item));
+      row.append(badge,info,dashboardActions(item),coverButton);
       list.append(row);
     }
   }
@@ -321,6 +361,12 @@
     cover.hidden = !image;
     if (image) cover.src = image;
     cover.alt = image ? 'Imagem de ' + titleOf(item) : '';
+    const detailDate=document.getElementById('event-details-date-chip');
+    detailDate.hidden=!validDate(item.date);
+    if (validDate(item.date)) { detailDate.dateTime=item.date; detailDate.textContent=shortDate(item.date); }
+    const detailDays=document.getElementById('event-details-days-chip');
+    detailDays.hidden=!validDate(item.date);
+    if (validDate(item.date)) detailDays.textContent=remainingLabel(until(item.date));
     const officialAssembly = item.type === 'Assembleia' && item.programId === 'CA-brpgm27'
       ? references.assembly : null;
     document.getElementById('event-details-kind').textContent =
@@ -345,6 +391,9 @@
       ? 'Realizada após o pôr do sol' +
         (item.time ? ' · Horário cadastrado: ' + item.time : ' · Confira o horário com a congregação.')
       : '';
+    const description=document.getElementById('event-details-description');
+    description.hidden=!item.description;
+    description.textContent=item.description || '';
     const program = document.getElementById('event-details-program');
     program.replaceChildren();
     if (item.type === 'Assembleia') {
@@ -375,6 +424,8 @@
     const url = sourceOf(item);
     link.hidden = !url;
     if (url) link.href = url;
+    link.textContent=item.type === 'Assembleia' || item.type === 'Celebração'
+      ? 'Consultar publicação oficial ↗' : 'Abrir referência do evento ↗';
     if (!details.open) details.showModal();
   }
   function message(text, error = false) {
@@ -397,6 +448,7 @@
       title: typeof item.title === 'string' ? item.title.slice(0, 100) : '',
       date: validDate(item.date) ? item.date : '',
       location: typeof item.location === 'string' ? item.location.slice(0, 120) : '',
+      description: typeof item.description === 'string' ? item.description.slice(0, 700) : '',
       dateEnd: validDate(item.dateEnd) ? item.dateEnd : '',
       theme: typeof item.theme === 'string' ? item.theme.slice(0, 140) : '',
       scripture: typeof item.scripture === 'string' ? item.scripture.slice(0, 100) : '',
@@ -429,6 +481,7 @@
     const ordered = allEventsWithOfficialDates().filter(item => item.date)
       .sort((a, b) => a.date.localeCompare(b.date) || titleOf(a).localeCompare(titleOf(b)));
     const next = ordered.find(item => until(item.dateEnd || item.date) >= 0);
+    nextCardItem = next || null;
     const mini = document.getElementById('event-mini');
     if (next) {
       const [year, month, day] = next.date.split('-');
@@ -446,6 +499,9 @@
     miniImage.hidden=!nextImage;
     if (nextImage) miniImage.src=nextImage;
     miniImage.alt=nextImage?'Imagem do evento '+titleOf(next):'';
+    const miniDate=document.getElementById('event-next-date-chip');
+    miniDate.hidden=!next;
+    if (next) { miniDate.dateTime=next.date; miniDate.textContent=shortDate(next.date); }
     renderDashboard(upcomingEvents(ordered));
     if (next) {
       document.getElementById('event-next-type').textContent = next.type;
@@ -504,7 +560,17 @@
       detail.textContent = 'Detalhes';
       detail.addEventListener('click', () => showEventDetails(item));
       actions.append(detail);
-      row.append(info, actions);
+      const thumb=document.createElement('button');
+      thumb.type='button';
+      thumb.className='event-list-cover';
+      thumb.setAttribute('aria-label','Abrir detalhes de '+titleOf(item));
+      const thumbImage=document.createElement('img');
+      thumbImage.src=imageOf(item);
+      thumbImage.alt='Imagem de '+titleOf(item);
+      thumbImage.loading='lazy';
+      thumb.append(thumbImage);
+      thumb.addEventListener('click',()=>showEventDetails(item));
+      row.append(thumb,info,actions);
       list.append(row);
     }
 
@@ -575,6 +641,7 @@
       field('event-form-title').value = item.title;
       inputDate.value = item.date;
       field('event-form-location').value = item.location;
+      field('event-form-description').value = item.description || '';
       field('event-form-program').value = item.programId || 'custom';
       field('event-form-theme').value = item.theme || '';
       field('event-form-scripture').value = item.scripture || '';
@@ -652,6 +719,17 @@
       message('Selecione um tipo e uma data válida.', true);
       return;
     }
+    const coverInput=field('event-form-image').value.trim();
+    const sourceInput=field('event-form-source').value.trim();
+    const descriptionInput=field('event-form-description').value.trim();
+    if ((coverInput && !safeHttpsUrl(coverInput)) || (sourceInput && !safeHttpsUrl(sourceInput))) {
+      message('Use somente URLs HTTPS válidas para imagem e referência.',true);
+      return;
+    }
+    if (descriptionInput.length > 700) {
+      message('A descrição não pode ultrapassar 700 caracteres.',true);
+      return;
+    }
     if (title.length > 100 || location.length > 120) {
       message('Título ou local ultrapassa o limite.', true);
       return;
@@ -676,12 +754,6 @@
       }
     }
     if (type === 'Assembleia') {
-      const img = field('event-form-image').value.trim();
-      const url = field('event-form-source').value.trim();
-      if ((img && !safeHttpsUrl(img)) || (url && !safeHttpsUrl(url))) {
-        message('Use somente URLs HTTPS válidas para imagem e programa.', true);
-        return;
-      }
       if (field('event-form-theme').value.length > 140 ||
           field('event-form-program-lines').value.length > 8000) {
         message('O tema ou a programação ultrapassou o limite.', true);
@@ -693,11 +765,12 @@
     try {
       const payload = {
         type, title, date, location,
+        description: descriptionInput,
         dateEnd: type === 'Visita' ? field('event-form-date-end').value : '',
         theme: type === 'Assembleia' ? field('event-form-theme').value.trim() : '',
         scripture: type === 'Assembleia' ? field('event-form-scripture').value.trim() : '',
-        imageUrl: type === 'Assembleia' ? safeHttpsUrl(field('event-form-image').value.trim()) : '',
-        sourceUrl: type === 'Assembleia' ? safeHttpsUrl(field('event-form-source').value.trim()) : '',
+        imageUrl: safeHttpsUrl(coverInput),
+        sourceUrl: safeHttpsUrl(sourceInput),
         programId,
         programText: type === 'Assembleia' ? field('event-form-program-lines').value.trim() : '',
         talks: type === 'Visita' ? [1, 2].map(index => ({

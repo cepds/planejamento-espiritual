@@ -2947,3 +2947,107 @@ body [data-reader-page="family"] .family-plan-swap:hover{background:#466f9d}
   .event-details-section{padding:16px 14px}
   .event-details-time{flex-basis:50px}
 }
+
+
+/* Agenda ilustrada - cards de eventos 2026 */
+.event-next-feature{
+  position:relative;display:grid;grid-template-columns:minmax(0,1fr);gap:11px;
+  padding:10px;background:linear-gradient(148deg,#182e45,#101f31);
+  border:1px solid #6284a6;cursor:pointer;overflow:hidden
+}
+.event-next-feature:hover,.event-next-feature:focus-visible{border-color:#abd5ff;box-shadow:0 8px 22px #050f1e66}
+.event-next-feature:focus-visible{outline:3px solid #9acbf6;outline-offset:3px}
+.event-next-image{
+  grid-column:1;grid-row:1;width:100%;height:160px;
+  flex:none;border-radius:11px;object-fit:cover;display:block
+}
+.event-next-date-chip,.agenda-hero-date-chip,.event-details-date-chip,.agenda-event-image-date{
+  position:absolute;z-index:2;left:18px;top:18px;padding:9px 12px;
+  color:#fff;background:rgba(20,51,82,.96);border:1px solid #a1c6ed;
+  border-radius:12px;box-shadow:0 4px 15px #0006;
+  font:800 .76rem/1.3 "Segoe UI",system-ui,sans-serif;letter-spacing:.035em
+}
+.event-next-date-chip[hidden],.agenda-hero-date-chip[hidden],.event-details-date-chip[hidden],.event-details-days-chip[hidden]{display:none!important}
+.event-next-count{
+  position:absolute;z-index:2;right:18px;top:111px;flex:none;
+  min-height:61px;width:76px;padding:7px 5px;
+  border:1px solid #90b7e0;background:rgba(41,81,123,.98);
+  box-shadow:0 4px 15px #0018
+}
+.event-next-count strong{font-size:1.5rem}
+.event-next-count span{font-size:.57rem}
+.event-next-detail{grid-column:1;grid-row:2;padding:2px 5px 7px}
+.event-next-detail .event-kind{font-size:.64rem;text-transform:uppercase;letter-spacing:.1em}
+.event-next-detail strong{display:block;font-size:1.04rem;line-height:1.35}
+.event-widget .event-list{max-height:380px;overflow-y:auto}
+.event-widget .event-list li{
+  display:grid;grid-template-columns:78px minmax(0,1fr);
+  align-items:start;gap:8px 10px;padding:12px 0
+}
+.event-list-cover{
+  width:78px;height:64px;padding:0;overflow:hidden;
+  background:#213e5c;border:1px solid #6688a8;border-radius:8px;cursor:pointer
+}
+.event-list-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.event-widget .event-list li>span{min-width:0}
+.event-widget .event-list li .event-list-actions{grid-column:1/-1;justify-content:flex-start}
+.agenda-hero{position:relative}
+.agenda-hero-date-chip{left:36px;top:36px}
+.agenda-events-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.agenda-event{
+  display:grid;grid-template-columns:60px minmax(0,1fr);
+  gap:12px;align-items:start;min-width:0;padding:12px;
+  border:1px solid #4f6d8d;border-radius:18px;
+  background:linear-gradient(145deg,#1b324a,#101e30);overflow:hidden
+}
+.agenda-event-cover{
+  grid-column:1/-1;grid-row:1;position:relative;display:block;
+  width:100%;height:182px;overflow:hidden;padding:0;
+  border:0;border-radius:12px;background:#263f59;cursor:pointer;text-align:left
+}
+.agenda-event-cover:focus-visible{outline:3px solid #b0d8ff;outline-offset:2px}
+.agenda-event-image{display:block;width:100%;height:100%;object-fit:cover;transition:transform .18s ease}
+.agenda-event-cover:hover .agenda-event-image{transform:scale(1.025)}
+.agenda-event-image-date{top:12px;left:12px;font-size:.71rem}
+.agenda-event-image-days{
+  position:absolute;right:12px;bottom:12px;z-index:2;
+  border:1px solid #9bbfdf;border-radius:10px;padding:7px 9px;
+  background:rgba(30,68,108,.97);color:#fff;font-size:.73rem;font-weight:800
+}
+.agenda-event-date{grid-column:1;grid-row:2;width:60px;min-height:68px;flex:initial}
+.agenda-event-info{grid-column:2;grid-row:2;gap:6px;min-width:0}
+.agenda-event-info>strong{font-size:1.03rem;line-height:1.35}
+.agenda-event-remaining{margin-top:2px}
+.agenda-event .event-list-actions{
+  grid-row:3;grid-column:1/-1;width:100%;padding:0;
+  display:flex;flex-wrap:wrap;gap:8px
+}
+.agenda-event .event-list-actions button{flex:1;min-width:68px}
+.event-details-media{position:relative}
+.event-details-date-chip{left:24px;top:24px}
+.event-details-days-chip{
+  position:absolute;right:24px;bottom:18px;padding:10px 13px;
+  background:rgba(36,77,119,.96);border:1px solid #8fb8e0;
+  border-radius:11px;color:#fff;font-weight:850;font-size:.81rem
+}
+.event-details-description{
+  padding:15px 18px;color:#e3edf7;background:#20364d;
+  border:1px solid #4c6987;border-radius:12px;
+  font-size:.91rem;line-height:1.65;white-space:pre-line
+}
+.event-dialog textarea{
+  width:100%;min-height:90px;padding:11px;border-radius:9px;
+  background:#15212e;color:#edf5fe;border:1px solid #4b6079;font:inherit
+}
+@media(max-width:650px){
+  .agenda-events-list{grid-template-columns:1fr;gap:13px}
+  .agenda-event{align-items:start;flex-wrap:initial;gap:10px}
+  .agenda-event-cover{height:177px}
+  .agenda-event-date{grid-column:1;grid-row:2;flex-basis:60px}
+  .agenda-event-info{grid-column:2;grid-row:2}
+  .agenda-event .event-list-actions{grid-column:1/-1;grid-row:3;padding:0}
+  .agenda-hero-date-chip{top:26px;left:26px}
+  .event-details-date-chip{top:17px;left:17px}
+  .event-details-days-chip{bottom:12px;right:12px}
+}
+@media(prefers-reduced-motion:reduce){.agenda-event-image{transition:none}}

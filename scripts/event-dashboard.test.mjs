@@ -174,3 +174,28 @@ function offsetDateFrom(value,days) {
   date.setUTCDate(date.getUTCDate()+days);
   return date.toISOString().slice(0,10);
 }
+
+test('Card da visita exibe imagem enviada, data e abre os discursos',()=>{
+  const date=offsetDate(6);
+  const {get}=runWithDocs([{id:'visita-visual',type:'Visita',title:'Visita do superintendente',
+    date,location:'Salão',dateEnd:offsetDate(11),talks:[
+      {date,theme:'Discurso da semana',time:'19:30'},
+      {date:offsetDate(10),theme:'Discurso de sábado',time:'18:00'}]}]);
+  assert.equal(get('event-next-image').src,'images/visita-super.jpg');
+  assert.match(get('event-next-date-chip').textContent,/\d{4}/);
+  assert.equal(get('agenda-events-list').children[0].children[3].children[0].src,'images/visita-super.jpg');
+  get('event-next').listeners.click();
+  assert.equal(get('event-details-image').src,'images/visita-super.jpg');
+  assert.equal(get('event-details-program').children.length,2);
+});
+
+test('Todo tipo de evento pode ter imagem própria e detalhes ilustrados',()=>{
+  const {get}=runWithDocs([{id:'outro-visual',type:'Outro',title:'Evento especial',
+    date:offsetDate(7),imageUrl:'https://example.com/capa.jpg',description:'Local a confirmar'}]);
+  const card=get('agenda-events-list').children[0];
+  assert.equal(card.children[3].children[0].src,'https://example.com/capa.jpg');
+  card.children[3].listeners.click();
+  assert.equal(get('event-details-dialog').open,true);
+  assert.equal(get('event-details-description').textContent,'Local a confirmar');
+  assert.equal(get('event-details-image').src,'https://example.com/capa.jpg');
+});

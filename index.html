@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/planejamento-espiritual-original.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/planejamento-espiritual-original.png">
-  <link rel="stylesheet" href="reader.css?v=22">
+  <link rel="stylesheet" href="reader.css?v=23">
 </head>
 <body>
 <div class="app">
@@ -259,8 +259,9 @@
     </div>
     <div id="event-preview" class="event-preview" aria-live="polite">
       <p id="event-empty" class="event-empty">Nenhum evento cadastrado.</p>
-      <div id="event-next" class="event-next-feature" hidden>
+      <div id="event-next" class="event-next-feature" role="button" tabindex="0" aria-label="Abrir detalhes do próximo evento" hidden>
         <img id="event-next-image" class="event-next-image" alt="" hidden>
+        <time id="event-next-date-chip" class="event-next-date-chip" hidden></time>
         <div class="event-next-count"><strong id="event-days">0</strong><span id="event-days-label">dias restantes</span></div>
         <div class="event-next-detail">
           <p id="event-next-type" class="event-kind"></p>
@@ -293,6 +294,7 @@
     <div class="agenda-main">
       <section class="agenda-hero" aria-label="Próximo evento">
         <img id="agenda-hero-image" class="agenda-hero-image" alt="" hidden>
+        <time id="agenda-hero-date-chip" class="agenda-hero-date-chip" hidden></time>
         <div class="agenda-hero-info">
           <span class="agenda-hero-label">PRÓXIMO COMPROMISSO</span>
           <strong id="agenda-hero-title">Nenhum evento futuro</strong>
@@ -347,7 +349,11 @@
 <dialog id="event-details-dialog" class="event-details-dialog" aria-labelledby="event-details-title">
   <div class="event-details-shell">
     <button id="event-details-close" class="event-details-close" type="button" aria-label="Fechar detalhes">✕</button>
-    <img id="event-details-image" class="event-details-image" hidden alt="">
+    <div class="event-details-media">
+      <img id="event-details-image" class="event-details-image" hidden alt="">
+      <time id="event-details-date-chip" class="event-details-date-chip" hidden></time>
+      <span id="event-details-days-chip" class="event-details-days-chip" hidden></span>
+    </div>
     <div class="event-details-body">
       <span id="event-details-kind" class="event-details-kind">PROGRAMA</span>
       <h2 id="event-details-title">Detalhes do evento</h2>
@@ -355,6 +361,7 @@
       <p id="event-details-period" class="event-details-period"></p>
       <p id="event-details-location" class="event-details-location" hidden></p>
       <p id="event-details-note" class="event-details-note" hidden></p>
+      <p id="event-details-description" class="event-details-description" hidden></p>
       <div id="event-details-program" class="event-details-program"></div>
       <a id="event-details-source" class="event-details-source" href="#" target="_blank" rel="noopener noreferrer" hidden>Ver publicação oficial no JW.org ↗</a>
     </div>
@@ -377,6 +384,13 @@
     <input id="event-form-date" type="date" required>
     <label for="event-form-location">Local (opcional)</label>
     <input id="event-form-location" type="text" maxlength="120" placeholder="Local do evento">
+    <label for="event-form-description">Informações adicionais (opcional)</label>
+    <textarea id="event-form-description" rows="3" maxlength="700" placeholder="Informações importantes para os participantes"></textarea>
+    <label for="event-form-image">Imagem do evento (URL HTTPS, opcional)</label>
+    <input id="event-form-image" type="url" maxlength="500" placeholder="https://...">
+    <p class="event-detail-hint">Todo evento tem uma imagem padrão. Insira um link HTTPS para personalizar a capa.</p>
+    <label for="event-form-source">Programa ou referência (URL HTTPS, opcional)</label>
+    <input id="event-form-source" type="url" maxlength="500" placeholder="https://www.jw.org/...">
     <fieldset id="event-form-assembly" class="event-detail-fields" hidden>
       <legend>Programa da assembleia</legend>
       <label for="event-form-program">Referência oficial</label>
@@ -388,10 +402,6 @@
       <input id="event-form-theme" type="text" maxlength="140" placeholder="Tema que aparecerá em destaque">
       <label for="event-form-scripture">Texto bíblico principal (opcional)</label>
       <input id="event-form-scripture" type="text" maxlength="100" placeholder="Ex.: Salmo 37:4">
-      <label for="event-form-image">Imagem (URL HTTPS, opcional)</label>
-      <input id="event-form-image" type="url" maxlength="500" placeholder="https://...">
-      <label for="event-form-source">Link do programa (URL HTTPS, opcional)</label>
-      <input id="event-form-source" type="url" maxlength="500" placeholder="https://www.jw.org/...">
       <label for="event-form-program-lines">Programação personalizada (opcional)</label>
       <textarea id="event-form-program-lines" rows="5" maxlength="8000" placeholder="Dia | Manhã | 09:40 | Música&#10;Dia | Tarde | 14:00 | Discurso"></textarea>
       <p class="event-detail-hint">O programa 2026–2027 já está disponível na Agenda completa. Se escolher outro programa, cadastre os itens acima, uma linha por atividade.</p>
@@ -447,7 +457,7 @@
 <script src="/__/firebase/init.js" defer></script>
 <script src="reader.js?v=15" defer></script>
 <script src="event-programs.js?v=1" defer></script>
-<script src="public-events.js?v=4" defer></script>
+<script src="public-events.js?v=5" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
    addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });

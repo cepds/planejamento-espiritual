@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=15', 'reader.css?v=22', 'public-events.js?v=4', 'event-programs.js?v=1']) {
+  for (const file of ['reader.js?v=15', 'reader.css?v=23', 'public-events.js?v=5', 'event-programs.js?v=1']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -608,7 +608,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v31-agenda-programas-celebracao/);
+  assert.match(worker, /v32-agenda-imagens-programas/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 
