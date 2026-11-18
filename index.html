@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=16">
+  <link rel="stylesheet" href="reader.css?v=17">
 </head>
 <body>
 <div class="app">
@@ -133,7 +133,7 @@
 
     <section class="page" data-reader-page="daily" aria-label="Texto diário" hidden>
       
-      <article class="reading daily-single-reading">
+      <article class="reading daily-single-reading daily-editorial">
         <div class="reading-heading">
           <span class="kicker" id="daily-date">Carregando…</span>
           <h2 class="verse" id="daily-verse">Texto do dia</h2>
@@ -146,16 +146,16 @@
 
     <section class="page" data-reader-page="family" aria-label="Adoração em família" hidden>
       
-      <article class="reading">
-        <div class="reading-heading"><span class="kicker" id="family-topic">Tema da semana</span><h2 id="family-title">Carregando…</h2><p id="family-date"></p></div>
-        <div class="reading-cover"><img id="family-cover" hidden alt="Imagem da publicação da semana"><div><p id="family-prompt"></p><p id="family-reading-wrap"><strong>Leitura bíblica:</strong> <span id="family-reading"></span></p></div></div>
-        <div class="prose">
-          <h3>O que aprender</h3><p id="family-do"></p>
-          <h3>O que evitar</h3><p id="family-avoid"></p>
-          <section id="family-questions-wrap" hidden><h3>Perguntas para conversar</h3><ul class="simple-list" id="family-questions"></ul></section>
-          <h3>Aplicação prática</h3><p id="family-action"></p>
+      <article class="reading family-feature-reading">
+        <div class="reading-heading family-feature-heading"><span class="kicker" id="family-topic">Tema da semana</span><h2 id="family-title">Carregando…</h2><p id="family-date"></p></div>
+        <div class="reading-cover family-feature-cover"><img id="family-cover" hidden alt="Imagem da publicação da semana"><div class="family-feature-intro"><p id="family-prompt"></p><p id="family-reading-wrap"><strong>Leitura bíblica:</strong> <span id="family-reading"></span></p></div></div>
+        <div class="prose family-feature-content">
+          <section class="family-insight family-insight--learn"><h3>O que aprender</h3><p id="family-do"></p></section>
+          <section class="family-insight family-insight--avoid"><h3>O que evitar</h3><p id="family-avoid"></p></section>
+          <section id="family-questions-wrap" class="family-insight family-insight--questions" hidden><h3>Perguntas para conversar</h3><ul class="simple-list" id="family-questions"></ul></section>
+          <section class="family-insight family-insight--practice"><h3>Aplicação prática</h3><p id="family-action"></p></section>
         </div>
-        <div class="source-line"><p class="small" id="family-source-title"></p><a class="inline-link" id="family-original" hidden target="_blank" rel="noopener noreferrer">Ler publicação no JW.org ↗</a></div>
+        <div class="source-line family-feature-source"><p class="small" id="family-source-title"></p><a class="inline-link" id="family-original" hidden target="_blank" rel="noopener noreferrer">Ler publicação no JW.org ↗</a></div>
       </article>
       <details id="family-library" class="family-library">
         <summary class="family-library-toggle">
@@ -183,8 +183,8 @@
     </section>
 
     <section class="page" data-reader-page="emergencies" aria-label="Preparação para emergências" hidden>
-      <div class="intro"><span class="kicker">Guia de leitura e referência</span><h2>Preparação para emergências</h2><p>Informações organizadas a partir de publicações oficiais do JW.org para consultar antes, durante e depois de desastres e outras situações de risco.</p></div>
-      <div class="quick-links" aria-label="Ir para assunto"><button type="button" data-scroll-to="planning">Planejamento</button><button type="button" data-scroll-to="bag">Bolsa de emergência</button><button type="button" data-scroll-to="action">Como agir</button><button type="button" data-scroll-to="sources">Fontes oficiais</button></div>
+      <div class="intro emergency-intro"><span class="kicker">Guia de leitura e referência</span><h2>Preparação para emergências</h2><p>Informações organizadas a partir de publicações oficiais do JW.org para consultar antes, durante e depois de desastres e outras situações de risco.</p></div>
+      <div class="quick-links emergency-links" aria-label="Ir para assunto"><button type="button" data-scroll-to="planning">Planejamento</button><button type="button" data-scroll-to="bag">Bolsa de emergência</button><button type="button" data-scroll-to="action">Como agir</button><button type="button" data-scroll-to="sources">Fontes oficiais</button></div>
 
       <article class="reading" id="planning">
         <div class="reading-heading"><span class="kicker">01 · Antes de acontecer</span><h2>Organize um plano de emergência</h2><p>Conhecer os riscos e combinar antecipadamente o que fazer facilita a reação em momentos críticos.</p></div>
@@ -314,7 +314,7 @@
 <script src="/__/firebase/8.10.1/firebase-app.js" defer></script>
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
-<script src="reader.js?v=14" defer></script>
+<script src="reader.js?v=15" defer></script>
 <script src="public-events.js?v=2" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
