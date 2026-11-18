@@ -25,6 +25,8 @@
     const requested = location.hash.slice(1);
     const meetingsRoute = ['meetings', 'meetings-midweek', 'meetings-weekend'].includes(requested);
     const page = meetingsRoute ? 'meetings' : Object.hasOwn(pageTitles, requested) ? requested : 'today';
+    // O visual neutro de leitura aplica-se apenas às reuniões.
+    document.body.classList.toggle('meetings-reading-theme', page === 'meetings');
     for (const item of pages) item.hidden = item.dataset.readerPage !== page;
     for (const link of navItems) {
       if (link.dataset.readerLink === page) link.setAttribute('aria-current', 'page');
