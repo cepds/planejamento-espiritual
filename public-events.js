@@ -79,6 +79,60 @@
   function remainingLabel(days) {
     return days === 0 ? 'É hoje' : days === 1 ? 'Falta 1 dia' : 'Faltam '+days+' dias';
   }
+  function renderTypeChart(items) {
+    const target = document.getElementById('agenda-type-chart');
+    target.replaceChildren();
+    const entries = countByType(items);
+    const maximum = Math.max(1,...entries.map(item => item.count));
+    target.setAttribute('aria-label','Eventos futuros por categoria: '+
+      entries.map(item => item.name+': '+item.count).join(', '));
+    for (const item of entries) {
+      const row = document.createElement('div');
+      row.className='agenda-type-row';
+      const top = document.createElement('div');
+      top.className='agenda-type-row-heading';
+      const label=document.createElement('span');
+      label.textContent=item.name;
+      const count=document.createElement('strong');
+      count.textContent=String(item.count);
+      top.append(label,count);
+      const track=document.createElement('div');
+      track.className='agenda-type-track';
+      const bar=document.createElement('span');
+      bar.className='agenda-type-bar';
+      bar.dataset.type=item.name;
+      bar.style.width=(100*item.count/maximum)+'%';
+      track.append(bar);
+      row.append(top,track);
+      target.append(row);
+    }
+  }
+  function renderMonthChart(items) {
+    const target=document.getElementById('agenda-month-chart');
+    target.replaceChildren();
+    const entries=sixMonthCounts(items);
+    const maximum=Math.max(1,...entries.map(item=>item.count));
+    target.setAttribute('aria-label','Eventos por mês: '+
+      entries.map(item=>item.key+': '+item.count).join(', '));
+    for (const item of entries) {
+      const col=document.createElement('div');
+      col.className='agenda-month-col';
+      const count=document.createElement('strong');
+      count.className='agenda-month-count';
+      count.textContent=String(item.count);
+      const track=document.createElement('div');
+      track.className='agenda-month-track';
+      const bar=document.createElement('span');
+      bar.className='agenda-month-bar';
+      bar.style.height=(100*item.count/maximum)+'%';
+      track.append(bar);
+      const label=document.createElement('span');
+      label.className='agenda-month-label';
+      label.textContent=item.label;
+      col.append(count,track,label);
+      target.append(col);
+    }
+  }
   function message(text, error = false) {
     status.textContent = text;
     status.classList.toggle('error', error);
