@@ -1,7 +1,7 @@
 const CACHE_PREFIX = 'planejamento-espiritual-shell-';
-const CACHE_NAME = CACHE_PREFIX + 'v30-sidebar-icone-original';
+const CACHE_NAME = CACHE_PREFIX + 'v31-agenda-programas-celebracao';
 const CONTENT_KEY = '/data/content.json';
-const SHELL = ['/', '/index.html', '/reader.css?v=21', '/reader.js?v=15', '/public-events.js?v=3', '/manifest.webmanifest', '/icons/planejamento-espiritual-original.png', '/icons/planejamento-espiritual.svg'];
+const SHELL = ['/', '/index.html', '/reader.css?v=22', '/reader.js?v=15', '/public-events.js?v=4', '/event-programs.js?v=1', '/images/celebracao-jesus.webp', '/manifest.webmanifest', '/icons/planejamento-espiritual-original.png', '/icons/planejamento-espiritual.svg'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
