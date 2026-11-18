@@ -3,17 +3,23 @@
   "short_name": "Planejamento",
   "description": "Planejamento pessoal para reuniões, texto diário e adoração em família.",
   "lang": "pt-BR",
-  "start_url": "/#panel",
+  "start_url": "/#today",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#103d2c",
-  "theme_color": "#103d2c",
+  "background_color": "#101f32",
+  "theme_color": "#101f32",
   "icons": [
     {
-      "src": "icons/favicon-3d.png",
-      "sizes": "1254x1254",
+      "src": "icons/planejamento-espiritual-original.png",
+      "sizes": "128x128",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "icons/planejamento-espiritual.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
   ]
 }
