@@ -608,7 +608,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v30-sidebar-icone-original/);
+  assert.match(worker, /v31-agenda-programas-celebracao/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 
