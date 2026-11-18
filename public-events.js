@@ -72,7 +72,7 @@
     return Array.from({length:6},(_,index) => {
       const date = new Date(Date.UTC(year,month-1+index,1));
       const key = date.toISOString().slice(0,7);
-      const label = new Intl.DateTimeFormat('pt-BR',{timeZone:'UTC',month:'short'}).format(date).replace(/\\.$/,'');
+      const label = new Intl.DateTimeFormat('pt-BR',{timeZone:'UTC',month:'short'}).format(date).replace(/\.$/,'');
       return {key,label,count:items.filter(item => item.date.startsWith(key)).length};
     });
   }
@@ -187,7 +187,7 @@
       day.textContent=item.date.slice(8,10);
       const month=document.createElement('small');
       month.textContent=new Intl.DateTimeFormat('pt-BR',{timeZone:'UTC',month:'short'})
-        .format(new Date(item.date+'T00:00:00Z')).replace(/\\.$/,'');
+        .format(new Date(item.date+'T00:00:00Z')).replace(/\.$/,'');
       badge.append(day,month);
       const info=document.createElement('div');
       info.className='agenda-event-info';
