@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=15', 'reader.css?v=20', 'public-events.js?v=3']) {
+  for (const file of ['reader.js?v=15', 'reader.css?v=21', 'public-events.js?v=3']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -488,7 +488,7 @@ test('barra lateral tem cinco destinos originais e identidades visuais refinadas
   const found = [...sidebar.matchAll(/data-reader-link="([^"]+)"/g)].map(match => match[1]);
   assert.deepEqual(found, ['today', 'meetings', 'daily', 'family', 'emergencies']);
   assert.match(sidebar, /class="sidebar-section-label">Navegação/);
-  assert.match(sidebar, /class="brand-mark" aria-hidden="true">PE/);
+  assert.match(sidebar, /class="brand-mark" aria-hidden="true"><img src="icons\/planejamento-espiritual-original\.png"/);
   assert.doesNotMatch(sidebar, /<span class="brand-mark" aria-hidden="true">✧/);
   assert.equal((sidebar.match(/class="nav-svg"/g) || []).length, 5);
   assert.equal((sidebar.match(/class="nav-label"/g) || []).length, 5);
@@ -579,4 +579,35 @@ test('Agenda mantém quadro compacto no celular e painel grande responsivo', () 
   assert.match(css, /\.agenda-charts\{grid-template-columns:1fr/);
   assert.match(events, /setMobileCollapsed/);
   assert.match(events, /mini\.textContent/);
+});
+
+
+test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () => {
+  const sidebar = html.slice(html.indexOf('<aside class="sidebar"'), html.indexOf('</aside>') + 8);
+  const choices = [...sidebar.matchAll(/data-reader-link="([^"]+)"/g)].map(item => item[1]);
+  assert.deepEqual(choices, ['today', 'meetings', 'daily', 'family', 'emergencies']);
+  assert.match(sidebar, /icons\/planejamento-espiritual-original\.png/);
+  assert.match(css, /Sidebar premium — livro, luz e azul profundo/);
+  assert.match(css, /\.sidebar \.brand-mark img\{/);
+  assert.match(css, /\.sidebar \.nav a\[aria-current="page"\]::after/);
+  assert.match(css, /background:linear-gradient\(#fff0c8,#e4ba75\)/);
+  assert.match(css, /@media\(max-width:600px\)/);
+  assert.match(html, /class="today-feature-eyebrow">A Sentinela<\/span>/);
+  assert.doesNotMatch(html, /A Sentinela · Estudo da semana/);
+  assert.match(html, /rel="icon" href="icons\/planejamento-espiritual-original\.png" type="image\/png"/);
+  assert.match(html, /rel="apple-touch-icon" href="icons\/planejamento-espiritual-original\.png"/);
+  const manifest = JSON.parse(await read('manifest.webmanifest'));
+  assert.equal(manifest.theme_color, '#101f32');
+  assert.equal(manifest.start_url, '/#today');
+  assert.ok(manifest.icons.some(item => item.src === 'icons/planejamento-espiritual-original.png'));
+  assert.ok(manifest.icons.some(item => item.src === 'icons/planejamento-espiritual.svg'));
+  const png = await readFile(new URL('../icons/planejamento-espiritual-original.png', import.meta.url));
+  assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
+  assert.equal(png.readUInt32BE(16), 128);
+  assert.equal(png.readUInt32BE(20), 128);
+  const svg = await read('icons/planejamento-espiritual.svg');
+  assert.match(svg, /<svg/);
+  assert.match(svg, /Planejamento Espiritual/);
+  assert.match(worker, /v30-sidebar-icone-original/);
+  assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
