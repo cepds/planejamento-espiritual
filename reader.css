@@ -1526,3 +1526,112 @@ body.meetings-reading-theme{background:#111317}
 @media(prefers-reduced-motion:reduce){
   [data-reader-page="emergencies"] .emergency-links button{scroll-behavior:auto}
 }
+
+
+/* Ajuste de acabamento: retira fundos verdes herdados apenas nas três abas
+   refinadas. Preserva a paleta da barra lateral, de Hoje e das reuniões. */
+[data-reader-page="daily"],
+[data-reader-page="family"],
+[data-reader-page="emergencies"]{
+  --surface:#fcfdff;
+  --soft:#eef3f8;
+  --line:#d9e3eb;
+  --ink:#253947;
+  --muted:#617686;
+  --green:#325f81;
+  --green-deep:#224d6a;
+  color:var(--ink)
+}
+[data-reader-page="daily"] .daily-editorial .prose,
+[data-reader-page="family"] .family-feature-reading,
+[data-reader-page="family"] .family-library,
+[data-reader-page="emergencies"] .reading{
+  background:var(--surface);
+  border-color:var(--line);
+  color:var(--ink)
+}
+[data-reader-page="daily"] .daily-editorial .inline-link,
+[data-reader-page="family"] .family-feature-intro #family-reading-wrap,
+[data-reader-page="family"] .family-insight,
+[data-reader-page="family"] .family-library-controls,
+[data-reader-page="family"] .family-plan-item.is-current,
+[data-reader-page="emergencies"] .topic-grid section,
+[data-reader-page="emergencies"] .note,
+[data-reader-page="emergencies"] .sources li{
+  background:var(--soft);
+  border-color:var(--line);
+  color:var(--ink)
+}
+[data-reader-page="family"] .family-feature-heading{
+  background:
+    radial-gradient(ellipse at 88% 8%,rgba(151,184,220,.13),transparent 60%),
+    linear-gradient(133deg,#24394f 0%,#2b485f 54%,#35546d 100%)
+}
+[data-reader-page="family"] .family-feature-heading .kicker{color:#c6d8eb}
+[data-reader-page="family"] .family-feature-heading p{color:#d4e1ed}
+[data-reader-page="family"] .family-feature-intro #family-reading-wrap strong,
+[data-reader-page="family"] .family-plan-source,
+[data-reader-page="family"] .family-plan-current-label{
+  color:var(--green)
+}
+[data-reader-page="family"] .family-insight{border-top-color:#83a3c7}
+[data-reader-page="family"] .family-insight--avoid{border-top-color:#c2a181}
+[data-reader-page="family"] .family-insight--questions{border-top-color:#969ac6}
+[data-reader-page="family"] .family-insight--practice{border-top-color:#c1a772}
+[data-reader-page="family"] .family-library-toggle{
+  background:
+    radial-gradient(ellipse at 100% 0%,rgba(180,202,233,.13),transparent 63%),
+    linear-gradient(122deg,#273f57 0%,#355470 100%)
+}
+[data-reader-page="family"] .family-plan-item.is-current{border-color:#9bb2cf}
+[data-reader-page="family"] .family-plan-swap{
+  background:#345d83;
+  border-color:#49749b;
+  color:#fff
+}
+[data-reader-page="family"] .family-plan-swap:hover{background:#426d95}
+[data-reader-page="family"] .family-feature-source .inline-link{
+  background:var(--soft);
+  color:var(--green);
+  border-color:var(--line)
+}
+[data-reader-page="emergencies"] .emergency-links button{
+  background:var(--surface);
+  border-color:var(--line);
+  color:var(--ink)
+}
+[data-reader-page="emergencies"] .emergency-links button:hover{background:var(--soft)}
+[data-reader-page="emergencies"] .reading-heading .kicker{color:#587eaa}
+[data-reader-page="emergencies"] .topic-grid section{border-top-color:#8faac6}
+[data-reader-page="emergencies"] .topic-grid section:nth-child(2){border-top-color:#c5aa82}
+[data-reader-page="emergencies"] .topic-grid section:nth-child(3){border-top-color:#8d9fc9}
+[data-reader-page="emergencies"] .topic-grid section:nth-child(4){border-top-color:#b6a0c9}
+[data-reader-page="emergencies"] .reading>.simple-list li::before{background:#819fbd}
+[data-reader-page="emergencies"] .sources a,
+[data-reader-page="emergencies"] .reading .inline-link{
+  color:var(--green)
+}
+[data-reader-page="emergencies"] .reading .inline-link{background:var(--soft)}
+@media(prefers-color-scheme:dark){
+  [data-reader-page="daily"],
+  [data-reader-page="family"],
+  [data-reader-page="emergencies"]{
+    color-scheme:dark;
+    --surface:#1d2934;
+    --soft:#273745;
+    --line:#3d5263;
+    --ink:#f1f5fa;
+    --muted:#b9c8d5;
+    --green:#b4d3f5;
+    --green-deep:#a6c4e4;
+    color:var(--ink)
+  }
+  [data-reader-page="family"] .family-plan-item.is-current{border-color:#6c88aa}
+  [data-reader-page="family"] .family-plan-swap{
+    background:#355e89;
+    border-color:#577da9;
+    color:#fff
+  }
+  [data-reader-page="family"] .family-plan-swap:hover{background:#4775a0}
+  [data-reader-page="emergencies"] .reading-heading .kicker{color:#aec6e7}
+}
