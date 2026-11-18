@@ -3,7 +3,8 @@
   // Agenda pública: qualquer visitante pode ver, adicionar, editar e excluir eventos.
   // Eventos locais antigos só são compartilhados após confirmação explícita.
   const legacyKey = 'planejamento-espiritual-20-events';
-  const types = new Set(['Congresso', 'Assembleia', 'Visita', 'Outro']);
+  const types = new Set(['Congresso', 'Assembleia', 'Visita', 'Celebração', 'Outro']);
+  const references = window.spiritualEventPrograms || { assembly: null, memorial: null };
   const dialog = document.getElementById('event-dialog');
   const form = document.getElementById('event-form');
   const submit = form.querySelector('button[type="submit"]');
@@ -57,13 +58,71 @@
       Date.parse(currentDate() + 'T00:00:00Z')) / 86400000);
   }
 
+  function addDays(date, count) {
+    if (!validDate(date)) return '';
+    const next = new Date(date + 'T00:00:00Z');
+    next.setUTCDate(next.getUTCDate() + count);
+    return next.toISOString().slice(0, 10);
+  }
+  function visitWeekIsValid(start, end) {
+    return validDate(start) && new Date(start + 'T00:00:00Z').getUTCDay() === 2 &&
+      end === addDays(start, 5);
+  }
+  function safeHttpsUrl(value) {
+    return typeof value === 'string' && /^https:\/\/[^\s<>"']+$/i.test(value) ?
+      value.slice(0, 500) : '';
+  }
+  function dayWithin(date, start, end) {
+    return validDate(date) && date >= start && date <= end;
+  }
+  function cleanTalks(input) {
+    if (!Array.isArray(input)) return [];
+    return input.slice(0, 2).map(item => ({
+      date: validDate(item?.date) ? item.date : '',
+      time: /^([01]\d|2[0-3]):[0-5]\d$/.test(item?.time || '') ? item.time : '',
+      theme: typeof item?.theme === 'string' ? item.theme.slice(0, 180) : ''
+    }));
+  }
+  function memorialEvents() {
+    if (!references.memorial) return [];
+    return references.memorial.dates.map(date => ({
+      id: 'official-memorial-' + date, type: 'Celebração',
+      title: references.memorial.title, date, location: '', dateEnd: date,
+      theme: '', scripture: 'Lucas 22:19', programId: '',
+      programText: '', talks: [], time: '', sourceUrl: references.memorial.source,
+      imageUrl: references.memorial.image, official: true
+    }));
+  }
+  function allEventsWithOfficialDates() {
+    const items = sharedEvents.slice();
+    for (const official of memorialEvents()) {
+      if (!items.some(item => item.type === 'Celebração' && item.date === official.date)) {
+        items.push(official);
+      }
+    }
+    return items;
+  }
+  function imageOf(item) {
+    if (item.type === 'Celebração' && references.memorial) return references.memorial.image;
+    if (item.type === 'Assembleia' && item.programId === 'CA-brpgm27' && references.assembly) {
+      return safeHttpsUrl(item.imageUrl) || references.assembly.image;
+    }
+    return safeHttpsUrl(item.imageUrl);
+  }
+  function sourceOf(item) {
+    if (item.type === 'Celebração' && references.memorial) return references.memorial.source;
+    if (item.type === 'Assembleia' && item.programId === 'CA-brpgm27' && references.assembly) {
+      return safeHttpsUrl(item.sourceUrl) || references.assembly.source;
+    }
+    return safeHttpsUrl(item.sourceUrl);
+  }
   // Computed exclusively from Firestore events, using Brasília calendar dates.
   function upcomingEvents(items) {
     return items.filter(item => validDate(item.date) && until(item.date) >= 0)
       .slice().sort((a,b) => a.date.localeCompare(b.date) || titleOf(a).localeCompare(titleOf(b)));
   }
   function countByType(items) {
-    return ['Congresso','Assembleia','Visita','Outro'].map(type => ({
+    return ['Congresso','Assembleia','Visita','Celebração','Outro'].map(type => ({
       name:type, count:items.filter(item => item.type === type).length
     }));
   }
