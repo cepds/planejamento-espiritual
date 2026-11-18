@@ -454,7 +454,8 @@ test('refinamento destas três abas não modifica a barra lateral nem a aba Hoje
 
 test('cards refinados têm paleta própria sem os fundos verdes globais', () => {
   assert.match(css, /Ajuste de acabamento: retira fundos verdes herdados/);
-  const scoped = css.slice(css.indexOf('Ajuste de acabamento: retira fundos verdes herdados'));
+  const scoped = css.slice(css.indexOf('Ajuste de acabamento: retira fundos verdes herdados'))
+    .split('/* Navegação lateral editorial — paleta azul-ardósia')[0];
   for (const page of ['daily', 'family', 'emergencies']) {
     assert.ok(scoped.includes('[data-reader-page="' + page + '"]'), page);
   }
