@@ -1096,6 +1096,18 @@
       else location.hash = hash;
     });
   });
+  // Atalhos da guia de emergências levam às seções internas sem mudar de aba.
+  document.querySelectorAll('[data-reader-page="emergencies"] [data-scroll-to]')
+    .forEach(button => {
+      button.addEventListener('click', () => {
+        const target = document.getElementById(button.dataset.scrollTo);
+        if (target?.closest('[data-reader-page="emergencies"]') &&
+            !document.querySelector('[data-reader-page="emergencies"]').hidden) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
   addEventListener('resize', () => {
     resizeVisibleWatchtowerComments();
     resizeVisibleMidweekComments();
