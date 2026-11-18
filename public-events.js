@@ -23,6 +23,10 @@
   let saving = false;
   const widget = document.querySelector('.event-widget');
   const toggle = document.getElementById('event-toggle');
+  const dashboard = document.getElementById('event-dashboard');
+  const openDashboard = document.getElementById('event-dashboard-open');
+  const closeDashboard = document.getElementById('event-dashboard-close');
+  const dashboardAdd = document.getElementById('agenda-add');
 
   function setMobileCollapsed(collapsed) {
     widget.dataset.mobileCollapsed = String(collapsed);
@@ -53,6 +57,156 @@
       Date.parse(currentDate() + 'T00:00:00Z')) / 86400000);
   }
 
+  // Computed exclusively from Firestore events, using Brasília calendar dates.
+  function upcomingEvents(items) {
+    return items.filter(item => validDate(item.date) && until(item.date) >= 0)
+      .slice().sort((a,b) => a.date.localeCompare(b.date) || titleOf(a).localeCompare(titleOf(b)));
+  }
+  function countByType(items) {
+    return ['Congresso','Assembleia','Visita','Outro'].map(type => ({
+      name:type, count:items.filter(item => item.type === type).length
+    }));
+  }
+  function sixMonthCounts(items) {
+    const [year,month] = currentDate().slice(0,7).split('-').map(Number);
+    return Array.from({length:6},(_,index) => {
+      const date = new Date(Date.UTC(year,month-1+index,1));
+      const key = date.toISOString().slice(0,7);
+      const label = new Intl.DateTimeFormat('pt-BR',{timeZone:'UTC',month:'short'}).format(date).replace(/\.$/,'');
+      return {key,label,count:items.filter(item => item.date.startsWith(key)).length};
+    });
+  }
+  function remainingLabel(days) {
+    return days === 0 ? 'É hoje' : days === 1 ? 'Falta 1 dia' : 'Faltam '+days+' dias';
+  }
+  function renderTypeChart(items) {
+    const target = document.getElementById('agenda-type-chart');
+    target.replaceChildren();
+    const entries = countByType(items);
+    const maximum = Math.max(1,...entries.map(item => item.count));
+    target.setAttribute('aria-label','Eventos futuros por categoria: '+
+      entries.map(item => item.name+': '+item.count).join(', '));
+    for (const item of entries) {
+      const row = document.createElement('div');
+      row.className='agenda-type-row';
+      const top = document.createElement('div');
+      top.className='agenda-type-row-heading';
+      const label=document.createElement('span');
+      label.textContent=item.name;
+      const count=document.createElement('strong');
+      count.textContent=String(item.count);
+      top.append(label,count);
+      const track=document.createElement('div');
+      track.className='agenda-type-track';
+      const bar=document.createElement('span');
+      bar.className='agenda-type-bar';
+      bar.dataset.type=item.name;
+      bar.style.width=(100*item.count/maximum)+'%';
+      track.append(bar);
+      row.append(top,track);
+      target.append(row);
+    }
+  }
+  function renderMonthChart(items) {
+    const target=document.getElementById('agenda-month-chart');
+    target.replaceChildren();
+    const entries=sixMonthCounts(items);
+    const maximum=Math.max(1,...entries.map(item=>item.count));
+    target.setAttribute('aria-label','Eventos por mês: '+
+      entries.map(item=>item.key+': '+item.count).join(', '));
+    for (const item of entries) {
+      const col=document.createElement('div');
+      col.className='agenda-month-col';
+      const count=document.createElement('strong');
+      count.className='agenda-month-count';
+      count.textContent=String(item.count);
+      const track=document.createElement('div');
+      track.className='agenda-month-track';
+      const bar=document.createElement('span');
+      bar.className='agenda-month-bar';
+      bar.style.height=(100*item.count/maximum)+'%';
+      track.append(bar);
+      const label=document.createElement('span');
+      label.className='agenda-month-label';
+      label.textContent=item.label;
+      col.append(count,track,label);
+      target.append(col);
+    }
+  }
+  function dashboardActions(item) {
+    const actions=document.createElement('div');
+    actions.className='event-list-actions';
+    const edit=document.createElement('button');
+    edit.type='button';
+    edit.textContent='Editar';
+    edit.disabled=!connected;
+    edit.addEventListener('click',()=>openDialog(item));
+    const remove=document.createElement('button');
+    remove.type='button';
+    remove.textContent='Excluir';
+    remove.disabled=!connected;
+    remove.addEventListener('click',async()=>{
+      if(!collection || !confirm('Excluir "'+titleOf(item)+'" da agenda de todos?')) return;
+      remove.disabled=true;
+      try {
+        await collection.doc(item.id).delete();
+        message('Evento excluído para todos.');
+      } catch(error) {
+        console.error('Erro ao excluir evento público:',error);
+        remove.disabled=false;
+        message('Não foi possível excluir o evento.',true);
+      }
+    });
+    actions.append(edit,remove);
+    return actions;
+  }
+  function renderDashboard(upcoming) {
+    const next=upcoming[0];
+    document.getElementById('agenda-hero-title').textContent=next?titleOf(next):'Nenhum evento futuro';
+    document.getElementById('agenda-hero-meta').textContent=next
+      ?dateLabel(next.date)+(next.location?' · '+next.location:'')
+      :'Adicione um evento para começar seu planejamento.';
+    const left=next?until(next.date):null;
+    document.getElementById('agenda-hero-days').textContent=left===null?'—':left===0?'HOJE':String(left);
+    document.getElementById('agenda-hero-days-label').textContent=left===null?'sem eventos':left===0?'é hoje':'dias restantes';
+    document.getElementById('agenda-kpi-upcoming').textContent=String(upcoming.length);
+    document.getElementById('agenda-kpi-month').textContent=String(upcoming.filter(item=>until(item.date)<=30).length);
+    document.getElementById('agenda-kpi-types').textContent=String(new Set(upcoming.map(item=>item.type)).size);
+    renderTypeChart(upcoming);
+    renderMonthChart(upcoming);
+    const list=document.getElementById('agenda-events-list');
+    list.replaceChildren();
+    document.getElementById('agenda-events-empty').hidden=upcoming.length>0;
+    for(const item of upcoming) {
+      const row=document.createElement('li');
+      row.className='agenda-event';
+      const badge=document.createElement('time');
+      badge.className='agenda-event-date';
+      badge.dateTime=item.date;
+      const day=document.createElement('strong');
+      day.textContent=item.date.slice(8,10);
+      const month=document.createElement('small');
+      month.textContent=new Intl.DateTimeFormat('pt-BR',{timeZone:'UTC',month:'short'})
+        .format(new Date(item.date+'T00:00:00Z')).replace(/\.$/,'');
+      badge.append(day,month);
+      const info=document.createElement('div');
+      info.className='agenda-event-info';
+      const type=document.createElement('span');
+      type.className='agenda-event-type';
+      type.textContent=item.type;
+      const title=document.createElement('strong');
+      title.textContent=titleOf(item);
+      const meta=document.createElement('span');
+      meta.className='agenda-event-meta';
+      meta.textContent=dateLabel(item.date)+(item.location?' · '+item.location:'');
+      const remaining=document.createElement('span');
+      remaining.className='agenda-event-remaining';
+      remaining.textContent=remainingLabel(until(item.date));
+      info.append(type,title,meta,remaining);
+      row.append(badge,info,dashboardActions(item));
+      list.append(row);
+    }
+  }
   function message(text, error = false) {
     status.textContent = text;
     status.classList.toggle('error', error);
@@ -62,6 +216,7 @@
     connected = value;
     add.disabled = !value;
     importButton.disabled = !value;
+    dashboardAdd.disabled = !value;
   }
 
   function fromDoc(doc) {
@@ -103,6 +258,10 @@
     }
     document.getElementById('event-empty').hidden = Boolean(next);
     document.getElementById('event-next').hidden = !next;
+    const days=next?until(next.date):null;
+    document.getElementById('event-days').textContent=days===null?'—':days===0?'HOJE':String(days);
+    document.getElementById('event-days-label').textContent=days===0?'é hoje':'dias restantes';
+    renderDashboard(upcomingEvents(ordered));
     if (next) {
       document.getElementById('event-next-type').textContent = next.type;
       document.getElementById('event-next-title').textContent = titleOf(next);
@@ -181,6 +340,27 @@
     dialog.showModal();
   }
 
+  openDashboard.addEventListener('click', () => {
+    render();
+    if (!dashboard.open) dashboard.showModal();
+  });
+  closeDashboard.addEventListener('click', () => dashboard.close());
+  dashboard.addEventListener('click', event => {
+    if (event.target === dashboard) dashboard.close();
+  });
+  dashboardAdd.addEventListener('click', () => openDialog());
+  let lastDay = currentDate();
+  function refreshWhenDateChanges() {
+    const today = currentDate();
+    if (today !== lastDay) {
+      lastDay = today;
+      render();
+    }
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) refreshWhenDateChanges();
+  });
+  setInterval(refreshWhenDateChanges, 60000);
   add.addEventListener('click', () => openDialog());
   document.getElementById('event-cancel').addEventListener('click', () => dialog.close());
   form.addEventListener('submit', async event => {

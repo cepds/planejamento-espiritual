@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=19">
+  <link rel="stylesheet" href="reader.css?v=20">
 </head>
 <body>
 <div class="app">
@@ -246,8 +246,8 @@
   <aside class="event-widget" data-mobile-collapsed="true" aria-label="Agenda de eventos especiais">
     <div class="event-widget-header">
       <div>
-        <span class="event-widget-eyebrow">Agenda</span>
-        <h2>Próximo evento</h2>
+        <span class="event-widget-eyebrow">Agenda compartilhada</span>
+        <h2>Próximos eventos</h2>
         <p id="event-mini" class="event-mini" aria-live="polite">Carregando agenda…</p>
       </div>
       <div class="event-widget-controls">
@@ -259,22 +259,80 @@
     </div>
     <div id="event-preview" class="event-preview" aria-live="polite">
       <p id="event-empty" class="event-empty">Nenhum evento cadastrado.</p>
-      <div id="event-next" hidden>
-        <p id="event-next-type" class="event-kind"></p>
-        <strong id="event-next-title"></strong>
-        <p id="event-next-date"></p>
-        <p id="event-next-location" hidden></p>
+      <div id="event-next" class="event-next-feature" hidden>
+        <div class="event-next-count"><strong id="event-days">0</strong><span id="event-days-label">dias restantes</span></div>
+        <div class="event-next-detail">
+          <p id="event-next-type" class="event-kind"></p>
+          <strong id="event-next-title"></strong>
+          <p id="event-next-date"></p>
+          <p id="event-next-location" hidden></p>
+        </div>
       </div>
     </div>
     <details id="event-all" class="event-all" hidden>
       <summary>Ver eventos cadastrados</summary>
       <ul id="event-list" class="event-list"></ul>
     </details>
+    <button id="event-dashboard-open" class="event-dashboard-open" type="button" aria-haspopup="dialog" aria-controls="event-dashboard">Abrir agenda completa <span aria-hidden="true">↗</span></button>
     <button id="event-import" class="event-import" type="button" hidden disabled>Publicar eventos antigos</button>
     <p id="event-sync-status" class="event-sync-status" role="status">Conectando agenda compartilhada…</p>
   </aside>
 </div>
 
+<dialog id="event-dashboard" class="event-dashboard" aria-labelledby="event-dashboard-title">
+  <div class="agenda-shell">
+    <header class="agenda-header">
+      <div>
+        <span class="agenda-eyebrow">PLANEJAMENTO · EVENTOS</span>
+        <h2 id="event-dashboard-title">Agenda de eventos</h2>
+        <p>Compromissos compartilhados, contagem regressiva e visão dos próximos meses.</p>
+      </div>
+      <button type="button" id="event-dashboard-close" class="agenda-close" aria-label="Fechar agenda">✕</button>
+    </header>
+    <div class="agenda-main">
+      <section class="agenda-hero" aria-label="Próximo evento">
+        <div class="agenda-hero-info">
+          <span class="agenda-hero-label">PRÓXIMO COMPROMISSO</span>
+          <strong id="agenda-hero-title">Nenhum evento futuro</strong>
+          <p id="agenda-hero-meta">Adicione um evento para começar seu planejamento.</p>
+        </div>
+        <div class="agenda-countdown" aria-live="polite">
+          <strong id="agenda-hero-days">—</strong>
+          <span id="agenda-hero-days-label">dias restantes</span>
+        </div>
+      </section>
+      <section class="agenda-kpis" aria-label="Indicadores da agenda">
+        <div class="agenda-kpi"><span>Eventos futuros</span><strong id="agenda-kpi-upcoming">0</strong><small>Datas a partir de hoje</small></div>
+        <div class="agenda-kpi"><span>Nos próximos 30 dias</span><strong id="agenda-kpi-month">0</strong><small>Compromissos mais próximos</small></div>
+        <div class="agenda-kpi"><span>Tipos de evento</span><strong id="agenda-kpi-types">0</strong><small>Categorias com registros futuros</small></div>
+      </section>
+      <div class="agenda-charts">
+        <section class="agenda-chart-card" aria-labelledby="agenda-type-title">
+          <h3 id="agenda-type-title">Eventos por categoria</h3>
+          <p>Distribuição dos compromissos futuros</p>
+          <div id="agenda-type-chart" class="agenda-type-chart" role="img" aria-label="Distribuição de eventos por categoria"></div>
+        </section>
+        <section class="agenda-chart-card" aria-labelledby="agenda-month-title">
+          <h3 id="agenda-month-title">Próximos seis meses</h3>
+          <p>Eventos registrados por mês</p>
+          <div id="agenda-month-chart" class="agenda-month-chart" role="img" aria-label="Quantidade de eventos por mês"></div>
+        </section>
+      </div>
+      <section class="agenda-events-panel" aria-labelledby="agenda-events-title">
+        <div class="agenda-events-heading">
+          <div>
+            <h3 id="agenda-events-title">Próximos compromissos</h3>
+            <p>Datas em ordem cronológica, com dias restantes</p>
+          </div>
+          <button type="button" id="agenda-add" class="agenda-add" disabled>+ Adicionar</button>
+        </div>
+        <p id="agenda-events-empty" class="agenda-events-empty" hidden>Não há eventos futuros cadastrados.</p>
+        <ol id="agenda-events-list" class="agenda-events-list"></ol>
+      </section>
+      <p class="agenda-shared-note">Agenda pública compartilhada em tempo real. Os eventos cadastrados podem ser editados ou excluídos por qualquer visitante.</p>
+    </div>
+  </div>
+</dialog>
 <dialog id="event-dialog" class="event-dialog" aria-labelledby="event-dialog-title">
   <form id="event-form">
     <h2 id="event-dialog-title">Adicionar evento</h2>
@@ -316,7 +374,7 @@
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
 <script src="reader.js?v=15" defer></script>
-<script src="public-events.js?v=2" defer></script>
+<script src="public-events.js?v=3" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
    addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });

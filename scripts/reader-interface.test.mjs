@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=15', 'reader.css?v=19', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=15', 'reader.css?v=20', 'public-events.js?v=3']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -515,4 +515,68 @@ test('barra lateral mantém opções acessíveis no celular sem mudar as página
   assert.match(html, /data-reader-page="daily"/);
   assert.match(html, /data-reader-page="family"/);
   assert.match(html, /data-reader-page="emergencies"/);
+});
+
+
+test('botão JW.org é padronizado e fundo azul-grafite em todas as abas', () => {
+  assert.match(html, /class="source-pill" href="https:\/\/www\.jw\.org\/pt\/"/);
+  assert.match(css, /UNIFICAÇÃO: base azul-grafite das reuniões em todas as cinco páginas/);
+  const unified = css.slice(css.indexOf('UNIFICAÇÃO: base azul-grafite'));
+  assert.match(unified, /body\{\s*--bg:#111317/);
+  assert.match(unified, /background:#111317/);
+  assert.match(unified, /body \.source-pill,\s*body\.meetings-reading-theme \.source-pill/);
+  assert.match(unified, /background:#242e3a/);
+  for (const name of ['daily','family','emergencies','today']) {
+    assert.ok(unified.includes('[data-reader-page="' + name + '"]'), name);
+  }
+  assert.match(unified, /--surface:#1b1e23/);
+  assert.match(unified, /--soft:#262a31/);
+});
+
+test('Agenda completa inclui gráficos, KPIs, contagem regressiva e todos os controles originais', () => {
+  assert.match(html, /class="event-widget"/);
+  for (const id of ['event-open','event-toggle','event-preview','event-all',
+    'event-list','event-import','event-sync-status','event-dialog','event-form',
+    'event-form-date','event-dashboard-open','event-dashboard','event-dashboard-close',
+    'agenda-hero-title','agenda-hero-days','agenda-hero-meta','agenda-kpi-upcoming',
+    'agenda-kpi-month','agenda-kpi-types','agenda-type-chart','agenda-month-chart',
+    'agenda-events-list','agenda-events-empty','agenda-add','event-days']) {
+    assert.match(html, new RegExp('id="' + id + '"'), id);
+  }
+  assert.match(events, /function upcomingEvents\(items\)/);
+  assert.match(events, /function countByType\(items\)/);
+  assert.match(events, /function sixMonthCounts\(items\)/);
+  assert.match(events, /function renderTypeChart\(items\)/);
+  assert.match(events, /function renderMonthChart\(items\)/);
+  assert.match(events, /function renderDashboard\(upcoming\)/);
+  assert.match(events, /function remainingLabel\(days\)/);
+  assert.match(events, /dashboard\.showModal\(\)/);
+  assert.match(events, /dashboard\.close\(\)/);
+  assert.match(events, /agenda-kpi-upcoming/);
+  assert.match(events, /agenda-month-bar/);
+  assert.match(events, /agenda-type-bar/);
+  assert.match(events, /new Intl\.DateTimeFormat\('en-CA'/);
+  assert.match(events, /timeZone: 'America\/Sao_Paulo'/);
+  assert.match(events, /setInterval\(refreshWhenDateChanges, 60000\)/);
+  assert.match(events, /collection\.orderBy\('date', 'desc'\)\.limit\(200\)\.onSnapshot/);
+  assert.match(events, /collection\.doc\(editingId\)\.update\(payload\)/);
+  assert.match(events, /collection\.add\(payload\)/);
+  assert.match(events, /collection\.doc\(item\.id\)\.delete\(\)/);
+  assert.doesNotMatch(events, /localStorage\.setItem/);
+  assert.match(css, /\.event-dashboard\{/);
+  assert.match(css, /\.agenda-type-track\{/);
+  assert.match(css, /\.agenda-month-chart\{/);
+  assert.match(css, /\.agenda-events-list\{/);
+  assert.match(css, /\.agenda-countdown\{/);
+});
+
+test('Agenda mantém quadro compacto no celular e painel grande responsivo', () => {
+  assert.match(html, /data-mobile-collapsed="true"/);
+  assert.match(html, /id="event-toggle"/);
+  assert.match(html, /id="event-dashboard-open"/);
+  assert.match(css, /@media\(max-width:650px\)/);
+  assert.match(css, /\.event-dashboard\{width:calc\(100vw - 12px\)/);
+  assert.match(css, /\.agenda-charts\{grid-template-columns:1fr/);
+  assert.match(events, /setMobileCollapsed/);
+  assert.match(events, /mini\.textContent/);
 });
