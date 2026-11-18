@@ -23,6 +23,10 @@
   let saving = false;
   const widget = document.querySelector('.event-widget');
   const toggle = document.getElementById('event-toggle');
+  const dashboard = document.getElementById('event-dashboard');
+  const openDashboard = document.getElementById('event-dashboard-open');
+  const closeDashboard = document.getElementById('event-dashboard-close');
+  const dashboardAdd = document.getElementById('agenda-add');
 
   function setMobileCollapsed(collapsed) {
     widget.dataset.mobileCollapsed = String(collapsed);
@@ -53,6 +57,28 @@
       Date.parse(currentDate() + 'T00:00:00Z')) / 86400000);
   }
 
+  // Computed exclusively from Firestore events, using Brasília calendar dates.
+  function upcomingEvents(items) {
+    return items.filter(item => validDate(item.date) && until(item.date) >= 0)
+      .slice().sort((a,b) => a.date.localeCompare(b.date) || titleOf(a).localeCompare(titleOf(b)));
+  }
+  function countByType(items) {
+    return ['Congresso','Assembleia','Visita','Outro'].map(type => ({
+      name:type, count:items.filter(item => item.type === type).length
+    }));
+  }
+  function sixMonthCounts(items) {
+    const [year,month] = currentDate().slice(0,7).split('-').map(Number);
+    return Array.from({length:6},(_,index) => {
+      const date = new Date(Date.UTC(year,month-1+index,1));
+      const key = date.toISOString().slice(0,7);
+      const label = new Intl.DateTimeFormat('pt-BR',{timeZone:'UTC',month:'short'}).format(date).replace(/\\.$/,'');
+      return {key,label,count:items.filter(item => item.date.startsWith(key)).length};
+    });
+  }
+  function remainingLabel(days) {
+    return days === 0 ? 'É hoje' : days === 1 ? 'Falta 1 dia' : 'Faltam '+days+' dias';
+  }
   function message(text, error = false) {
     status.textContent = text;
     status.classList.toggle('error', error);
