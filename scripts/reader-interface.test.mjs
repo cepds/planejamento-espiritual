@@ -534,7 +534,8 @@ test('botão JW.org é padronizado e fundo azul-grafite em todas as abas', () =>
 });
 
 test('Agenda completa inclui gráficos, KPIs, contagem regressiva e todos os controles originais', () => {
-  for (const id of ['event-widget','event-open','event-toggle','event-preview','event-all',
+  assert.match(html, /class="event-widget"/);
+  for (const id of ['event-open','event-toggle','event-preview','event-all',
     'event-list','event-import','event-sync-status','event-dialog','event-form',
     'event-form-date','event-dashboard-open','event-dashboard','event-dashboard-close',
     'agenda-hero-title','agenda-hero-days','agenda-hero-meta','agenda-kpi-upcoming',
