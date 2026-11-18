@@ -11,19 +11,20 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/favicon-3d.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/favicon-3d.png">
-  <link rel="stylesheet" href="reader.css?v=18">
+  <link rel="stylesheet" href="reader.css?v=19">
 </head>
 <body>
 <div class="app">
   <aside class="sidebar" aria-label="Navegação principal">
-    <a class="brand" href="#today"><span class="brand-mark" aria-hidden="true">✧</span><span class="brand-name">Planejamento<em>Espiritual</em></span></a>
+    <a class="brand" href="#today" aria-label="Planejamento Espiritual — voltar à página Hoje"><span class="brand-mark" aria-hidden="true">PE</span><span class="brand-name">Planejamento<em>Espiritual</em></span></a>
     
+    <p class="sidebar-section-label">Navegação</p>
     <nav class="nav" aria-label="Seções">
-      <a href="#today" data-reader-link="today" aria-current="page"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10Z"/><path d="M9 21v-7h6v7"/></svg></span>Hoje</a>
-      <a href="#meetings" data-reader-link="meetings"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-13 4h3m3 0h3m-9 4h3"/></svg></span>Reuniões</a>
-      <a href="#daily" data-reader-link="daily"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Zm0 0v14"/></svg></span>Texto diário</a>
-      <a href="#family" data-reader-link="family"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3V10Z"/><path d="M8 20v-5h8v5m-6-11c1-2 4-2 5 0 1 2-2.5 4-2.5 4S9 11 10 9Z"/></svg></span>Adoração em família</a>
-      <a href="#emergencies" data-reader-link="emergencies"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M12 7v6m0 4h.01"/></svg></span>Emergências</a>
+      <a href="#today" data-reader-link="today" aria-current="page"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V10Z"/><path d="M9 21v-7h6v7"/></svg></span><span class="nav-copy"><span class="nav-label">Hoje</span><small class="nav-description" aria-hidden="true">Visão geral</small></span></a>
+      <a href="#meetings" data-reader-link="meetings"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-13 4h3m3 0h3m-9 4h3"/></svg></span><span class="nav-copy"><span class="nav-label">Reuniões</span><small class="nav-description" aria-hidden="true">Meio de semana e A Sentinela</small></span></a>
+      <a href="#daily" data-reader-link="daily"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Zm0 0v14"/></svg></span><span class="nav-copy"><span class="nav-label">Texto diário</span><small class="nav-description" aria-hidden="true">Leitura e reflexão</small></span></a>
+      <a href="#family" data-reader-link="family"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10H3V10Z"/><path d="M8 20v-5h8v5m-6-11c1-2 4-2 5 0 1 2-2.5 4-2.5 4S9 11 10 9Z"/></svg></span><span class="nav-copy"><span class="nav-label">Adoração em família</span><small class="nav-description" aria-hidden="true">Estudos e calendário</small></span></a>
+      <a href="#emergencies" data-reader-link="emergencies"><span class="nav-symbol" aria-hidden="true"><svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="M12 7v6m0 4h.01"/></svg></span><span class="nav-copy"><span class="nav-label">Emergências</span><small class="nav-description" aria-hidden="true">Preparação e referências</small></span></a>
     </nav>
     
   </aside>
