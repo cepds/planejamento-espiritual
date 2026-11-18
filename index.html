@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/planejamento-espiritual-original.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/planejamento-espiritual-original.png">
-  <link rel="stylesheet" href="reader.css?v=21">
+  <link rel="stylesheet" href="reader.css?v=22">
 </head>
 <body>
 <div class="app">
@@ -329,7 +329,32 @@
         <p id="agenda-events-empty" class="agenda-events-empty" hidden>Não há eventos futuros cadastrados.</p>
         <ol id="agenda-events-list" class="agenda-events-list"></ol>
       </section>
+      <section class="agenda-reference-panel" aria-labelledby="agenda-reference-title">
+        <div class="agenda-reference-cover"><img src="https://cms-imgp.jw-cdn.org/img/p/ca-brpgm27/T/pt/ca-brpgm27_T_lg.jpg" loading="lazy" alt="Capa do programa oficial da Assembleia de Circuito 2026–2027"></div>
+        <div class="agenda-reference-body">
+          <span class="agenda-reference-tag">PROGRAMA OFICIAL · 2026–2027</span>
+          <h3 id="agenda-reference-title">Encontre a Mais Plena Alegria em Jeová</h3>
+          <p>Assembleia de Circuito com o representante de Betel · Salmo 37:4</p>
+          <button id="agenda-reference-view" type="button" class="agenda-reference-view">Consultar programação completa</button>
+        </div>
+      </section>
       <p class="agenda-shared-note">Agenda pública compartilhada em tempo real. Os eventos cadastrados podem ser editados ou excluídos por qualquer visitante.</p>
+    </div>
+  </div>
+</dialog>
+<dialog id="event-details-dialog" class="event-details-dialog" aria-labelledby="event-details-title">
+  <div class="event-details-shell">
+    <button id="event-details-close" class="event-details-close" type="button" aria-label="Fechar detalhes">✕</button>
+    <img id="event-details-image" class="event-details-image" hidden alt="">
+    <div class="event-details-body">
+      <span id="event-details-kind" class="event-details-kind">PROGRAMA</span>
+      <h2 id="event-details-title">Detalhes do evento</h2>
+      <p id="event-details-scripture" class="event-details-scripture" hidden></p>
+      <p id="event-details-period" class="event-details-period"></p>
+      <p id="event-details-location" class="event-details-location" hidden></p>
+      <p id="event-details-note" class="event-details-note" hidden></p>
+      <div id="event-details-program" class="event-details-program"></div>
+      <a id="event-details-source" class="event-details-source" href="#" target="_blank" rel="noopener noreferrer" hidden>Ver publicação oficial no JW.org ↗</a>
     </div>
   </div>
 </dialog>
@@ -341,6 +366,7 @@
       <option value="Congresso">Congresso</option>
       <option value="Assembleia">Assembleia</option>
       <option value="Visita">Visita</option>
+      <option value="Celebração">Celebração</option>
       <option value="Outro">Outro</option>
     </select>
     <label for="event-form-title">Título (opcional)</label>
@@ -349,6 +375,50 @@
     <input id="event-form-date" type="date" required>
     <label for="event-form-location">Local (opcional)</label>
     <input id="event-form-location" type="text" maxlength="120" placeholder="Local do evento">
+    <fieldset id="event-form-assembly" class="event-detail-fields" hidden>
+      <legend>Programa da assembleia</legend>
+      <label for="event-form-program">Referência oficial</label>
+      <select id="event-form-program">
+        <option value="CA-brpgm27">Assembleia 2026–2027 · Representante de Betel</option>
+        <option value="custom">Outro programa (preencher manualmente)</option>
+      </select>
+      <label for="event-form-theme">Tema da assembleia</label>
+      <input id="event-form-theme" type="text" maxlength="140" placeholder="Tema que aparecerá em destaque">
+      <label for="event-form-scripture">Texto bíblico principal (opcional)</label>
+      <input id="event-form-scripture" type="text" maxlength="100" placeholder="Ex.: Salmo 37:4">
+      <label for="event-form-image">Imagem (URL HTTPS, opcional)</label>
+      <input id="event-form-image" type="url" maxlength="500" placeholder="https://...">
+      <label for="event-form-source">Link do programa (URL HTTPS, opcional)</label>
+      <input id="event-form-source" type="url" maxlength="500" placeholder="https://www.jw.org/...">
+      <label for="event-form-program-lines">Programação personalizada (opcional)</label>
+      <textarea id="event-form-program-lines" rows="5" maxlength="8000" placeholder="Dia | Manhã | 09:40 | Música&#10;Dia | Tarde | 14:00 | Discurso"></textarea>
+      <p class="event-detail-hint">O programa 2026–2027 já está disponível na Agenda completa. Se escolher outro programa, cadastre os itens acima, uma linha por atividade.</p>
+    </fieldset>
+    <fieldset id="event-form-visit" class="event-detail-fields" hidden>
+      <legend>Visita de terça a domingo</legend>
+      <label for="event-form-date-end">Último dia da visita (domingo)</label>
+      <input id="event-form-date-end" type="date" readonly>
+      <div class="event-talk-fields">
+        <div><h3>Discurso 1</h3>
+          <label for="event-talk-1-date">Data</label><input id="event-talk-1-date" type="date">
+          <label for="event-talk-1-time">Horário (opcional)</label><input id="event-talk-1-time" type="time">
+          <label for="event-talk-1-theme">Tema</label><input id="event-talk-1-theme" type="text" maxlength="180" placeholder="Informe o tema do primeiro discurso">
+        </div>
+        <div><h3>Discurso 2</h3>
+          <label for="event-talk-2-date">Data</label><input id="event-talk-2-date" type="date">
+          <label for="event-talk-2-time">Horário (opcional)</label><input id="event-talk-2-time" type="time">
+          <label for="event-talk-2-theme">Tema</label><input id="event-talk-2-theme" type="text" maxlength="180" placeholder="Informe o tema do segundo discurso">
+        </div>
+      </div>
+      <p class="event-detail-hint">A visita vai de terça a domingo. As datas dos discursos são sugeridas para terça e sábado, mas você pode alterá-las dentro desse período.</p>
+    </fieldset>
+    <fieldset id="event-form-memorial" class="event-detail-fields" hidden>
+      <legend>Celebração da morte de Cristo</legend>
+      <p class="event-sunset-note">Sempre após o pôr do sol. Confirme o horário e o local com a congregação.</p>
+      <label for="event-memorial-time">Horário confirmado (opcional)</label>
+      <input id="event-memorial-time" type="time">
+      <p class="event-detail-hint">Datas oficiais: 22/03/2027, 09/04/2028 e 29/03/2029. Elas já aparecem automaticamente na Agenda, sem precisar duplicá-las.</p>
+    </fieldset>
     <p class="event-storage">Eventos compartilhados: qualquer visitante pode visualizar, adicionar, editar e excluir.</p>
     <div class="event-form-actions">
       <button id="event-cancel" type="button" class="event-cancel">Cancelar</button>
@@ -374,7 +444,8 @@
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
 <script src="reader.js?v=15" defer></script>
-<script src="public-events.js?v=3" defer></script>
+<script src="event-programs.js?v=1" defer></script>
+<script src="public-events.js?v=4" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
    addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
