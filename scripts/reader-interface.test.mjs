@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=15', 'reader.css?v=17', 'public-events.js?v=2']) {
+  for (const file of ['reader.js?v=15', 'reader.css?v=18', 'public-events.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -449,4 +449,34 @@ test('refinamento destas três abas não modifica a barra lateral nem a aba Hoje
   assert.match(css, /Leitura editorial refinada: Texto diário, Adoração em família e Emergências/);
   assert.match(css, /Aba Hoje — refinamento editorial dos quatro cards originais/);
   assert.match(css, /body\.meetings-reading-theme\{background:#111317\}/);
+});
+
+
+test('cards refinados têm paleta própria sem os fundos verdes globais', () => {
+  assert.match(css, /Ajuste de acabamento: retira fundos verdes herdados/);
+  const scoped = css.slice(css.indexOf('Ajuste de acabamento: retira fundos verdes herdados'));
+  for (const page of ['daily', 'family', 'emergencies']) {
+    assert.ok(scoped.includes('[data-reader-page="' + page + '"]'), page);
+  }
+  for (const color of ['--soft:#eef3f8', '--surface:#fcfdff',
+    '--soft:#273745', '--surface:#1d2934', '--green:#325f81', '--green:#b4d3f5']) {
+    assert.ok(scoped.includes(color), color);
+  }
+  for (const card of ['.family-insight', '.family-plan-item.is-current',
+    '.family-library-controls', '.topic-grid section', '.note', '.sources li']) {
+    assert.ok(scoped.includes(card), card);
+  }
+  assert.match(scoped, /@media\(prefers-color-scheme:dark\)/);
+  assert.doesNotMatch(scoped, /(?:\.sidebar|\[data-reader-page="today"\]|\[data-reader-page="meetings"\])/);
+});
+
+test('ajuste residual mantém estudos e controles de Emergências', () => {
+  assert.match(html, /id="family-library"/);
+  assert.match(html, /id="family-plan-list"/);
+  assert.match(html, /id="family-category-filter"/);
+  assert.match(html, /id="daily-content"/);
+  assert.match(html, /id="sources"/);
+  assert.match(reader, /function swapFamilyStudy\(otherDate\)/);
+  assert.match(reader, /function renderDailyOnly\(content\)/);
+  assert.match(reader, /document\.querySelectorAll\('\[data-reader-page="emergencies"\] \[data-scroll-to\]'\)/);
 });
