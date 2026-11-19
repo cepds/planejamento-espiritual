@@ -629,7 +629,7 @@ test('Agenda suporta Assembleia, Visita e Celebração com datas e fontes oficia
   }
   assert.match(html, /<option value="Celebração">Celebração<\/option>/);
   assert.match(html, /Realizada após o pôr do sol|Sempre após o pôr do sol/);
-  assert.match(html, /event-programs\.js\?v=1/);
+  assert.match(html, /event-programs\.js\?v=2/);
   assert.match(events, /function memorialEvents\(\)/);
   assert.match(events, /function visitWeekIsValid\(start, end\)/);
   assert.match(events, /function showEventDetails\(item\)/);
