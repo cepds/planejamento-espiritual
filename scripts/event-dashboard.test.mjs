@@ -66,7 +66,7 @@ function runWithDocs(documents, useOfficial = false) {
   return {get,recorded};
 }
 
-test('Agenda mostra somente dados reais, prazos em dias e duas visualizações',()=>{
+test('Agenda exibe apenas cards ilustrados com os eventos reais e suas datas',()=>{
   const {get}=runWithDocs([
     {id:'a',type:'Assembleia',title:'Primeiro evento',date:offsetDate(5),location:'Local A'},
     {id:'b',type:'Congresso',title:'Segundo evento',date:offsetDate(38),location:'Local B'},
@@ -74,12 +74,6 @@ test('Agenda mostra somente dados reais, prazos em dias e duas visualizações',
   ]);
   assert.equal(get('event-next-title').textContent,'Primeiro evento');
   assert.equal(get('event-days').textContent,'5');
-  assert.equal(get('agenda-hero-days').textContent,'5');
-  assert.equal(get('agenda-kpi-upcoming').textContent,'2');
-  assert.equal(get('agenda-kpi-month').textContent,'1');
-  assert.equal(get('agenda-kpi-types').textContent,'2');
-  assert.equal(get('agenda-type-chart').children.length,5);
-  assert.equal(get('agenda-month-chart').children.length,6);
   assert.equal(get('agenda-events-list').children.length,2);
   assert.equal(get('agenda-events-list').children[0].children[1].children.at(-1).textContent,'Faltam 5 dias');
   assert.equal(get('agenda-events-list').children[0].children[2].children.length,3);
@@ -90,16 +84,10 @@ test('Agenda mostra somente dados reais, prazos em dias e duas visualizações',
   assert.equal(get('event-dashboard').open,false);
 });
 
-test('Agenda sem eventos não inventa dados ou gráficos preenchidos',()=>{
+test('Agenda sem eventos mostra estado vazio sem gráficos',()=>{
   const {get}=runWithDocs([]);
-  assert.equal(get('agenda-kpi-upcoming').textContent,'0');
-  assert.equal(get('agenda-kpi-month').textContent,'0');
-  assert.equal(get('agenda-kpi-types').textContent,'0');
-  assert.equal(get('agenda-hero-days').textContent,'—');
   assert.equal(get('agenda-events-list').children.length,0);
   assert.equal(get('agenda-events-empty').hidden,false);
-  assert.equal(get('agenda-type-chart').children.every(row=>row.children[1].children[0].style.width==='0%'),true);
-  assert.equal(get('agenda-month-chart').children.every(col=>col.children[1].children[0].style.height==='0%'),true);
 });
 
 test('Agenda mantém cadastro no Firestore e botão de inclusão em ambos os painéis',()=>{
@@ -114,7 +102,7 @@ test('Agenda mantém cadastro no Firestore e botão de inclusão em ambos os pai
 test('Celebração apresenta somente as três datas oficiais e a imagem enviada',()=>{
   const {get}=runWithDocs([],true);
   const expected=['2027-03-22','2028-04-09','2029-03-29'].filter(d=>d>=dateInBrasilia());
-  assert.equal(Number(get('agenda-kpi-upcoming').textContent),expected.length);
+
   assert.equal(get('agenda-events-list').children.length,expected.length);
   if(expected.length) {
     const item=get('agenda-events-list').children[0];
@@ -207,7 +195,6 @@ test('Celebração antiga ignora capa, link e tema personalizados e mantém tít
     sourceUrl:'https://example.com/sem-fonte',theme:'Tema personalizado'
   }],true);
   assert.equal(get('event-next-image').src,'images/celebracao-jesus.webp');
-  assert.equal(get('agenda-hero-image').src,'images/celebracao-jesus.webp');
   const card=get('agenda-events-list').children[0];
   assert.equal(card.children[3].children[0].src,'images/celebracao-jesus.webp');
   card.children[3].listeners.click();

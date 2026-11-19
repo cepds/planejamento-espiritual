@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/planejamento-espiritual-original.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/planejamento-espiritual-original.png">
-  <link rel="stylesheet" href="reader.css?v=23">
+  <link rel="stylesheet" href="reader.css?v=24">
 </head>
 <body>
 <div class="app">
@@ -287,41 +287,11 @@
       <div>
         <span class="agenda-eyebrow">PLANEJAMENTO · EVENTOS</span>
         <h2 id="event-dashboard-title">Agenda de eventos</h2>
-        <p>Compromissos compartilhados, contagem regressiva e visão dos próximos meses.</p>
+        <p>Eventos ilustrados, em ordem de data. Toque em um card para abrir os detalhes.</p>
       </div>
       <button type="button" id="event-dashboard-close" class="agenda-close" aria-label="Fechar agenda">✕</button>
     </header>
     <div class="agenda-main">
-      <section class="agenda-hero" aria-label="Próximo evento">
-        <img id="agenda-hero-image" class="agenda-hero-image" alt="" hidden>
-        <time id="agenda-hero-date-chip" class="agenda-hero-date-chip" hidden></time>
-        <div class="agenda-hero-info">
-          <span class="agenda-hero-label">PRÓXIMO COMPROMISSO</span>
-          <strong id="agenda-hero-title">Nenhum evento futuro</strong>
-          <p id="agenda-hero-meta">Adicione um evento para começar seu planejamento.</p>
-        </div>
-        <div class="agenda-countdown" aria-live="polite">
-          <strong id="agenda-hero-days">—</strong>
-          <span id="agenda-hero-days-label">dias restantes</span>
-        </div>
-      </section>
-      <section class="agenda-kpis" aria-label="Indicadores da agenda">
-        <div class="agenda-kpi"><span>Eventos futuros</span><strong id="agenda-kpi-upcoming">0</strong><small>Datas a partir de hoje</small></div>
-        <div class="agenda-kpi"><span>Nos próximos 30 dias</span><strong id="agenda-kpi-month">0</strong><small>Compromissos mais próximos</small></div>
-        <div class="agenda-kpi"><span>Tipos de evento</span><strong id="agenda-kpi-types">0</strong><small>Categorias com registros futuros</small></div>
-      </section>
-      <div class="agenda-charts">
-        <section class="agenda-chart-card" aria-labelledby="agenda-type-title">
-          <h3 id="agenda-type-title">Eventos por categoria</h3>
-          <p>Distribuição dos compromissos futuros</p>
-          <div id="agenda-type-chart" class="agenda-type-chart" role="img" aria-label="Distribuição de eventos por categoria"></div>
-        </section>
-        <section class="agenda-chart-card" aria-labelledby="agenda-month-title">
-          <h3 id="agenda-month-title">Próximos seis meses</h3>
-          <p>Eventos registrados por mês</p>
-          <div id="agenda-month-chart" class="agenda-month-chart" role="img" aria-label="Quantidade de eventos por mês"></div>
-        </section>
-      </div>
       <section class="agenda-events-panel" aria-labelledby="agenda-events-title">
         <div class="agenda-events-heading">
           <div>
@@ -459,7 +429,7 @@
 <script src="/__/firebase/init.js" defer></script>
 <script src="reader.js?v=15" defer></script>
 <script src="event-programs.js?v=1" defer></script>
-<script src="public-events.js?v=6" defer></script>
+<script src="public-events.js?v=7" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
    addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });

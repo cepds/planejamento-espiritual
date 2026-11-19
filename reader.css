@@ -3051,3 +3051,7 @@ body [data-reader-page="family"] .family-plan-swap:hover{background:#466f9d}
   .event-details-days-chip{bottom:12px;right:12px}
 }
 @media(prefers-reduced-motion:reduce){.agenda-event-image{transition:none}}
+
+/* Agenda focada apenas em cards ilustrados, sem indicadores ou gráficos. */
+.agenda-main>.agenda-events-panel{margin-top:0;padding-top:23px}
+@media(max-width:650px){.agenda-main>.agenda-events-panel{padding-top:18px}}
