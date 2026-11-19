@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=18', 'reader.css?v=27', 'public-events.js?v=7', 'event-programs.js?v=1']) {
+  for (const file of ['reader.js?v=19', 'reader.css?v=28', 'public-events.js?v=7', 'event-programs.js?v=1']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -393,46 +393,33 @@ test('Texto Diário tem leitura editorial refinada sem perder texto, data e font
   assert.match(reader, /renderDailyOnly\(content\)/);
 });
 
-test('Adoração em família mantém imagem original e abre leitura da fonte oficial, sem resumos', () => {
+test('Adoração em família mantém o visual superior e apresenta somente link da publicação', () => {
   const family = html.slice(html.indexOf('data-reader-page="family"'),
     html.indexOf('data-reader-page="emergencies"'));
   assert.match(family, /class="reading family-feature-reading"/);
   assert.match(family, /class="reading-cover family-feature-cover"/);
-  for (const id of ['family-cover', 'family-prompt', 'family-reading',
-    'family-publication-heading', 'family-publication-title', 'family-reader-input',
-    'family-reader-toggle', 'family-reader-save', 'family-reader-cancel',
-    'family-reader-clear', 'family-reader-content', 'family-reader-text',
-    'family-publication-status', 'family-original', 'family-official-pdf',
-    'family-pdf-frame', 'family-pdf-status', 'family-pdf-open',
-    'family-library', 'family-category-filter', 'family-plan-list', 'family-plan-reset']) {
+  for (const id of ['family-cover','family-topic','family-title','family-date','family-prompt',
+    'family-reading','family-original','family-library','family-category-filter',
+    'family-plan-list','family-plan-reset']) {
     assert.match(family, new RegExp('id="' + id + '"'));
   }
-  assert.doesNotMatch(family, /class="family-insight/);
-  assert.match(family, /<iframe id="family-pdf-frame"/);
-  assert.match(family, /<textarea id="family-reader-input"/);
-  assert.match(family, /id="family-reader-content"/);
+  assert.match(family, /class="family-source-only"/);
+  assert.match(family, /class="family-original-link"/);
+  assert.match(family, /Ler publicação completa no JW.org/);
+  for (const removed of ['family-pdf-frame','family-official-pdf',
+    'family-reader-input','family-reader-content','family-publication-status']) {
+    assert.doesNotMatch(family, new RegExp('id="' + removed + '"'), removed);
+  }
+  assert.doesNotMatch(family, /<iframe|<textarea|class="family-insight/);
   assert.match(css, /\.family-feature-cover img:not\(\[hidden\]\)\{/);
-  assert.match(css, /max-width:none/);
-  assert.match(css, /object-fit:cover/);
-  assert.match(css, /border-radius:0/);
-  assert.match(css, /\.family-publication-reader\{/);
-  assert.match(css, /\.family-official-pdf\{/);
-  assert.match(css, /\.family-library-toggle\{/);
+  assert.match(css, /\.family-source-only\{/);
+  assert.match(css, /\.family-original-link\{/);
   assert.match(reader, /function swapFamilyStudy\(otherDate\)/);
   assert.match(reader, /function renderFamilySchedule\(\)/);
-  assert.match(reader, /function officialUrl\(value\)/);
-  assert.match(reader, /localStorage\.setItem\(activeFamilyReadingKey, content\)/);
-  assert.match(reader, /localStorage\.getItem\(activeFamilyReadingKey\)/);
-  assert.match(reader, /function renderPersonalFamilyText\(\)/);
-  assert.match(reader, /function renderOfficialFamilyPdf\(study\)/);
-  assert.match(reader, /function familyPublicationCode\(value\)/);
-  assert.match(reader, /function verifiedFamilyPdfUrl\(value\)/);
-  assert.match(reader, /GETPUBMEDIALINKS/);
-  assert.match(reader, /imiteSuaFePdf = 'https:\/\/cfp2\.jw-cdn\.org/);
-  assert.doesNotMatch(reader, /family-publication-frame/);
-  assert.match(reader, /setSource\('#family-original', source\)/);
-  assert.doesNotMatch(reader, /setText\('#family-do'/);
-  assert.doesNotMatch(reader, /setText\('#family-avoid'/);
+  assert.match(reader, /setSource\('#family-original', study.articleUrl\)/);
+  assert.doesNotMatch(reader, /renderOfficialFamilyPdf|renderPersonalFamilyText/);
+  assert.doesNotMatch(reader, /GETPUBMEDIALINKS/);
+  assert.doesNotMatch(reader, /family-reader-input/);
 });
 
 test('Emergências mantém as referências e tem navegação por atalhos em cartões', () => {
@@ -623,7 +610,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v37-familia-pdf-oficial/);
+  assert.match(worker, /v38-familia-link-oficial/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 

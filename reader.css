@@ -3056,115 +3056,27 @@ body [data-reader-page="family"] .family-plan-swap:hover{background:#466f9d}
 .agenda-main>.agenda-events-panel{margin-top:0;padding-top:23px}
 @media(max-width:650px){.agenda-main>.agenda-events-panel{padding-top:18px}}
 
-/* Leitura da fonte oficial na aba Adoração em família: não altera imagem e cabeçalho. */
-[data-reader-page="family"] .family-publication-reader{
-  padding:30px clamp(23px,5vw,54px) 33px;
-  background:var(--surface);color:var(--ink)
+/* Adoração em família: apenas a fonte original abaixo da imagem. */
+[data-reader-page="family"] .family-source-only{
+  padding:28px clamp(23px,5vw,54px) 36px;
+  display:flex;justify-content:center;align-items:center;
+  background:var(--surface)
 }
-[data-reader-page="family"] .family-publication-header{margin:0 0 19px}
-[data-reader-page="family"] .family-publication-eyebrow{
-  font-size:.68rem;letter-spacing:.14em;font-weight:850;color:var(--green)
+[data-reader-page="family"] .family-original-link{
+  display:inline-flex;align-items:center;justify-content:center;
+  max-width:100%;min-height:52px;padding:14px 22px;
+  border:1px solid #4e769f;border-radius:12px;
+  background:#315c87;color:#fff;
+  font:750 .93rem/1.35 "Segoe UI",system-ui,sans-serif;
+  text-align:center;text-decoration:none;
+  transition:background .16s ease,border-color .16s ease
 }
-[data-reader-page="family"] .family-publication-header h3{
-  font:700 clamp(1.45rem,3vw,2rem)/1.23 Georgia,"Times New Roman",serif;
-  color:var(--ink);margin:8px 0 9px
+[data-reader-page="family"] .family-original-link:hover,
+[data-reader-page="family"] .family-original-link:focus-visible{
+  color:#fff;background:#426f9e;border-color:#6a96bf
 }
-[data-reader-page="family"] .family-publication-title{
-  margin:0;color:var(--muted);font-size:.91rem;line-height:1.6
-}
-[data-reader-page="family"] .family-publication-view{
-  overflow:hidden;border:1px solid var(--line);border-radius:15px;
-  background:#fff
-}
-[data-reader-page="family"] .family-publication-view[hidden]{display:none}
-[data-reader-page="family"] .family-publication-view iframe{
-  display:block;width:100%;height:min(79vh,920px);
-  min-height:520px;border:0;background:#fff
-}
-[data-reader-page="family"] .family-publication-guidance{
-  padding-top:18px;display:flex;flex-wrap:wrap;gap:10px 20px;
-  align-items:center;justify-content:space-between
-}
-[data-reader-page="family"] .family-publication-guidance p{
-  margin:0;flex:1 1 270px;font-size:.79rem;line-height:1.6;color:var(--muted)
-}
-[data-reader-page="family"] .family-publication-fallback{
-  min-height:40px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;
-  color:var(--green);text-decoration:none;font-size:.81rem;font-weight:800
-}
-[data-reader-page="family"] .family-publication-fallback[hidden]{display:none}
+[data-reader-page="family"] .family-original-link[hidden]{display:none!important}
 @media(max-width:600px){
-  [data-reader-page="family"] .family-publication-reader{padding:25px 17px}
-  [data-reader-page="family"] .family-publication-view iframe{height:77vh;min-height:480px}
-}
-
-/* Adoração em família — área de leitura pessoal, sem publicação de conteúdo. */
-[data-reader-page="family"] .family-reader-toolbar,
-[data-reader-page="family"] .family-reader-editor-actions{
-  display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0
-}
-[data-reader-page="family"] .family-reader-button,
-[data-reader-page="family"] .family-reader-remove{
-  min-height:43px;padding:11px 16px;border:1px solid #6486aa;border-radius:11px;
-  font:750 .85rem/1.35 "Segoe UI",system-ui,sans-serif;cursor:pointer
-}
-[data-reader-page="family"] .family-reader-button{color:#fff;background:#315c87}
-[data-reader-page="family"] .family-reader-button:hover{background:#416f9e}
-[data-reader-page="family"] .family-reader-remove{color:var(--ink);background:var(--soft);border-color:var(--line)}
-[data-reader-page="family"] .family-reader-editor{
-  padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--soft)
-}
-[data-reader-page="family"] .family-reader-editor[hidden],
-[data-reader-page="family"] .family-reader-content[hidden],
-[data-reader-page="family"] .family-reader-remove[hidden]{display:none!important}
-[data-reader-page="family"] .family-reader-editor label{
-  display:block;margin-bottom:13px;color:var(--ink);font-weight:750;font-size:.88rem
-}
-[data-reader-page="family"] #family-reader-input{
-  display:block;width:100%;min-height:240px;max-height:75vh;resize:vertical;
-  padding:18px 19px;background:var(--surface);border:1px solid var(--line);
-  border-radius:12px;color:var(--ink);font:400 1rem/1.7 "Segoe UI",system-ui,sans-serif
-}
-[data-reader-page="family"] .family-reader-content{
-  padding:clamp(20px,4vw,38px);
-  background:var(--surface);border:1px solid var(--line);border-radius:14px;
-  color:var(--ink)
-}
-[data-reader-page="family"] .family-reader-text{
-  white-space:pre-wrap;overflow-wrap:anywhere;
-  font:400 clamp(1rem,1.35vw,1.14rem)/1.9 Georgia,"Times New Roman",serif
-}
-[data-reader-page="family"] .family-publication-guidance{margin-top:18px}
-@media(max-width:600px){
-  [data-reader-page="family"] .family-reader-content{padding:22px 17px}
-  [data-reader-page="family"] .family-reader-text{font-size:1.05rem;line-height:1.85}
-}
-
-/* Leitor em PDF oficial na Adoração em família (sem copiar ou distribuir arquivos). */
-[data-reader-page="family"] .family-official-pdf{
-  border:1px solid var(--line);border-radius:15px;overflow:hidden;
-  background:var(--soft);margin:8px 0 16px
-}
-[data-reader-page="family"] .family-official-pdf[hidden],
-[data-reader-page="family"] .family-pdf-open[hidden]{display:none!important}
-[data-reader-page="family"] .family-official-pdf-header{
-  padding:15px 18px;display:flex;align-items:center;justify-content:space-between;
-  gap:12px;flex-wrap:wrap;color:var(--ink)
-}
-[data-reader-page="family"] .family-official-pdf-header strong{
-  font-size:.85rem;font-weight:800
-}
-[data-reader-page="family"] .family-pdf-open{
-  border:1px solid var(--line);border-radius:10px;background:var(--surface);
-  min-height:40px;padding:10px 14px;color:var(--green);font-size:.8rem
-}
-[data-reader-page="family"] #family-pdf-frame{
-  display:block;border:0;width:100%;height:min(82vh,930px);min-height:530px;background:#fff
-}
-[data-reader-page="family"] .family-pdf-status{
-  margin:12px 0 16px;font-size:.8rem;line-height:1.65;color:var(--muted)
-}
-@media(max-width:600px){
-  [data-reader-page="family"] .family-official-pdf-header{padding:13px}
-  [data-reader-page="family"] #family-pdf-frame{height:75vh;min-height:490px}
+  [data-reader-page="family"] .family-source-only{padding:24px 18px 29px}
+  [data-reader-page="family"] .family-original-link{width:100%}
 }
