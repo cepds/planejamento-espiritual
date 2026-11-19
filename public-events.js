@@ -188,6 +188,10 @@
     return actions;
   }
   function renderDashboard(upcoming) {
+    // O painel de referência não deve duplicar uma Assembleia já cadastrada.
+    // O cadastro no Firestore não é alterado.
+    document.getElementById('agenda-reference-panel').hidden =
+      upcoming.some(item => item.type === 'Assembleia');
     const list=document.getElementById('agenda-events-list');
     list.replaceChildren();
     document.getElementById('agenda-events-empty').hidden=upcoming.length>0;
@@ -223,6 +227,7 @@
       coverButton.setAttribute('aria-label','Abrir detalhes de '+titleOf(item));
       const coverImage=document.createElement('img');
       coverImage.className='agenda-event-image';
+      coverImage.dataset.eventType=item.type;
       coverImage.src=imageOf(item);
       coverImage.alt='Imagem de '+titleOf(item);
       coverImage.loading='lazy';
@@ -280,6 +285,7 @@
   function showEventDetails(item) {
     const details = document.getElementById('event-details-dialog');
     const cover = document.getElementById('event-details-image');
+    cover.dataset.eventType=item.type;
     const image = imageOf(item);
     cover.hidden = !image;
     if (image) cover.src = image;
@@ -420,6 +426,7 @@
     document.getElementById('event-days').textContent=days===null?'—':days<0?'ATUAL':days===0?'HOJE':String(days);
     document.getElementById('event-days-label').textContent=days!==null&&days<0?'em andamento':days===0?'é hoje':'dias restantes';
     const miniImage=document.getElementById('event-next-image');
+    miniImage.dataset.eventType=next?.type || '';
     const nextImage=next?imageOf(next):'';
     miniImage.hidden=!nextImage;
     if (nextImage) miniImage.src=nextImage;
@@ -490,6 +497,7 @@
       thumb.className='event-list-cover';
       thumb.setAttribute('aria-label','Abrir detalhes de '+titleOf(item));
       const thumbImage=document.createElement('img');
+      thumbImage.dataset.eventType=item.type;
       thumbImage.src=imageOf(item);
       thumbImage.alt='Imagem de '+titleOf(item);
       thumbImage.loading='lazy';

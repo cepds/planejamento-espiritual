@@ -3083,3 +3083,20 @@ body [data-reader-page="family"] .family-plan-swap:hover{background:#466f9d}
 
 /* Imagens vetoriais nítidas sem ampliação interpolada. */
 .agenda-event-image{image-rendering:auto;transform:none}
+
+/* Assembleia: capa de publicação preservada, sem ampliar nem cortar o arquivo.
+   Específico para Assembleia; demais eventos continuam com suas imagens atuais. */
+.agenda-reference-panel[hidden]{display:none!important}
+.agenda-reference-cover img{object-fit:contain;background:#172a3f}
+.agenda-event-image[data-event-type="Assembleia"],
+.event-next-image[data-event-type="Assembleia"],
+.event-list-cover img[data-event-type="Assembleia"],
+.event-details-image[data-event-type="Assembleia"]{
+  object-fit:contain;object-position:center;background:#172a3f;
+}
+.agenda-event-image[data-event-type="Assembleia"]{
+  padding:8px 0;box-sizing:border-box
+}
+.event-details-image[data-event-type="Assembleia"]{
+  height:240px;max-height:240px
+}

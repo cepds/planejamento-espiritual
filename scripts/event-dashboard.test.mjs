@@ -73,6 +73,7 @@ test('Agenda exibe apenas cards ilustrados com os eventos reais e suas datas',()
     {id:'c',type:'Outro',title:'Já ocorreu',date:offsetDate(-4),location:''}
   ]);
   assert.equal(get('event-next-title').textContent,'Primeiro evento');
+  assert.equal(get('agenda-reference-panel').hidden,true,'referência oficial não duplica Assembleia agendada');
   assert.equal(get('event-days').textContent,'5');
   assert.equal(get('agenda-events-list').children.length,2);
   assert.equal(get('agenda-events-list').children[0].children[1].children.at(-1).textContent,'Faltam 5 dias');
@@ -86,6 +87,7 @@ test('Agenda exibe apenas cards ilustrados com os eventos reais e suas datas',()
 
 test('Agenda sem eventos mostra estado vazio sem gráficos',()=>{
   const {get}=runWithDocs([]);
+  assert.equal(get('agenda-reference-panel').hidden,false,'referência oficial permanece acessível quando não há Assembleia');
   assert.equal(get('agenda-events-list').children.length,0);
   assert.equal(get('agenda-events-empty').hidden,false);
 });
@@ -129,6 +131,21 @@ test('Programa oficial da Assembleia abre completo dividido em manhã e tarde',(
   assert.equal(sections[0].children[1].children.length,9);
   assert.equal(sections[1].children[1].children.length,9);
   assert.match(get('event-details-source').href,/1102027242/);
+});
+
+test('Imagem da Assembleia mantém marcação em card, detalhes e painel compacto',()=>{
+  const {get}=runWithDocs([{
+    id:'assembly-1',type:'Assembleia',title:'Encontre a Mais Plena Alegria em Jeová',
+    programId:'CA-brpgm27',date:offsetDate(3)
+  }],true);
+  assert.equal(get('agenda-reference-panel').hidden,true);
+  const card=get('agenda-events-list').children[0];
+  assert.equal(card.children[3].children[0].dataset.eventType,'Assembleia');
+  assert.equal(get('event-next-image').dataset.eventType,'Assembleia');
+  card.children[3].listeners.click();
+  assert.equal(get('event-details-image').dataset.eventType,'Assembleia');
+  assert.equal(get('event-details-dialog').open,true);
+  assert.equal(get('event-details-program').children.length,2,'programação completa permanece disponível no card');
 });
 
 test('Visita permite salvar semana terça-domingo e dois temas independentes',async()=>{

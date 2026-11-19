@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=19', 'reader.css?v=29', 'public-events.js?v=9', 'event-programs.js?v=2']) {
+  for (const file of ['reader.js?v=19', 'reader.css?v=30', 'public-events.js?v=10', 'event-programs.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -611,7 +611,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v41-celebracao-jw-imagem-oficial/);
+  assert.match(worker, /v42-assembleia-sem-duplicacao/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 
@@ -622,7 +622,7 @@ test('Agenda suporta Assembleia, Visita e Celebração com datas e fontes oficia
     'event-form-image','event-form-source','event-form-program-lines',
     'event-talk-1-date','event-talk-1-time','event-talk-1-theme',
     'event-talk-2-date','event-talk-2-time','event-talk-2-theme',
-    'event-memorial-time','agenda-reference-view','event-details-dialog',
+    'event-memorial-time','agenda-reference-panel','agenda-reference-view','event-details-dialog',
     'event-details-close','event-details-program','event-details-image',
     'event-next-image','agenda-events-list']) {
     assert.match(html, new RegExp('id="' + id + '"'), id);
@@ -643,6 +643,9 @@ test('Agenda suporta Assembleia, Visita e Celebração com datas e fontes oficia
   assert.match(css, /\.event-details-dialog\{/);
   assert.match(css, /\.event-talk-fields\{/);
   assert.match(css, /\.agenda-reference-panel\{/);
+  assert.match(css, /\.agenda-reference-panel\[hidden\]\{display:none!important\}/);
+  assert.match(css, /\.agenda-event-image\[data-event-type="Assembleia"\]/);
+  assert.match(events, /getElementById\('agenda-reference-panel'\)\.hidden/);
   const program = await read('event-programs.js');
   assert.match(program, /CA-brpgm27/);
   for (const date of ['2027-03-22','2028-04-09','2029-03-29']) assert.ok(program.includes(date));

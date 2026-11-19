@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/planejamento-espiritual-original.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/planejamento-espiritual-original.png">
-  <link rel="stylesheet" href="reader.css?v=29">
+  <link rel="stylesheet" href="reader.css?v=30">
 </head>
 <body>
 <div class="app">
@@ -299,7 +299,7 @@
         <p id="agenda-events-empty" class="agenda-events-empty" hidden>Não há eventos futuros cadastrados.</p>
         <ol id="agenda-events-list" class="agenda-events-list"></ol>
       </section>
-      <section class="agenda-reference-panel" aria-labelledby="agenda-reference-title">
+      <section id="agenda-reference-panel" class="agenda-reference-panel" aria-labelledby="agenda-reference-title">
         <div class="agenda-reference-cover"><img src="https://cms-imgp.jw-cdn.org/img/p/ca-brpgm27/T/pt/ca-brpgm27_T_lg.jpg" loading="lazy" alt="Capa do programa oficial da Assembleia de Circuito 2026–2027"></div>
         <div class="agenda-reference-body">
           <span class="agenda-reference-tag">PROGRAMA OFICIAL · 2026–2027</span>
@@ -425,7 +425,7 @@
 <script src="/__/firebase/init.js" defer></script>
 <script src="reader.js?v=19" defer></script>
 <script src="event-programs.js?v=2" defer></script>
-<script src="public-events.js?v=9" defer></script>
+<script src="public-events.js?v=10" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
    addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
