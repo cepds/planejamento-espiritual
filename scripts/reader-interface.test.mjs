@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=16', 'reader.css?v=25', 'public-events.js?v=7', 'event-programs.js?v=1']) {
+  for (const file of ['reader.js?v=17', 'reader.css?v=26', 'public-events.js?v=7', 'event-programs.js?v=1']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -399,15 +399,17 @@ test('Adoração em família mantém imagem original e abre leitura da fonte ofi
   assert.match(family, /class="reading family-feature-reading"/);
   assert.match(family, /class="reading-cover family-feature-cover"/);
   for (const id of ['family-cover', 'family-prompt', 'family-reading',
-    'family-publication-heading', 'family-publication-title', 'family-publication-frame',
-    'family-publication-view', 'family-publication-status', 'family-original',
+    'family-publication-heading', 'family-publication-title', 'family-reader-input',
+    'family-reader-toggle', 'family-reader-save', 'family-reader-cancel',
+    'family-reader-clear', 'family-reader-content', 'family-reader-text',
+    'family-publication-status', 'family-original',
     'family-library', 'family-category-filter', 'family-plan-list', 'family-plan-reset']) {
     assert.match(family, new RegExp('id="' + id + '"'));
   }
   assert.doesNotMatch(family, /class="family-insight/);
-  assert.match(family, /<iframe id="family-publication-frame"/);
-  assert.match(family, /loading="lazy"/);
-  assert.match(family, /referrerpolicy="no-referrer"/);
+  assert.doesNotMatch(family, /<iframe/);
+  assert.match(family, /<textarea id="family-reader-input"/);
+  assert.match(family, /id="family-reader-content"/);
   assert.match(css, /\.family-feature-cover img:not\(\[hidden\]\)\{/);
   assert.match(css, /max-width:none/);
   assert.match(css, /object-fit:cover/);
@@ -417,7 +419,10 @@ test('Adoração em família mantém imagem original e abre leitura da fonte ofi
   assert.match(reader, /function swapFamilyStudy\(otherDate\)/);
   assert.match(reader, /function renderFamilySchedule\(\)/);
   assert.match(reader, /function officialUrl\(value\)/);
-  assert.match(reader, /frame\.src = source/);
+  assert.match(reader, /localStorage\.setItem\(activeFamilyReadingKey, content\)/);
+  assert.match(reader, /localStorage\.getItem\(activeFamilyReadingKey\)/);
+  assert.match(reader, /function renderPersonalFamilyText\(\)/);
+  assert.doesNotMatch(reader, /family-publication-frame/);
   assert.match(reader, /setSource\('#family-original', source\)/);
   assert.doesNotMatch(reader, /setText\('#family-do'/);
   assert.doesNotMatch(reader, /setText\('#family-avoid'/);
@@ -611,7 +616,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v35-familia-leitura-oficial/);
+  assert.match(worker, /v36-familia-leitura-local/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 

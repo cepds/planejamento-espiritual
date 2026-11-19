@@ -796,6 +796,76 @@
     return asDate(week) || week;
   }
 
+  let activeFamilyReadingKey = '';
+  function personalFamilyText() {
+    if (!activeFamilyReadingKey) return '';
+    try {
+      return localStorage.getItem(activeFamilyReadingKey) || '';
+    } catch {
+      return '';
+    }
+  }
+
+  function renderPersonalFamilyText() {
+    const saved = personalFamilyText();
+    const reader = document.querySelector('#family-reader-content');
+    const output = document.querySelector('#family-reader-text');
+    const toggle = document.querySelector('#family-reader-toggle');
+    const remove = document.querySelector('#family-reader-clear');
+    const status = document.querySelector('#family-publication-status');
+    output.textContent = saved;
+    reader.hidden = !saved;
+    remove.hidden = !saved;
+    toggle.textContent = saved ? 'Editar texto para leitura' : 'Colar texto para leitura';
+    status.textContent = saved
+      ? 'Cópia pessoal salva somente neste navegador. Não é compartilhada nem enviada ao Firebase.'
+      : 'Cole o texto para ler a publicação inteira aqui. O conteúdo não é publicado nem compartilhado.';
+  }
+
+  document.querySelector('#family-reader-toggle').addEventListener('click', () => {
+    const editor = document.querySelector('#family-reader-editor');
+    editor.hidden = !editor.hidden;
+    if (!editor.hidden) {
+      document.querySelector('#family-reader-input').value = personalFamilyText();
+      document.querySelector('#family-reader-input').focus();
+    }
+  });
+  document.querySelector('#family-reader-cancel').addEventListener('click', () => {
+    document.querySelector('#family-reader-editor').hidden = true;
+    document.querySelector('#family-reader-input').value = '';
+    renderPersonalFamilyText();
+  });
+  document.querySelector('#family-reader-save').addEventListener('click', () => {
+    if (!activeFamilyReadingKey) return;
+    const content = document.querySelector('#family-reader-input').value.trim();
+    if (!content) {
+      document.querySelector('#family-publication-status').textContent =
+        'Cole o texto da publicação antes de salvar.';
+      return;
+    }
+    try {
+      localStorage.setItem(activeFamilyReadingKey, content);
+      document.querySelector('#family-reader-editor').hidden = true;
+      renderPersonalFamilyText();
+    } catch {
+      document.querySelector('#family-publication-status').textContent =
+        'Não foi possível salvar neste navegador. Verifique o armazenamento local.';
+    }
+  });
+  document.querySelector('#family-reader-clear').addEventListener('click', () => {
+    if (!activeFamilyReadingKey ||
+      !confirm('Apagar deste navegador o texto salvo para esta publicação?')) return;
+    try {
+      localStorage.removeItem(activeFamilyReadingKey);
+      document.querySelector('#family-reader-editor').hidden = true;
+      document.querySelector('#family-reader-input').value = '';
+      renderPersonalFamilyText();
+    } catch {
+      document.querySelector('#family-publication-status').textContent =
+        'Não foi possível apagar o texto local neste navegador.';
+    }
+  });
+
   function renderFamilyStudy(study) {
     if (!study) return;
     setText('#family-topic', study.topic || study.category || 'Tema da semana');
@@ -807,22 +877,12 @@
     setCover('#family-cover', study.publicationImageUrl, 'Imagem da publicação do estudo selecionado');
     setText('#family-publication-title', study.sourceTitle || study.title || '');
     const source = officialUrl(study.articleUrl);
-    const frame = document.querySelector('#family-publication-frame');
-    const display = document.querySelector('#family-publication-view');
-    const status = document.querySelector('#family-publication-status');
-    // A leitura é servida diretamente pelo JW.org: não se armazena nem se reproduz
-    // o conteúdo protegido no Firebase. O domínio de origem decide se aceita iframe.
-    const webpage = source && /^https:\/\/(?:[a-z0-9-]+\.)*(?:jw\.org)$/i.test(new URL(source).hostname);
-    display.hidden = !webpage;
-    if (webpage) {
-      if (frame.getAttribute('src') !== source) frame.src = source;
-      frame.title = 'Leitura de ' + (study.sourceTitle || study.title || 'publicação') + ' no JW.org';
-      status.textContent = 'A leitura utiliza a página original do JW.org. Se não aparecer aqui, o site oficial pode impedir a exibição incorporada.';
-    } else {
-      frame.removeAttribute('src');
-      status.textContent = 'Esta publicação não possui um endereço de leitura compatível com a visualização incorporada.';
-    }
     setSource('#family-original', source);
+    activeFamilyReadingKey = 'planejamento-espiritual-family-text-v1:' +
+      (source || (study.title || 'sem-titulo'));
+    document.querySelector('#family-reader-editor').hidden = true;
+    document.querySelector('#family-reader-input').value = '';
+    renderPersonalFamilyText();
   }
 
   function renderFamilySchedule() {

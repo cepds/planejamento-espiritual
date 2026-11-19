@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/planejamento-espiritual-original.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/planejamento-espiritual-original.png">
-  <link rel="stylesheet" href="reader.css?v=25">
+  <link rel="stylesheet" href="reader.css?v=26">
 </head>
 <body>
 <div class="app">
@@ -158,12 +158,24 @@
               <p id="family-publication-title" class="family-publication-title"></p>
             </div>
           </header>
-          <div id="family-publication-view" class="family-publication-view" hidden>
-            <iframe id="family-publication-frame" title="Leitura da publicação oficial no JW.org" loading="lazy" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
+          <div class="family-reader-toolbar">
+            <button type="button" id="family-reader-toggle" class="family-reader-button">Colar texto para leitura</button>
+            <button type="button" id="family-reader-clear" class="family-reader-remove" hidden>Apagar texto local</button>
           </div>
+          <div id="family-reader-editor" class="family-reader-editor" hidden>
+            <label for="family-reader-input">Cole abaixo a publicação que você quer ler</label>
+            <textarea id="family-reader-input" rows="12" maxlength="400000" spellcheck="false" placeholder="Copie o texto da publicação e cole aqui. Ele ficará salvo somente neste navegador."></textarea>
+            <div class="family-reader-editor-actions">
+              <button type="button" id="family-reader-save" class="family-reader-button">Salvar para ler</button>
+              <button type="button" id="family-reader-cancel" class="family-reader-remove">Cancelar</button>
+            </div>
+          </div>
+          <article id="family-reader-content" class="family-reader-content" aria-label="Texto para leitura pessoal" hidden>
+            <div id="family-reader-text" class="family-reader-text"></div>
+          </article>
           <div class="family-publication-guidance">
-            <p id="family-publication-status">A publicação é carregada diretamente da fonte oficial, sem ser copiada para este site. A exibição depende da permissão do JW.org.</p>
-            <a class="inline-link family-publication-fallback" id="family-original" hidden target="_blank" rel="noopener noreferrer">Abrir publicação original no JW.org ↗</a>
+            <p id="family-publication-status" role="status">Cole o texto uma vez para ler aqui. O conteúdo fica apenas neste navegador, não é enviado ao Firebase.</p>
+            <a class="inline-link family-publication-fallback" id="family-original" hidden target="_blank" rel="noopener noreferrer">Abrir publicação no JW.org ↗</a>
           </div>
         </section>
       </article>
@@ -436,7 +448,7 @@
 <script src="/__/firebase/8.10.1/firebase-app.js" defer></script>
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
-<script src="reader.js?v=16" defer></script>
+<script src="reader.js?v=17" defer></script>
 <script src="event-programs.js?v=1" defer></script>
 <script src="public-events.js?v=7" defer></script>
 <script>
