@@ -110,7 +110,7 @@ test('Celebração apresenta somente as três datas oficiais e a imagem enviada'
     assert.equal(item.children[2].children.length,1,'datas oficiais são somente leitura');
     item.children[2].children[0].listeners.click();
     assert.equal(get('event-details-dialog').open,true);
-    assert.equal(get('event-details-image').src,'images/celebracao-jesus.svg');
+    assert.equal(get('event-details-image').src,'https://cms-imgp.jw-cdn.org/img/p/500900026/univ/art/500900026_univ_cnt_1_xl.jpg');
     assert.match(get('event-details-note').textContent,/após o pôr do sol/);
     assert.match(get('event-details-source').href,/jw\.org/);
   }
@@ -194,11 +194,11 @@ test('Celebração antiga ignora capa, link e tema personalizados e mantém tít
     date:offsetDate(4),imageUrl:'https://example.com/foto-errada.jpg',
     sourceUrl:'https://example.com/sem-fonte',theme:'Tema personalizado'
   }],true);
-  assert.equal(get('event-next-image').src,'images/celebracao-jesus.svg');
+  assert.equal(get('event-next-image').src,'https://cms-imgp.jw-cdn.org/img/p/500900026/univ/art/500900026_univ_cnt_1_xl.jpg');
   const card=get('agenda-events-list').children[0];
-  assert.equal(card.children[3].children[0].src,'images/celebracao-jesus.svg');
+  assert.equal(card.children[3].children[0].src,'https://cms-imgp.jw-cdn.org/img/p/500900026/univ/art/500900026_univ_cnt_1_xl.jpg');
   card.children[3].listeners.click();
-  assert.equal(get('event-details-image').src,'images/celebracao-jesus.svg');
+  assert.equal(get('event-details-image').src,'https://cms-imgp.jw-cdn.org/img/p/500900026/univ/art/500900026_univ_cnt_1_xl.jpg');
   assert.equal(get('event-details-title').textContent,'Celebração da morte de Cristo');
   assert.match(get('event-details-source').href,/jw\.org/);
 });

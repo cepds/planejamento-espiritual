@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=19', 'reader.css?v=29', 'public-events.js?v=8', 'event-programs.js?v=1']) {
+  for (const file of ['reader.js?v=19', 'reader.css?v=29', 'public-events.js?v=9', 'event-programs.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -611,7 +611,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v40-capas-nitidas-agenda/);
+  assert.match(worker, /v41-celebracao-jw-imagem-oficial/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 
@@ -646,16 +646,16 @@ test('Agenda suporta Assembleia, Visita e Celebração com datas e fontes oficia
   const program = await read('event-programs.js');
   assert.match(program, /CA-brpgm27/);
   for (const date of ['2027-03-22','2028-04-09','2029-03-29']) assert.ok(program.includes(date));
-  assert.match(program, /images\/celebracao-jesus\.svg/);
+  assert.match(program, /https:\/\/cms-imgp\.jw-cdn\.org\/img\/p\/500900026\/univ\/art\/500900026_univ_cnt_1_xl\.jpg/);
 });
 
-test('Capas de Congresso e Celebração usam vetores nítidos',async()=>{
-const celebration=await read('images/celebracao-jesus.svg');
-const congress=await read('images/congresso.svg');
-assert.match(celebration,/viewBox="0 0 1600 800"/);
-assert.match(congress,/viewBox="0 0 1600 850"/);
-assert.match(events,/images\/celebracao-jesus\.svg/);
-assert.match(events,/images\/congresso\.svg/);
-assert.match(css,/\.agenda-event-image\{image-rendering:auto;transform:none\}/);
-assert.doesNotMatch(css,/\.agenda-event-cover:hover \.agenda-event-image\{transform:scale/);
+test('Celebração usa imagem oficial do JW.org em vez de ilustração gerada', async () => {
+  const congress = await read('images/congresso.svg');
+  assert.match(congress, /viewBox="0 0 1600 850"/);
+  assert.match(events, /500900026_univ_cnt_1_xl\.jpg/);
+  const program = await read('event-programs.js');
+  assert.match(program, /500900026_univ_cnt_1_xl\.jpg/);
+  assert.match(css, /\.agenda-event-image\{image-rendering:auto;transform:none\}/);
+  assert.doesNotMatch(events, /images\/celebracao-jesus\.svg/);
+  assert.doesNotMatch(program, /images\/celebracao-jesus\.svg/);
 });

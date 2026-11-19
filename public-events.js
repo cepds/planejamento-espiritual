@@ -126,7 +126,7 @@
   function defaultCover(item) {
     if (item.type === 'Visita') return 'images/visita-super.jpg';
     if (item.type === 'Assembleia') return references.assembly?.image || 'images/evento-padrao.svg';
-    if (item.type === 'Celebração') return references.memorial?.image || 'images/celebracao-jesus.svg';
+    if (item.type === 'Celebração') return references.memorial?.image || 'https://cms-imgp.jw-cdn.org/img/p/500900026/univ/art/500900026_univ_cnt_1_xl.jpg';
     if (item.type === 'Congresso') return 'images/congresso.svg';
     return 'images/evento-padrao.svg';
   }
@@ -134,7 +134,7 @@
     // Eventos de Celebração sempre usam a única capa oficial configurada.
     // Também cobre eventos manuais antigos com imageUrl diferente.
     if (item.type === 'Celebração' || isOfficialMemorial(item)) {
-      return references.memorial?.image || 'images/celebracao-jesus.svg';
+      return references.memorial?.image || 'https://cms-imgp.jw-cdn.org/img/p/500900026/univ/art/500900026_univ_cnt_1_xl.jpg';
     }
     return safeHttpsUrl(item.imageUrl) || defaultCover(item);
   }

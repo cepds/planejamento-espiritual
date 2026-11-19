@@ -37,7 +37,7 @@
     },
     memorial: {
       title: 'Celebração da morte de Cristo',
-      image: 'images/celebracao-jesus.svg',
+      image: 'https://cms-imgp.jw-cdn.org/img/p/500900026/univ/art/500900026_univ_cnt_1_xl.jpg',
       source: 'https://www.jw.org/pt/testemunhas-de-jeova/celebracao/Celebra%C3%A7%C3%A3o-da-morte-de-Jesus/',
       note: 'Realizada após o pôr do sol',
       dates: ['2027-03-22', '2028-04-09', '2029-03-29']
