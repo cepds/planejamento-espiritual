@@ -796,6 +796,112 @@
     return asDate(week) || week;
   }
 
+
+  // Os arquivos são servidos diretamente pelo JW.org, sem cópias no Firebase.
+  const familyPdfRequests = new Map();
+  let familyPdfRequestId = 0;
+  const imiteSuaFePdf = 'https://cfp2.jw-cdn.org/a/5d2664/1/o/ia_T.pdf';
+  const monthNumbers = Object.freeze({
+    janeiro:'01',fevereiro:'02',marco:'03',março:'03',abril:'04',
+    maio:'05',junho:'06',julho:'07',agosto:'08',
+    setembro:'09',outubro:'10',novembro:'11',dezembro:'12'
+  });
+
+  function verifiedFamilyPdfUrl(value) {
+    try {
+      const url = new URL(value);
+      const host = url.hostname.toLowerCase();
+      if (url.protocol !== 'https:' ||
+          !(host === 'jw-cdn.org' || host.endsWith('.jw-cdn.org')) ||
+          !/\.pdf$/i.test(url.pathname)) return '';
+      return url.href;
+    } catch {
+      return '';
+    }
+  }
+
+  function familyPublicationCode(value) {
+    const url = officialUrl(value);
+    if (!url) return null;
+    const path = new URL(url).pathname.toLowerCase();
+    if (/^\/pt\/biblioteca\/livros\/verdadeira-fe\//.test(path)) {
+      return { pub: 'ia', issue: '', knownPdf: imiteSuaFePdf };
+    }
+    const magazine = path.match(/\/biblioteca\/revistas\/(?:a-)?sentinela-estudo-([a-zç]+)-(\d{4})\//);
+    if (magazine && monthNumbers[magazine[1]]) {
+      return { pub: 'w', issue: magazine[2] + monthNumbers[magazine[1]] };
+    }
+    const legacyMagazine = path.match(/\/biblioteca\/revistas\/(wp|w)(\d{8})\//);
+    if (legacyMagazine) {
+      return { pub: legacyMagazine[1], issue: legacyMagazine[2] };
+    }
+    const workbook = path.match(/\/biblioteca\/jw-apostila-do-mes\/([a-zç]+)-(\d{4})-mwb\//);
+    if (workbook && monthNumbers[workbook[1]]) {
+      return { pub: 'mwb', issue: workbook[2] + monthNumbers[workbook[1]] };
+    }
+    return null;
+  }
+
+  async function resolveFamilyPdf(study) {
+    const source = officialUrl(study.articleUrl);
+    if (!source) return '';
+    if (familyPdfRequests.has(source)) return familyPdfRequests.get(source);
+    const publication = familyPublicationCode(source);
+    if (!publication) return '';
+    if (publication.knownPdf) return verifiedFamilyPdfUrl(publication.knownPdf);
+    // API oficial de opções de download, usada apenas para localizar PDFs existentes.
+    const request = (async () => {
+      const query = new URLSearchParams({
+        pub: publication.pub, issue: publication.issue, langwritten: 'T',
+        fileformat: 'PDF', alllangs: '0', output: 'json'
+      });
+      try {
+        const response = await fetch(
+          'https://b.jw-cdn.org/apis/pub-media/GETPUBMEDIALINKS?' + query,
+          { mode:'cors' }
+        );
+        if (!response.ok) return '';
+        const media = await response.json();
+        const options = media?.files?.T?.PDF;
+        const file = Array.isArray(options) ? options[0]?.file?.url : '';
+        return verifiedFamilyPdfUrl(file);
+      } catch {
+        return '';
+      }
+    })();
+    familyPdfRequests.set(source, request);
+    return request;
+  }
+
+  async function renderOfficialFamilyPdf(study) {
+    const requestId = ++familyPdfRequestId;
+    const wrap = document.querySelector('#family-official-pdf');
+    const frame = document.querySelector('#family-pdf-frame');
+    const status = document.querySelector('#family-pdf-status');
+    const open = document.querySelector('#family-pdf-open');
+    frame.removeAttribute('src');
+    wrap.hidden = true;
+    open.hidden = true;
+    open.removeAttribute('href');
+    status.textContent = 'Verificando se esta publicação possui PDF oficial…';
+    const url = await resolveFamilyPdf(study);
+    if (requestId !== familyPdfRequestId) return;
+    if (!url) {
+      status.textContent =
+        'Não encontrei um PDF oficial disponível para esta publicação. ' +
+        'Você pode usar o leitor pessoal abaixo ou abrir o artigo original.';
+      return;
+    }
+    frame.src = url;
+    frame.title = 'Publicação em PDF: ' + (study.sourceTitle || study.title || 'estudo');
+    open.href = url;
+    open.hidden = false;
+    wrap.hidden = false;
+    status.textContent =
+      'Leitura do PDF original, sem cópias no site. O arquivo pode conter a publicação inteira: ' +
+      'use a busca do leitor para encontrar o capítulo. Se o PDF não abrir aqui, use o link acima.';
+  }
+
   let activeFamilyReadingKey = '';
   function personalFamilyText() {
     if (!activeFamilyReadingKey) return '';
@@ -876,6 +982,7 @@
     setVisible('#family-reading-wrap', Boolean(study.reading));
     setCover('#family-cover', study.publicationImageUrl, 'Imagem da publicação do estudo selecionado');
     setText('#family-publication-title', study.sourceTitle || study.title || '');
+    void renderOfficialFamilyPdf(study);
     const source = officialUrl(study.articleUrl);
     setSource('#family-original', source);
     activeFamilyReadingKey = 'planejamento-espiritual-family-text-v1:' +

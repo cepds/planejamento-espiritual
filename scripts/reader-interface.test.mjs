@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=17', 'reader.css?v=26', 'public-events.js?v=7', 'event-programs.js?v=1']) {
+  for (const file of ['reader.js?v=18', 'reader.css?v=27', 'public-events.js?v=7', 'event-programs.js?v=1']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -402,12 +402,13 @@ test('Adoração em família mantém imagem original e abre leitura da fonte ofi
     'family-publication-heading', 'family-publication-title', 'family-reader-input',
     'family-reader-toggle', 'family-reader-save', 'family-reader-cancel',
     'family-reader-clear', 'family-reader-content', 'family-reader-text',
-    'family-publication-status', 'family-original',
+    'family-publication-status', 'family-original', 'family-official-pdf',
+    'family-pdf-frame', 'family-pdf-status', 'family-pdf-open',
     'family-library', 'family-category-filter', 'family-plan-list', 'family-plan-reset']) {
     assert.match(family, new RegExp('id="' + id + '"'));
   }
   assert.doesNotMatch(family, /class="family-insight/);
-  assert.doesNotMatch(family, /<iframe/);
+  assert.match(family, /<iframe id="family-pdf-frame"/);
   assert.match(family, /<textarea id="family-reader-input"/);
   assert.match(family, /id="family-reader-content"/);
   assert.match(css, /\.family-feature-cover img:not\(\[hidden\]\)\{/);
@@ -415,6 +416,7 @@ test('Adoração em família mantém imagem original e abre leitura da fonte ofi
   assert.match(css, /object-fit:cover/);
   assert.match(css, /border-radius:0/);
   assert.match(css, /\.family-publication-reader\{/);
+  assert.match(css, /\.family-official-pdf\{/);
   assert.match(css, /\.family-library-toggle\{/);
   assert.match(reader, /function swapFamilyStudy\(otherDate\)/);
   assert.match(reader, /function renderFamilySchedule\(\)/);
@@ -422,6 +424,11 @@ test('Adoração em família mantém imagem original e abre leitura da fonte ofi
   assert.match(reader, /localStorage\.setItem\(activeFamilyReadingKey, content\)/);
   assert.match(reader, /localStorage\.getItem\(activeFamilyReadingKey\)/);
   assert.match(reader, /function renderPersonalFamilyText\(\)/);
+  assert.match(reader, /function renderOfficialFamilyPdf\(study\)/);
+  assert.match(reader, /function familyPublicationCode\(value\)/);
+  assert.match(reader, /function verifiedFamilyPdfUrl\(value\)/);
+  assert.match(reader, /GETPUBMEDIALINKS/);
+  assert.match(reader, /imiteSuaFePdf = 'https:\/\/cfp2\.jw-cdn\.org/);
   assert.doesNotMatch(reader, /family-publication-frame/);
   assert.match(reader, /setSource\('#family-original', source\)/);
   assert.doesNotMatch(reader, /setText\('#family-do'/);
@@ -616,7 +623,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v36-familia-leitura-local/);
+  assert.match(worker, /v37-familia-pdf-oficial/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 

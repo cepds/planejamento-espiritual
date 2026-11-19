@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/planejamento-espiritual-original.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/planejamento-espiritual-original.png">
-  <link rel="stylesheet" href="reader.css?v=26">
+  <link rel="stylesheet" href="reader.css?v=27">
 </head>
 <body>
 <div class="app">
@@ -158,6 +158,14 @@
               <p id="family-publication-title" class="family-publication-title"></p>
             </div>
           </header>
+          <div id="family-official-pdf" class="family-official-pdf" hidden>
+            <div class="family-official-pdf-header">
+              <strong>Publicação oficial em PDF</strong>
+              <a id="family-pdf-open" class="inline-link family-pdf-open" href="#" target="_blank" rel="noopener noreferrer" hidden>Abrir PDF oficial em outra aba ↗</a>
+            </div>
+            <iframe id="family-pdf-frame" title="Leitor do PDF oficial da publicação" loading="lazy" referrerpolicy="no-referrer"></iframe>
+          </div>
+          <p id="family-pdf-status" class="family-pdf-status" role="status" aria-live="polite">Verificando a versão PDF da publicação oficial…</p>
           <div class="family-reader-toolbar">
             <button type="button" id="family-reader-toggle" class="family-reader-button">Colar texto para leitura</button>
             <button type="button" id="family-reader-clear" class="family-reader-remove" hidden>Apagar texto local</button>
@@ -448,7 +456,7 @@
 <script src="/__/firebase/8.10.1/firebase-app.js" defer></script>
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
-<script src="reader.js?v=17" defer></script>
+<script src="reader.js?v=18" defer></script>
 <script src="event-programs.js?v=1" defer></script>
 <script src="public-events.js?v=7" defer></script>
 <script>

@@ -3139,3 +3139,32 @@ body [data-reader-page="family"] .family-plan-swap:hover{background:#466f9d}
   [data-reader-page="family"] .family-reader-content{padding:22px 17px}
   [data-reader-page="family"] .family-reader-text{font-size:1.05rem;line-height:1.85}
 }
+
+/* Leitor em PDF oficial na Adoração em família (sem copiar ou distribuir arquivos). */
+[data-reader-page="family"] .family-official-pdf{
+  border:1px solid var(--line);border-radius:15px;overflow:hidden;
+  background:var(--soft);margin:8px 0 16px
+}
+[data-reader-page="family"] .family-official-pdf[hidden],
+[data-reader-page="family"] .family-pdf-open[hidden]{display:none!important}
+[data-reader-page="family"] .family-official-pdf-header{
+  padding:15px 18px;display:flex;align-items:center;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;color:var(--ink)
+}
+[data-reader-page="family"] .family-official-pdf-header strong{
+  font-size:.85rem;font-weight:800
+}
+[data-reader-page="family"] .family-pdf-open{
+  border:1px solid var(--line);border-radius:10px;background:var(--surface);
+  min-height:40px;padding:10px 14px;color:var(--green);font-size:.8rem
+}
+[data-reader-page="family"] #family-pdf-frame{
+  display:block;border:0;width:100%;height:min(82vh,930px);min-height:530px;background:#fff
+}
+[data-reader-page="family"] .family-pdf-status{
+  margin:12px 0 16px;font-size:.8rem;line-height:1.65;color:var(--muted)
+}
+@media(max-width:600px){
+  [data-reader-page="family"] .family-official-pdf-header{padding:13px}
+  [data-reader-page="family"] #family-pdf-frame{height:75vh;min-height:490px}
+}
