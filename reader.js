@@ -804,20 +804,25 @@
     setText('#family-prompt', study.prompt);
     setText('#family-reading', study.reading);
     setVisible('#family-reading-wrap', Boolean(study.reading));
-    setText('#family-do', study.doThis);
-    setText('#family-avoid', study.avoidThis);
-    setText('#family-action', study.action);
     setCover('#family-cover', study.publicationImageUrl, 'Imagem da publicação do estudo selecionado');
-    const questions = document.querySelector('#family-questions');
-    questions.replaceChildren();
-    for (const question of Array.isArray(study.questions) ? study.questions : []) {
-      const item = document.createElement('li');
-      item.textContent = question;
-      questions.append(item);
+    setText('#family-publication-title', study.sourceTitle || study.title || '');
+    const source = officialUrl(study.articleUrl);
+    const frame = document.querySelector('#family-publication-frame');
+    const display = document.querySelector('#family-publication-view');
+    const status = document.querySelector('#family-publication-status');
+    // A leitura é servida diretamente pelo JW.org: não se armazena nem se reproduz
+    // o conteúdo protegido no Firebase. O domínio de origem decide se aceita iframe.
+    const webpage = source && /^https:\/\/(?:[a-z0-9-]+\.)*(?:jw\.org)$/i.test(new URL(source).hostname);
+    display.hidden = !webpage;
+    if (webpage) {
+      if (frame.getAttribute('src') !== source) frame.src = source;
+      frame.title = 'Leitura de ' + (study.sourceTitle || study.title || 'publicação') + ' no JW.org';
+      status.textContent = 'A leitura utiliza a página original do JW.org. Se não aparecer aqui, o site oficial pode impedir a exibição incorporada.';
+    } else {
+      frame.removeAttribute('src');
+      status.textContent = 'Esta publicação não possui um endereço de leitura compatível com a visualização incorporada.';
     }
-    setVisible('#family-questions-wrap', questions.children.length > 0);
-    setSource('#family-original', study.articleUrl);
-    setText('#family-source-title', study.sourceTitle || 'Material oficial no JW.org');
+    setSource('#family-original', source);
   }
 
   function renderFamilySchedule() {

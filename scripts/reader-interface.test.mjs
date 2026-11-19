@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=15', 'reader.css?v=24', 'public-events.js?v=7', 'event-programs.js?v=1']) {
+  for (const file of ['reader.js?v=16', 'reader.css?v=25', 'public-events.js?v=7', 'event-programs.js?v=1']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -393,27 +393,34 @@ test('Texto Diário tem leitura editorial refinada sem perder texto, data e font
   assert.match(reader, /renderDailyOnly\(content\)/);
 });
 
-test('Adoração em família tem imagem sem margens e conserva o calendário de trocas', () => {
+test('Adoração em família mantém imagem original e abre leitura da fonte oficial, sem resumos', () => {
   const family = html.slice(html.indexOf('data-reader-page="family"'),
     html.indexOf('data-reader-page="emergencies"'));
   assert.match(family, /class="reading family-feature-reading"/);
   assert.match(family, /class="reading-cover family-feature-cover"/);
-  assert.match(family, /class="prose family-feature-content"/);
-  assert.match(family, /class="family-insight family-insight--learn"/);
-  assert.match(family, /class="family-insight family-insight--avoid"/);
-  assert.match(family, /class="family-insight family-insight--practice"/);
-  for (const id of ['family-cover', 'family-prompt', 'family-reading', 'family-do',
-    'family-avoid', 'family-questions', 'family-action', 'family-original',
+  for (const id of ['family-cover', 'family-prompt', 'family-reading',
+    'family-publication-heading', 'family-publication-title', 'family-publication-frame',
+    'family-publication-view', 'family-publication-status', 'family-original',
     'family-library', 'family-category-filter', 'family-plan-list', 'family-plan-reset']) {
     assert.match(family, new RegExp('id="' + id + '"'));
   }
-  assert.match(css, /\[data-reader-page="family"\] \.family-feature-cover img:not\(\[hidden\]\)\{/);
+  assert.doesNotMatch(family, /class="family-insight/);
+  assert.match(family, /<iframe id="family-publication-frame"/);
+  assert.match(family, /loading="lazy"/);
+  assert.match(family, /referrerpolicy="no-referrer"/);
+  assert.match(css, /\.family-feature-cover img:not\(\[hidden\]\)\{/);
   assert.match(css, /max-width:none/);
   assert.match(css, /object-fit:cover/);
   assert.match(css, /border-radius:0/);
-  assert.match(css, /\[data-reader-page="family"\] \.family-library-toggle\{/);
+  assert.match(css, /\.family-publication-reader\{/);
+  assert.match(css, /\.family-library-toggle\{/);
   assert.match(reader, /function swapFamilyStudy\(otherDate\)/);
   assert.match(reader, /function renderFamilySchedule\(\)/);
+  assert.match(reader, /function officialUrl\(value\)/);
+  assert.match(reader, /frame\.src = source/);
+  assert.match(reader, /setSource\('#family-original', source\)/);
+  assert.doesNotMatch(reader, /setText\('#family-do'/);
+  assert.doesNotMatch(reader, /setText\('#family-avoid'/);
 });
 
 test('Emergências mantém as referências e tem navegação por atalhos em cartões', () => {
@@ -604,7 +611,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v34-agenda-cards-fotos/);
+  assert.match(worker, /v35-familia-leitura-oficial/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 

@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/planejamento-espiritual-original.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/planejamento-espiritual-original.png">
-  <link rel="stylesheet" href="reader.css?v=24">
+  <link rel="stylesheet" href="reader.css?v=25">
 </head>
 <body>
 <div class="app">
@@ -150,13 +150,22 @@
       <article class="reading family-feature-reading">
         <div class="reading-heading family-feature-heading"><span class="kicker" id="family-topic">Tema da semana</span><h2 id="family-title">Carregando…</h2><p id="family-date"></p></div>
         <div class="reading-cover family-feature-cover"><img id="family-cover" hidden alt="Imagem da publicação da semana"><div class="family-feature-intro"><p id="family-prompt"></p><p id="family-reading-wrap"><strong>Leitura bíblica:</strong> <span id="family-reading"></span></p></div></div>
-        <div class="prose family-feature-content">
-          <section class="family-insight family-insight--learn"><h3>O que aprender</h3><p id="family-do"></p></section>
-          <section class="family-insight family-insight--avoid"><h3>O que evitar</h3><p id="family-avoid"></p></section>
-          <section id="family-questions-wrap" class="family-insight family-insight--questions" hidden><h3>Perguntas para conversar</h3><ul class="simple-list" id="family-questions"></ul></section>
-          <section class="family-insight family-insight--practice"><h3>Aplicação prática</h3><p id="family-action"></p></section>
-        </div>
-        <div class="source-line family-feature-source"><p class="small" id="family-source-title"></p><a class="inline-link" id="family-original" hidden target="_blank" rel="noopener noreferrer">Ler publicação no JW.org ↗</a></div>
+        <section class="family-publication-reader" aria-labelledby="family-publication-heading">
+          <header class="family-publication-header">
+            <div>
+              <span class="family-publication-eyebrow">PUBLICAÇÃO ORIGINAL</span>
+              <h3 id="family-publication-heading">Leitura da publicação</h3>
+              <p id="family-publication-title" class="family-publication-title"></p>
+            </div>
+          </header>
+          <div id="family-publication-view" class="family-publication-view" hidden>
+            <iframe id="family-publication-frame" title="Leitura da publicação oficial no JW.org" loading="lazy" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
+          </div>
+          <div class="family-publication-guidance">
+            <p id="family-publication-status">A publicação é carregada diretamente da fonte oficial, sem ser copiada para este site. A exibição depende da permissão do JW.org.</p>
+            <a class="inline-link family-publication-fallback" id="family-original" hidden target="_blank" rel="noopener noreferrer">Abrir publicação original no JW.org ↗</a>
+          </div>
+        </section>
       </article>
       <details id="family-library" class="family-library">
         <summary class="family-library-toggle">
@@ -427,7 +436,7 @@
 <script src="/__/firebase/8.10.1/firebase-app.js" defer></script>
 <script src="/__/firebase/8.10.1/firebase-firestore.js" defer></script>
 <script src="/__/firebase/init.js" defer></script>
-<script src="reader.js?v=15" defer></script>
+<script src="reader.js?v=16" defer></script>
 <script src="event-programs.js?v=1" defer></script>
 <script src="public-events.js?v=7" defer></script>
 <script>

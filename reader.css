@@ -3055,3 +3055,45 @@ body [data-reader-page="family"] .family-plan-swap:hover{background:#466f9d}
 /* Agenda focada apenas em cards ilustrados, sem indicadores ou gráficos. */
 .agenda-main>.agenda-events-panel{margin-top:0;padding-top:23px}
 @media(max-width:650px){.agenda-main>.agenda-events-panel{padding-top:18px}}
+
+/* Leitura da fonte oficial na aba Adoração em família: não altera imagem e cabeçalho. */
+[data-reader-page="family"] .family-publication-reader{
+  padding:30px clamp(23px,5vw,54px) 33px;
+  background:var(--surface);color:var(--ink)
+}
+[data-reader-page="family"] .family-publication-header{margin:0 0 19px}
+[data-reader-page="family"] .family-publication-eyebrow{
+  font-size:.68rem;letter-spacing:.14em;font-weight:850;color:var(--green)
+}
+[data-reader-page="family"] .family-publication-header h3{
+  font:700 clamp(1.45rem,3vw,2rem)/1.23 Georgia,"Times New Roman",serif;
+  color:var(--ink);margin:8px 0 9px
+}
+[data-reader-page="family"] .family-publication-title{
+  margin:0;color:var(--muted);font-size:.91rem;line-height:1.6
+}
+[data-reader-page="family"] .family-publication-view{
+  overflow:hidden;border:1px solid var(--line);border-radius:15px;
+  background:#fff
+}
+[data-reader-page="family"] .family-publication-view[hidden]{display:none}
+[data-reader-page="family"] .family-publication-view iframe{
+  display:block;width:100%;height:min(79vh,920px);
+  min-height:520px;border:0;background:#fff
+}
+[data-reader-page="family"] .family-publication-guidance{
+  padding-top:18px;display:flex;flex-wrap:wrap;gap:10px 20px;
+  align-items:center;justify-content:space-between
+}
+[data-reader-page="family"] .family-publication-guidance p{
+  margin:0;flex:1 1 270px;font-size:.79rem;line-height:1.6;color:var(--muted)
+}
+[data-reader-page="family"] .family-publication-fallback{
+  min-height:40px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;
+  color:var(--green);text-decoration:none;font-size:.81rem;font-weight:800
+}
+[data-reader-page="family"] .family-publication-fallback[hidden]{display:none}
+@media(max-width:600px){
+  [data-reader-page="family"] .family-publication-reader{padding:25px 17px}
+  [data-reader-page="family"] .family-publication-view iframe{height:77vh;min-height:480px}
+}

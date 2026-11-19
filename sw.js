@@ -1,7 +1,7 @@
 const CACHE_PREFIX = 'planejamento-espiritual-shell-';
-const CACHE_NAME = CACHE_PREFIX + 'v34-agenda-cards-fotos';
+const CACHE_NAME = CACHE_PREFIX + 'v35-familia-leitura-oficial';
 const CONTENT_KEY = '/data/content.json';
-const SHELL = ['/', '/index.html', '/reader.css?v=24', '/reader.js?v=15', '/public-events.js?v=7', '/event-programs.js?v=1', '/images/celebracao-jesus.webp', '/images/visita-super.jpg', '/images/congresso.svg', '/images/evento-padrao.svg', '/manifest.webmanifest', '/icons/planejamento-espiritual-original.png', '/icons/planejamento-espiritual.svg'];
+const SHELL = ['/', '/index.html', '/reader.css?v=25', '/reader.js?v=16', '/public-events.js?v=7', '/event-programs.js?v=1', '/images/celebracao-jesus.webp', '/images/visita-super.jpg', '/images/congresso.svg', '/images/evento-padrao.svg', '/manifest.webmanifest', '/icons/planejamento-espiritual-original.png', '/icons/planejamento-espiritual.svg'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
