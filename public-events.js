@@ -118,6 +118,11 @@
     }
     return items;
   }
+  function isOfficialMemorial(item) {
+    return item?.type === 'Celebração' &&
+      Array.isArray(references.memorial?.dates) &&
+      references.memorial.dates.includes(item.date);
+  }
   function defaultCover(item) {
     if (item.type === 'Visita') return 'images/visita-super.jpg';
     if (item.type === 'Assembleia') return references.assembly?.image || 'images/evento-padrao.svg';
@@ -126,10 +131,17 @@
     return 'images/evento-padrao.svg';
   }
   function imageOf(item) {
+    // Eventos de Celebração sempre usam a única capa oficial configurada.
+    // Também cobre eventos manuais antigos com imageUrl diferente.
+    if (item.type === 'Celebração' || isOfficialMemorial(item)) {
+      return references.memorial?.image || 'images/celebracao-jesus.webp';
+    }
     return safeHttpsUrl(item.imageUrl) || defaultCover(item);
   }
   function sourceOf(item) {
-    if (item.type === 'Celebração' && references.memorial) return references.memorial.source;
+    if (item.type === 'Celebração' || isOfficialMemorial(item)) {
+      return references.memorial?.source || '';
+    }
     if (item.type === 'Assembleia' && item.programId === 'CA-brpgm27' && references.assembly) {
       return safeHttpsUrl(item.sourceUrl) || references.assembly.source;
     }
@@ -372,7 +384,9 @@
     document.getElementById('event-details-kind').textContent =
       item.official ? 'DATA OFICIAL · ' + item.type.toUpperCase() : item.type.toUpperCase();
     document.getElementById('event-details-title').textContent =
-      item.theme || officialAssembly?.title || titleOf(item);
+      item.type === 'Celebração' && references.memorial
+        ? references.memorial.title
+        : (item.theme || officialAssembly?.title || titleOf(item));
     const scripture = item.scripture || officialAssembly?.scripture || '';
     const scriptureElement = document.getElementById('event-details-scripture');
     scriptureElement.hidden = !scripture;
@@ -607,6 +621,7 @@
     field('event-form-assembly').hidden = type !== 'Assembleia';
     field('event-form-visit').hidden = type !== 'Visita';
     field('event-form-memorial').hidden = type !== 'Celebração';
+    field('event-form-media-fields').hidden = type === 'Celebração';
     if (type === 'Visita') updateVisitDates(false);
   }
 
@@ -769,8 +784,9 @@
         dateEnd: type === 'Visita' ? field('event-form-date-end').value : '',
         theme: type === 'Assembleia' ? field('event-form-theme').value.trim() : '',
         scripture: type === 'Assembleia' ? field('event-form-scripture').value.trim() : '',
-        imageUrl: safeHttpsUrl(coverInput),
-        sourceUrl: safeHttpsUrl(sourceInput),
+        imageUrl: type === 'Celebração' ? '' : safeHttpsUrl(coverInput),
+        sourceUrl: type === 'Celebração'
+          ? (references.memorial?.source || '') : safeHttpsUrl(sourceInput),
         programId,
         programText: type === 'Assembleia' ? field('event-form-program-lines').value.trim() : '',
         talks: type === 'Visita' ? [1, 2].map(index => ({

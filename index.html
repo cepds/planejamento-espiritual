@@ -386,11 +386,13 @@
     <input id="event-form-location" type="text" maxlength="120" placeholder="Local do evento">
     <label for="event-form-description">Informações adicionais (opcional)</label>
     <textarea id="event-form-description" rows="3" maxlength="700" placeholder="Informações importantes para os participantes"></textarea>
-    <label for="event-form-image">Imagem do evento (URL HTTPS, opcional)</label>
-    <input id="event-form-image" type="url" maxlength="500" placeholder="https://...">
-    <p class="event-detail-hint">Todo evento tem uma imagem padrão. Insira um link HTTPS para personalizar a capa.</p>
-    <label for="event-form-source">Programa ou referência (URL HTTPS, opcional)</label>
-    <input id="event-form-source" type="url" maxlength="500" placeholder="https://www.jw.org/...">
+    <div id="event-form-media-fields">
+      <label for="event-form-image">Imagem do evento (URL HTTPS, opcional)</label>
+      <input id="event-form-image" type="url" maxlength="500" placeholder="https://...">
+      <p class="event-detail-hint">Todo evento tem uma imagem padrão. Insira um link HTTPS para personalizar a capa.</p>
+      <label for="event-form-source">Programa ou referência (URL HTTPS, opcional)</label>
+      <input id="event-form-source" type="url" maxlength="500" placeholder="https://www.jw.org/...">
+    </div>
     <fieldset id="event-form-assembly" class="event-detail-fields" hidden>
       <legend>Programa da assembleia</legend>
       <label for="event-form-program">Referência oficial</label>
@@ -457,7 +459,7 @@
 <script src="/__/firebase/init.js" defer></script>
 <script src="reader.js?v=15" defer></script>
 <script src="event-programs.js?v=1" defer></script>
-<script src="public-events.js?v=5" defer></script>
+<script src="public-events.js?v=6" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
    addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });

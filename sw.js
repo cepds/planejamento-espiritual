@@ -1,7 +1,7 @@
 const CACHE_PREFIX = 'planejamento-espiritual-shell-';
-const CACHE_NAME = CACHE_PREFIX + 'v32-agenda-imagens-programas';
+const CACHE_NAME = CACHE_PREFIX + 'v33-celebracao-capa-oficial';
 const CONTENT_KEY = '/data/content.json';
-const SHELL = ['/', '/index.html', '/reader.css?v=23', '/reader.js?v=15', '/public-events.js?v=5', '/event-programs.js?v=1', '/images/celebracao-jesus.webp', '/images/visita-super.jpg', '/images/congresso.svg', '/images/evento-padrao.svg', '/manifest.webmanifest', '/icons/planejamento-espiritual-original.png', '/icons/planejamento-espiritual.svg'];
+const SHELL = ['/', '/index.html', '/reader.css?v=23', '/reader.js?v=15', '/public-events.js?v=6', '/event-programs.js?v=1', '/images/celebracao-jesus.webp', '/images/visita-super.jpg', '/images/congresso.svg', '/images/evento-padrao.svg', '/manifest.webmanifest', '/icons/planejamento-espiritual-original.png', '/icons/planejamento-espiritual.svg'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {

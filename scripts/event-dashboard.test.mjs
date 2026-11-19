@@ -199,3 +199,38 @@ test('Todo tipo de evento pode ter imagem própria e detalhes ilustrados',()=>{
   assert.equal(get('event-details-description').textContent,'Local a confirmar');
   assert.equal(get('event-details-image').src,'https://example.com/capa.jpg');
 });
+
+test('Celebração antiga ignora capa, link e tema personalizados e mantém título oficial',()=>{
+  const {get}=runWithDocs([{
+    id:'memorial-manual',type:'Celebração',title:'Celebração cadastrada',
+    date:offsetDate(4),imageUrl:'https://example.com/foto-errada.jpg',
+    sourceUrl:'https://example.com/sem-fonte',theme:'Tema personalizado'
+  }],true);
+  assert.equal(get('event-next-image').src,'images/celebracao-jesus.webp');
+  assert.equal(get('agenda-hero-image').src,'images/celebracao-jesus.webp');
+  const card=get('agenda-events-list').children[0];
+  assert.equal(card.children[3].children[0].src,'images/celebracao-jesus.webp');
+  card.children[3].listeners.click();
+  assert.equal(get('event-details-image').src,'images/celebracao-jesus.webp');
+  assert.equal(get('event-details-title').textContent,'Celebração da morte de Cristo');
+  assert.match(get('event-details-source').href,/jw\.org/);
+});
+
+test('Formulário da Celebração oculta capas e sempre salva fonte oficial',async()=>{
+  const {get,recorded}=runWithDocs([],true);
+  get('agenda-add').listeners.click();
+  get('event-form-type').value='Celebração';
+  get('event-form-type').listeners.change();
+  assert.equal(get('event-form-media-fields').hidden,true);
+  get('event-form-date').value=offsetDate(5);
+  get('event-form-title').value='Celebração';
+  get('event-form-image').value='https://example.com/imagem-inadequada.jpg';
+  get('event-form-source').value='https://example.com/nao-oficial';
+  await get('event-form').listeners.submit({preventDefault(){}});
+  assert.equal(recorded.added.length,1);
+  assert.equal(recorded.added[0].imageUrl,'');
+  assert.match(recorded.added[0].sourceUrl,/jw\.org/);
+  get('event-form-type').value='Visita';
+  get('event-form-type').listeners.change();
+  assert.equal(get('event-form-media-fields').hidden,false);
+});
