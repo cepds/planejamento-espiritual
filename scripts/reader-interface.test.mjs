@@ -404,6 +404,7 @@ test('Adoração em família mantém o visual superior e apresenta somente link 
     assert.match(family, new RegExp('id="' + id + '"'));
   }
   assert.match(family, /class="family-source-only"/);
+  assert.match(family, /id="family-library" class="family-library" hidden/);
   assert.match(family, /class="family-original-link"/);
   assert.match(family, /Ler publicação completa no JW.org/);
   for (const removed of ['family-pdf-frame','family-official-pdf',
@@ -610,7 +611,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v38-familia-link-oficial/);
+  assert.match(worker, /v39-familia-apenas-link/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 
