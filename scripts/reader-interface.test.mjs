@@ -29,6 +29,11 @@ test('imagens de estudos vêm de seus artigos e não de capas genéricas', () =>
   assert.doesNotMatch(reader, /\.coverUrl/);
 });
 
+test('card Hoje prioriza imagem de A Sentinela em alta resolução, mantendo ilustração do estudo', () => {
+  assert.match(reader, /const highResolution = images\.find/);
+  assert.match(reader, /return highResolution \|\| hero \|\| images\[0\]/);
+});
+
 test('agenda no canto permite eventos e mantém dados do formato anterior', () => {
   for (const id of ['event-widget', 'event-dialog', 'event-open', 'event-form', 'event-form-date', 'event-list']) {
     assert.match(html, new RegExp('(?:id|class)="' + id + '(?:[" ])'));
@@ -46,7 +51,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=20', 'reader.css?v=30', 'public-events.js?v=10', 'event-programs.js?v=2']) {
+  for (const file of ['reader.js?v=21', 'reader.css?v=30', 'public-events.js?v=10', 'event-programs.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }

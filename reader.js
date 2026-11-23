@@ -96,7 +96,12 @@
 
   function studyImage(study) {
     // Use the article illustration; never replace it with the magazine cover.
-    return study?.heroImageUrl || (Array.isArray(study?.images) ? study.images[0] : null) || null;
+    // The article preview may be a smaller _lg file; prefer the official _xl illustration.
+    const images = Array.isArray(study?.images) ? study.images : [];
+    const highResolution = images.find(source => /_(?:xl|xxl)\.(?:jpe?g|webp)(?:[?#]|$)/i.test(source));
+    const hero = study?.heroImageUrl || null;
+    if (hero && /_(?:xl|xxl)\.(?:jpe?g|webp)(?:[?#]|$)/i.test(hero)) return hero;
+    return highResolution || hero || images[0] || null;
   }
 
   function studyTitle(title) {
