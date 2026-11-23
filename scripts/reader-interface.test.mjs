@@ -616,7 +616,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v43-antecipacao-sentinela/);
+  assert.match(worker, /v44-sentinela-imagem-hd/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 
@@ -677,5 +677,5 @@ test('A Sentinela tem pré-carregamento semanal e vira na segunda sem depender d
   assert.match(reader,/renderWatchtowerOnly\(incoming\)/);
   assert.match(updater,/watchtowerNext = await getWatchtowerStudy\(followingMonday\)/);
   assert.match(updater,/watchtower, watchtowerNext, covers/);
-  assert.match(html,/reader\.js\?v=20/);
+  assert.match(html,/reader\.js\?v=21/);
 });
