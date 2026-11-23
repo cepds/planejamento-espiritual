@@ -620,16 +620,41 @@ const watchtowerTarget = mondayOf(now);
 const outcomes = await Promise.allSettled([
   getDaily(now), getMeeting(meetingTarget), getWatchtowerStudy(watchtowerTarget)
 ]);
-const { daily, meeting, midweekStudy, watchtower, errors } = resolveContentUpdates(previous, outcomes, {
-  daily: now.toISOString().slice(0, 10),
-  midweek: meetingTarget.toISOString().slice(0, 10),
-  watchtower: watchtowerTarget.toISOString().slice(0, 10)
-});
+const expectedWatchtowerWeek = watchtowerTarget.toISOString().slice(0, 10);
+// A edição da próxima semana pode já ter sido pré-carregada no domingo.
+// Se a API falhar depois da virada, esta é a cópia correta para usar.
+const preloadedCurrent = previous.watchtowerNext?.weekOf === expectedWatchtowerWeek &&
+  previous.watchtowerNext.title && previous.watchtowerNext.theme &&
+  previous.watchtowerNext.objective && previous.watchtowerNext.content
+  ? previous.watchtowerNext : null;
+const { daily, meeting, midweekStudy, watchtower, errors } = resolveContentUpdates(
+  { ...previous, watchtower: preloadedCurrent || previous.watchtower }, outcomes, {
+    daily: now.toISOString().slice(0, 10),
+    midweek: meetingTarget.toISOString().slice(0, 10),
+    watchtower: expectedWatchtowerWeek
+  });
 // Publique antecipadamente os próximos dias: no navegador a troca pode
 // acontecer às 00:00 mesmo quando o agendador externo atrasa.
 const dailyDates = nextDates(now, 4);
 const futureDaily = await Promise.allSettled(dailyDates.slice(1).map(getDaily));
 const dailyReadings = mergeDailyReadings(dailyDates, daily, futureDaily, previous);
+// Antecipe A Sentinela da próxima semana, sem adiantar sua exibição.
+// A página escolhe o estudo correto quando vira a segunda-feira em Brasília.
+const followingMonday = new Date(watchtowerTarget);
+followingMonday.setUTCDate(followingMonday.getUTCDate() + 7);
+const followingWeek = followingMonday.toISOString().slice(0, 10);
+let watchtowerNext = previous.watchtowerNext?.weekOf === followingWeek &&
+  previous.watchtowerNext.title && previous.watchtowerNext.theme &&
+  previous.watchtowerNext.objective && previous.watchtowerNext.content
+  ? previous.watchtowerNext : null;
+if (!watchtowerNext) {
+  try {
+    watchtowerNext = await getWatchtowerStudy(followingMonday);
+  } catch (error) {
+    console.warn('Pré-carregamento de A Sentinela de ' + followingWeek +
+      ' indisponível: ' + (error?.message || String(error)));
+  }
+}
 for (const [index, result] of futureDaily.entries()) {
   if (result.status === 'rejected') {
     console.warn('Pré-carregamento do texto diário de ' +
@@ -667,7 +692,7 @@ const familyUpcoming = familySchedule.filter(item => item.weekOf >= currentWeek)
 const content = {
   updatedAt: new Date().toISOString(), timezone: 'America/Sao_Paulo',
   updateRules: { daily: '00:00 de Brasília, com leituras antecipadas', midweek: 'toda sexta-feira para a próxima semana', watchtower: 'toda segunda-feira', familyWorship: 'toda terça-feira' },
-  daily, dailyReadings, meeting, midweekStudy, watchtower, covers, familyWorship, familyUpcoming,
+  daily, dailyReadings, meeting, midweekStudy, watchtower, watchtowerNext, covers, familyWorship, familyUpcoming,
   familySchedule,
   previousUpdatedAt: previous.updatedAt || null, errors
 };

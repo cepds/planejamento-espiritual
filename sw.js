@@ -1,7 +1,7 @@
 const CACHE_PREFIX = 'planejamento-espiritual-shell-';
-const CACHE_NAME = CACHE_PREFIX + 'v42-assembleia-sem-duplicacao';
+const CACHE_NAME = CACHE_PREFIX + 'v43-antecipacao-sentinela';
 const CONTENT_KEY = '/data/content.json';
-const SHELL = ['/', '/index.html', '/reader.css?v=30', '/reader.js?v=19', '/public-events.js?v=10', '/event-programs.js?v=2', '/images/visita-super.jpg', '/images/congresso.svg', '/images/evento-padrao.svg', '/manifest.webmanifest', '/icons/planejamento-espiritual-original.png', '/icons/planejamento-espiritual.svg'];
+const SHELL = ['/', '/index.html', '/reader.css?v=30', '/reader.js?v=20', '/public-events.js?v=10', '/event-programs.js?v=2', '/images/visita-super.jpg', '/images/congresso.svg', '/images/evento-padrao.svg', '/manifest.webmanifest', '/icons/planejamento-espiritual-original.png', '/icons/planejamento-espiritual.svg'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {

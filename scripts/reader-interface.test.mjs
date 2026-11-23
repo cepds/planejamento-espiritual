@@ -46,7 +46,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=19', 'reader.css?v=30', 'public-events.js?v=10', 'event-programs.js?v=2']) {
+  for (const file of ['reader.js?v=20', 'reader.css?v=30', 'public-events.js?v=10', 'event-programs.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -611,7 +611,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v42-assembleia-sem-duplicacao/);
+  assert.match(worker, /v43-antecipacao-sentinela/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 
@@ -661,4 +661,16 @@ test('Celebração usa imagem oficial do JW.org em vez de ilustração gerada', 
   assert.match(css, /\.agenda-event-image\{image-rendering:auto;transform:none\}/);
   assert.doesNotMatch(events, /images\/celebracao-jesus\.svg/);
   assert.doesNotMatch(program, /images\/celebracao-jesus\.svg/);
+});
+
+test('A Sentinela tem pré-carregamento semanal e vira na segunda sem depender do agendador',()=>{
+  assert.match(reader,/function watchtowerWeek\(date\)/);
+  assert.match(reader,/function watchtowerForToday\(content\)/);
+  assert.match(reader,/content\?\.watchtowerNext/);
+  assert.match(reader,/function renderWatchtowerOnly\(content\)/);
+  assert.match(reader,/renderWatchtowerOnly\(latestContent\)/);
+  assert.match(reader,/renderWatchtowerOnly\(incoming\)/);
+  assert.match(updater,/watchtowerNext = await getWatchtowerStudy\(followingMonday\)/);
+  assert.match(updater,/watchtower, watchtowerNext, covers/);
+  assert.match(html,/reader\.js\?v=20/);
 });

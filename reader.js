@@ -949,6 +949,44 @@
     return 'https://wol.jw.org/pt/wol/h/r5/lp-t/' + year + '/' + month + '/' + day;
   }
 
+  function watchtowerWeek(date) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return '';
+    const current = new Date(date + 'T00:00:00Z');
+    if (!Number.isFinite(current.getTime())) return '';
+    current.setUTCDate(current.getUTCDate() - (current.getUTCDay() + 6) % 7);
+    return current.toISOString().slice(0, 10);
+  }
+
+  function watchtowerForToday(content) {
+    const week = watchtowerWeek(brazilDay());
+    const options = [content?.watchtower, content?.watchtowerNext];
+    return options.find(item => item?.weekOf === week &&
+      item.title && item.theme && item.objective && item.content) || null;
+  }
+
+  let displayedWatchtowerWeek = '';
+  function renderWatchtowerOnly(content) {
+    const selected = watchtowerForToday(content);
+    displayedWatchtowerWeek = watchtowerWeek(brazilDay());
+    const study = selected || {};
+    setText('#today-watchtower-title', studyTitle(study.title) ||
+      'A Sentinela desta semana ainda não está disponível');
+    setText('#today-watchtower-date', 'Semana de ' + asDate(displayedWatchtowerWeek));
+    setCover('#today-watchtower-cover', studyImage(study), 'Ilustração do estudo de A Sentinela');
+    setText('#watchtower-title', studyTitle(study.title) ||
+      'A Sentinela desta semana ainda não está disponível');
+    setText('#watchtower-date', study.title
+      ? studyRangeText(study.title, 'Semana de ' + asDate(displayedWatchtowerWeek))
+      : 'Semana de ' + asDate(displayedWatchtowerWeek));
+    setText('#watchtower-theme', study.theme || '');
+    setText('#watchtower-objective', study.objective || '');
+    setVisible('#watchtower-goal', Boolean(study.objective));
+    renderWatchtowerReading(study);
+    renderStudyGallery('watchtower', study, 'Estudo de A Sentinela');
+    requestAnimationFrame(resizeVisibleWatchtowerComments);
+    setSource('#watchtower-original', study.url || '');
+  }
+
   function renderDailyOnly(content) {
     const today = brazilDay();
     displayedBrazilDay = today;
@@ -978,6 +1016,7 @@
       if (!incoming?.daily) return;
       latestContent = incoming;
       renderDailyOnly(incoming);
+      renderWatchtowerOnly(incoming);
     } catch (error) {
       console.warn('Não foi possível atualizar o texto diário neste momento:', error);
     }
@@ -986,9 +1025,10 @@
   function checkDailyDate() {
     const today = brazilDay();
     if (!latestContent) return;
-    if (displayedBrazilDay !== today) {
+    if (displayedBrazilDay !== today || displayedWatchtowerWeek !== watchtowerWeek(today)) {
       // Troca instantaneamente para a leitura pré-publicada, mesmo com atraso no GitHub Actions.
       renderDailyOnly(latestContent);
+      renderWatchtowerOnly(latestContent);
       void refreshDailyFromSite();
     } else if (dailyNeedsRefresh && Date.now() - lastDailyRequest >= 300000) {
       void refreshDailyFromSite();
@@ -1007,7 +1047,6 @@
   function render(content) {
     const meeting = content.meeting || {};
     const midweek = content.midweekStudy || {};
-    const watchtower = content.watchtower || {};
     const family = content.familyWorship || {};
 
     renderDailyOnly(content);
@@ -1017,9 +1056,7 @@
     setText('#today-midweek-date', (midweek.weekOf || meeting.weekOf) ? 'Semana de ' + asDate(midweek.weekOf || meeting.weekOf) : '');
     setCover('#today-midweek-cover', studyImage(midweek), 'Ilustração do tema da reunião de meio de semana');
 
-    setText('#today-watchtower-title', studyTitle(watchtower.title) || 'Estudo de A Sentinela');
-    setText('#today-watchtower-date', watchtower.weekOf ? 'Semana de ' + asDate(watchtower.weekOf) : '');
-    setCover('#today-watchtower-cover', studyImage(watchtower), 'Ilustração do estudo de A Sentinela');
+    renderWatchtowerOnly(content);
 
     setText('#today-family-title', family.title || 'Adoração em família');
     setText('#today-family-date', family.weekOf ? 'Semana de ' + asDate(family.weekOf) : '');
@@ -1032,15 +1069,7 @@
     renderStudyGallery('midweek', midweek, 'Reunião de meio de semana');
     setSource('#midweek-original', midweek.url);
 
-    setText('#watchtower-title', studyTitle(watchtower.title) || 'Estudo de A Sentinela');
-    setText('#watchtower-date', studyRangeText(watchtower.title, 'Semana de ' + (asDate(watchtower.weekOf) || 'data indisponível')));
-    setText('#watchtower-theme', watchtower.theme);
-    setText('#watchtower-objective', watchtower.objective || '');
-    setVisible('#watchtower-goal', !!watchtower.objective);
-    renderWatchtowerReading(watchtower);
-    renderStudyGallery('watchtower', watchtower, 'Estudo de A Sentinela');
-    requestAnimationFrame(resizeVisibleWatchtowerComments);
-    setSource('#watchtower-original', watchtower.url);
+    // A Sentinela já foi selecionada por semana e exibida acima.
 
     initializeFamilyPlan(content);
 

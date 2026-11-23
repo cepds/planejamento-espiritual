@@ -154,3 +154,11 @@ test('textos dos próximos três dias são preparados com datas exatas', async (
     ['2026-12-30', '2026-12-31', '2027-01-01', '2027-01-02']);
   assert.ok(!selected.some(item => item.date === '2026-12-29'));
 });
+
+test('novo estudo de A Sentinela é selecionado apenas na semana correspondente',async()=>{
+  const { mondayOf } = await import('./update-content.mjs');
+  assert.equal(mondayOf(utcDate('2026-11-22')).toISOString().slice(0,10),'2026-11-16');
+  assert.equal(mondayOf(utcDate('2026-11-23')).toISOString().slice(0,10),'2026-11-23');
+  assert.equal(mondayOf(utcDate('2026-11-29')).toISOString().slice(0,10),'2026-11-23');
+  assert.equal(mondayOf(utcDate('2026-11-30')).toISOString().slice(0,10),'2026-11-30');
+});

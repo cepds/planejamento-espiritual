@@ -9,9 +9,12 @@ on:
     # Brasilia (UTC-3): atualização diária às 00:00, com novas tentativas
     # após a virada e pré-publicação do dia seguinte na noite anterior.
     # Horários do GitHub Actions são UTC e podem sofrer atrasos.
-    - cron: '0 3 * * *'
-    - cron: '10 3 * * *'
-    - cron: '0 6,9,15,21,23 * * *'
+    # Evite o minuto zero, mais sujeito a atrasos em agendamentos do GitHub.
+    # Duas execuções na virada e conferências diárias; a próxima Sentinela
+    # já fica pré-carregada caso o agendamento da segunda atrase.
+    - cron: '7 3 * * *'
+    - cron: '27 3 * * *'
+    - cron: '13 6,9,15,21,23 * * *'
   workflow_dispatch:
 
 permissions:
