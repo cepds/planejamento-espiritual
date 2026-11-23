@@ -25,7 +25,7 @@ test('imagens de estudos vêm de seus artigos e não de capas genéricas', () =>
     assert.match(html, new RegExp('id="' + name + '"'));
   }
   assert.match(reader, /studyImage\(midweek\)/);
-  assert.match(reader, /studyImage\(watchtower\)/);
+  assert.match(reader, /studyImage\(study\)/);
   assert.doesNotMatch(reader, /\.coverUrl/);
 });
 
@@ -76,7 +76,7 @@ test('agenda móvel inicia recolhida e permite expansão manual', () => {
 test('galerias oferecem todas as ilustrações válidas e navegação ampliada', () => {
   assert.match(reader, /function renderStudyGallery/);
   assert.match(reader, /renderStudyGallery\('midweek', midweek/);
-  assert.match(reader, /renderStudyGallery\('watchtower', watchtower/);
+  assert.match(reader, /renderStudyGallery\('watchtower', study/);
   assert.match(reader, /function imageList/);
   assert.match(reader, /new Set\(sources\.map\(officialUrl\)/);
   assert.match(reader, /function openImageViewer/);
@@ -95,14 +95,14 @@ test('Sentinela preserva perguntas e texto completo com apresentação de leitur
     assert.ok(html.includes(part), part);
   }
   assert.match(reader, /function renderWatchtowerReading/);
-  assert.match(reader, /renderWatchtowerReading\(watchtower\)/);
+  assert.match(reader, /renderWatchtowerReading\(study\)/);
   assert.match(reader, /Pergunta\\s\+/);
   assert.match(reader, /study-question-number/);
   assert.match(reader, /study-numbered-paragraph/);
   assert.match(reader, /study-scripture/);
   assert.match(reader, /study-review-list/);
   assert.match(reader, /studyIllustration\(images, imageIndex/);
-  assert.match(reader, /studyRangeText\(watchtower.title/);
+  assert.match(reader, /studyRangeText\(study.title/);
   assert.match(html, /id="watchtower-comment-status"/);
   assert.doesNotMatch(html, /contenteditable/);
 });
@@ -299,8 +299,8 @@ test('texto diário troca na data local de Brasília sem recarregar outros estud
 
 test('atualização programa meia-noite de Brasília e pré-carrega próximos textos', async () => {
   const workflow = await read('.github/workflows/update-content.yml');
-  assert.match(workflow, /cron: '0 3 \* \* \*'/);
-  assert.match(workflow, /cron: '10 3 \* \* \*'/);
+  assert.match(workflow, /cron: '7 3 \* \* \*'/);
+  assert.match(workflow, /cron: '27 3 \* \* \*'/);
   assert.match(updater, /const dailyDates = nextDates\(now, 4\)/);
   assert.match(updater, /getDaily/);
   assert.match(updater, /daily, dailyReadings,/);
