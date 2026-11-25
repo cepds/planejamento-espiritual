@@ -148,7 +148,7 @@ test('Imagem da Assembleia mantém marcação em card, detalhes e painel compact
   assert.equal(get('event-details-program').children.length,2,'programação completa permanece disponível no card');
 });
 
-test('Visita permite salvar semana terça-domingo e dois temas independentes',async()=>{
+test('Visita permite salvar semana terça-domingo e três temas independentes',async()=>{
   const {get,recorded}=runWithDocs([],true);
   get('agenda-add').listeners.click();
   get('event-form-type').value='Visita';
@@ -164,12 +164,15 @@ test('Visita permite salvar semana terça-domingo e dois temas independentes',as
   get('event-form-title').value='Visita do superintendente';
   get('event-talk-1-theme').value='Tema de terça';
   get('event-talk-2-theme').value='Tema de sábado';
+  get('event-talk-3-theme').value='Segundo tema de sábado';
+  assert.equal(get('event-talk-3-date').value,offsetDateFrom(tuesday,4));
   get('event-talk-1-time').value='19:30';
   get('event-talk-2-time').value='18:00';
   await get('event-form').listeners.submit({preventDefault(){}});
   assert.equal(recorded.added.length,1);
   assert.equal(recorded.added[0].dateEnd,offsetDateFrom(tuesday,5));
-  assert.equal(recorded.added[0].talks.length,2);
+  assert.equal(recorded.added[0].talks.length,3);
+  assert.equal(recorded.added[0].talks[2].theme,'Segundo tema de sábado');
   assert.equal(recorded.added[0].talks[0].theme,'Tema de terça');
   assert.equal(recorded.added[0].talks[1].theme,'Tema de sábado');
 });

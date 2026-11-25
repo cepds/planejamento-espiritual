@@ -389,6 +389,11 @@
           <label for="event-talk-2-time">Horário (opcional)</label><input id="event-talk-2-time" type="time">
           <label for="event-talk-2-theme">Tema</label><input id="event-talk-2-theme" type="text" maxlength="180" placeholder="Informe o tema do segundo discurso">
         </div>
+        <div><h3>Discurso 3</h3>
+          <label for="event-talk-3-date">Data</label><input id="event-talk-3-date" type="date">
+          <label for="event-talk-3-time">Horário (opcional)</label><input id="event-talk-3-time" type="time">
+          <label for="event-talk-3-theme">Tema</label><input id="event-talk-3-theme" type="text" maxlength="180" placeholder="Informe o tema do terceiro discurso">
+        </div>
       </div>
       <p class="event-detail-hint">A visita vai de terça a domingo. As datas dos discursos são sugeridas para terça e sábado, mas você pode alterá-las dentro desse período.</p>
     </fieldset>
@@ -425,7 +430,7 @@
 <script src="/__/firebase/init.js" defer></script>
 <script src="reader.js?v=21" defer></script>
 <script src="event-programs.js?v=2" defer></script>
-<script src="public-events.js?v=10" defer></script>
+<script src="public-events.js?v=11" defer></script>
 <script>
  if ('serviceWorker' in navigator) {
    addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });

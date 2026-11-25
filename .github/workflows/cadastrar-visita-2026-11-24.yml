@@ -1,0 +1,20 @@
+name: Cadastro pontual da visita 24-11-2026
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/cadastrar-visita-2026-11-24.mjs'
+      - '.github/workflows/cadastrar-visita-2026-11-24.yml'
+permissions:
+  contents: read
+jobs:
+  cadastrar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - run: node --test scripts/event-dashboard.test.mjs
+      - run: node scripts/cadastrar-visita-2026-11-24.mjs

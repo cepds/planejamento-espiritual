@@ -93,11 +93,11 @@
   }
   function cleanTalks(input) {
     if (!Array.isArray(input)) return [];
-    return input.slice(0, 2).map(item => ({
+    return input.slice(0, 3).map(item => ({
       date: validDate(item?.date) ? item.date : '',
       time: /^([01]\d|2[0-3]):[0-5]\d$/.test(item?.time || '') ? item.time : '',
       theme: typeof item?.theme === 'string' ? item.theme.slice(0, 180) : ''
-    }));
+    })).filter(talk => talk.theme || talk.time);
   }
   function memorialEvents() {
     if (!references.memorial) return [];
@@ -532,6 +532,7 @@
     if (resetTalks) {
       field('event-talk-1-date').value = isTuesday ? start : '';
       field('event-talk-2-date').value = isTuesday ? addDays(start, 4) : '';
+      field('event-talk-3-date').value = isTuesday ? addDays(start, 4) : '';
     }
   }
 
@@ -584,7 +585,7 @@
       field('event-form-program-lines').value = item.programText || '';
       field('event-memorial-time').value = item.time || '';
       const talks = cleanTalks(item.talks);
-      for (const index of [1, 2]) {
+      for (const index of [1, 2, 3]) {
         const talk = talks[index - 1] || {};
         field('event-talk-' + index + '-date').value = talk.date || '';
         field('event-talk-' + index + '-time').value = talk.time || '';
@@ -677,7 +678,7 @@
         message('A visita deve começar na terça e terminar no domingo.', true);
         return;
       }
-      for (const index of [1, 2]) {
+      for (const index of [1, 2, 3]) {
         const day = field('event-talk-' + index + '-date').value;
         const theme = field('event-talk-' + index + '-theme').value.trim();
         if ((day && !dayWithin(day, date, field('event-form-date-end').value)) ||
@@ -708,11 +709,11 @@
           ? (references.memorial?.source || '') : safeHttpsUrl(sourceInput),
         programId,
         programText: type === 'Assembleia' ? field('event-form-program-lines').value.trim() : '',
-        talks: type === 'Visita' ? [1, 2].map(index => ({
+        talks: type === 'Visita' ? [1, 2, 3].map(index => ({
           date: field('event-talk-' + index + '-date').value,
           time: field('event-talk-' + index + '-time').value,
           theme: field('event-talk-' + index + '-theme').value.trim()
-        })) : [],
+        })).filter(talk => talk.theme || talk.time) : [],
         time: type === 'Celebração' ? field('event-memorial-time').value : ''
       };
       if (editingId) await collection.doc(editingId).update(payload);
