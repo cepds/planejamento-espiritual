@@ -51,7 +51,7 @@ test('agenda no canto permite eventos e mantém dados do formato anterior', () =
 });
 
 test('versões do cache acompanham CSS e JS da página', () => {
-  for (const file of ['reader.js?v=21', 'reader.css?v=30', 'public-events.js?v=11', 'event-programs.js?v=2']) {
+  for (const file of ['reader.js?v=21', 'reader.css?v=31', 'public-events.js?v=11', 'event-programs.js?v=2']) {
     assert.ok(html.includes(file));
     assert.ok(worker.includes(file));
   }
@@ -616,7 +616,7 @@ test('nova lateral premium preserva rotas e exibe o ícone aprovado', async () =
   const svg = await read('icons/planejamento-espiritual.svg');
   assert.match(svg, /<svg/);
   assert.match(svg, /Planejamento Espiritual/);
-  assert.match(worker, /v45-visita-tres-discursos/);
+  assert.match(worker, /v46-agenda-compacta/);
   assert.match(worker, /\/icons\/planejamento-espiritual-original\.png/);
 });
 
@@ -679,4 +679,11 @@ test('A Sentinela tem pré-carregamento semanal e vira na segunda sem depender d
   assert.match(updater,/watchtowerNext = await getWatchtowerStudy\(followingMonday\)/);
   assert.match(updater,/watchtower, watchtowerNext, covers/);
   assert.match(html,/reader\.js\?v=21/);
+});
+
+test('Agenda compacta preserva acesso à agenda completa e aos eventos',()=>{
+  assert.match(css,/\.event-widget\[data-mobile-collapsed="true"\]\{\s*width:min\(250px/);
+  assert.match(css,/\.agenda-event-cover\{height:120px\}/);
+  assert.match(html,/id="event-dashboard-open"/);
+  assert.match(html,/id="agenda-events-list"/);
 });

@@ -3100,3 +3100,52 @@ body [data-reader-page="family"] .family-plan-swap:hover{background:#466f9d}
 .event-details-image[data-event-type="Assembleia"]{
   height:240px;max-height:240px
 }
+
+/* Agenda compacta: mantém todos os eventos e detalhes, reduz a área sobre a leitura. */
+.event-widget[data-mobile-collapsed="true"]{
+  width:min(250px,calc(100vw - 20px));padding:8px 10px;
+  border-radius:13px;max-height:none;overflow:hidden
+}
+.event-widget .event-toggle{
+  display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;
+  border:1px solid #536780;border-radius:10px;padding:9px;cursor:pointer
+}
+.event-widget .event-toggle svg{width:18px;height:18px}
+.event-widget[data-mobile-collapsed="false"] .event-toggle svg{transform:rotate(180deg)}
+.event-widget[data-mobile-collapsed="true"] .event-widget-header{gap:7px;min-width:0}
+.event-widget[data-mobile-collapsed="true"] .event-widget-header>div:first-child{min-width:0;flex:1}
+.event-widget[data-mobile-collapsed="true"] .event-widget-eyebrow,
+.event-widget[data-mobile-collapsed="true"] #event-open,
+.event-widget[data-mobile-collapsed="true"] #event-preview,
+.event-widget[data-mobile-collapsed="true"] #event-all,
+.event-widget[data-mobile-collapsed="true"] #event-import,
+.event-widget[data-mobile-collapsed="true"] #event-sync-status{display:none!important}
+.event-widget[data-mobile-collapsed="true"] h2{font:700 .82rem/1.25 "Segoe UI",system-ui,sans-serif;margin:0 0 3px}
+.event-widget[data-mobile-collapsed="true"] .event-mini{display:block;font-size:.72rem;line-height:1.3;margin:0;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.event-widget[data-mobile-collapsed="true"] .event-dashboard-open{min-height:40px;margin-top:5px;padding:6px 9px;font-size:.74rem;border-radius:9px}
+.event-dashboard{width:min(820px,calc(100vw - 24px));max-height:88dvh}
+.agenda-header{padding:17px 21px}
+.agenda-header h2{font-size:clamp(1.45rem,2.6vw,1.9rem);margin:4px 0}
+.agenda-header p{font-size:.78rem}
+.agenda-main{padding:12px 16px 18px}
+.agenda-events-panel{margin-top:0;padding:12px}
+.agenda-events-heading{margin-bottom:10px}
+.agenda-events-heading h3{font-size:1.1rem}
+.agenda-events-list{gap:10px}
+.agenda-event{padding:9px;gap:8px;border-radius:13px}
+.agenda-event-cover{height:136px;border-radius:9px}
+.agenda-event-date{min-height:55px}
+.agenda-event .event-list-actions{gap:6px}
+.agenda-reference-panel{margin-top:12px}
+.agenda-reference-body{padding:14px;gap:7px}
+.agenda-reference-cover img{min-height:145px}
+@media(max-width:650px){
+  .event-widget[data-mobile-collapsed="true"]{width:min(230px,calc(100vw - 18px))}
+  .event-dashboard{width:calc(100vw - 12px);max-height:calc(100dvh - 24px)}
+  .agenda-header{padding:14px 12px}
+  .agenda-main{padding:10px}
+  .agenda-events-panel{padding:9px}
+  .agenda-event-cover{height:120px}
+  .agenda-reference-cover{max-height:125px}
+  .agenda-reference-cover img{height:125px;min-height:0}
+}

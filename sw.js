@@ -1,7 +1,7 @@
 const CACHE_PREFIX = 'planejamento-espiritual-shell-';
-const CACHE_NAME = CACHE_PREFIX + 'v45-visita-tres-discursos';
+const CACHE_NAME = CACHE_PREFIX + 'v46-agenda-compacta';
 const CONTENT_KEY = '/data/content.json';
-const SHELL = ['/', '/index.html', '/reader.css?v=30', '/reader.js?v=21', '/public-events.js?v=11', '/event-programs.js?v=2', '/images/visita-super.jpg', '/images/congresso.svg', '/images/evento-padrao.svg', '/manifest.webmanifest', '/icons/planejamento-espiritual-original.png', '/icons/planejamento-espiritual.svg'];
+const SHELL = ['/', '/index.html', '/reader.css?v=31', '/reader.js?v=21', '/public-events.js?v=11', '/event-programs.js?v=2', '/images/visita-super.jpg', '/images/congresso.svg', '/images/evento-padrao.svg', '/manifest.webmanifest', '/icons/planejamento-espiritual-original.png', '/icons/planejamento-espiritual.svg'];
 
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
